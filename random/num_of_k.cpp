@@ -1,3 +1,11 @@
+/*
+ * @Author: zephyr
+ * @Date: 2020-11-25 14:34:35
+ * @LastEditTime: 2020-11-25 16:48:02
+ * @LastEditors: zephyr
+ * @Description: In User Settings Edit
+ * @FilePath: \LeetCodeSolution\random\num_of_k.cpp
+ */
 #include <iostream>
 using namespace std;
 
