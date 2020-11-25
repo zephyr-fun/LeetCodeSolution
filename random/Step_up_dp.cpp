@@ -1,9 +1,9 @@
-/*
- * @Author: zephyr
- * @Date: 2020-11-25 09:04:01
- * @LastEditors: zephyr
- * @LastEditTime: 2020-11-25 16:48:16
- * @FilePath: \LeetCodeSolution\random\Step_up_dp.cpp
+/*** 
+ * Author: zephyr
+ * Date: 2020-11-25 09:04:01
+ * LastEditors: zephyr
+ * LastEditTime: 2020-11-25 17:10:34
+ * FilePath: \LeetCodeSolution\random\Step_up_dp.cpp
  */
 
 #include <iostream>

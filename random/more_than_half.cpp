@@ -1,11 +1,11 @@
-/*
- * @Author: zephyr
- * @Date: 2020-11-25 09:21:22
- * @LastEditTime: 2020-11-25 16:47:33
- * @LastEditors: zephyr
- * @Description: In User Settings Edit
- * @FilePath: \LeetCodeSolution\random\more_than_half.cpp
+/*** 
+ * Author: zephyr
+ * Date: 2020-11-25 09:21:22
+ * LastEditors: zephyr
+ * LastEditTime: 2020-11-25 17:10:06
+ * FilePath: \LeetCodeSolution\random\more_than_half.cpp
  */
+
 #include <iostream>
 using namespace std;
 int majorityElement(int* data,int nums) 
