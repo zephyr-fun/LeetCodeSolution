@@ -2,18 +2,21 @@
  * Author: zephyr
  * Date: 2020-12-05 09:18:40
  * LastEditors: zephyr
- * LastEditTime: 2020-12-05 09:43:56
+ * LastEditTime: 2020-12-05 10:24:20
  * FilePath: \LeetCodeSolution\tree\104_Maximum_Depth_of_Binary_Tree.cpp
  */
 #include <iostream>
 #include <vector>
 using namespace std;
+//recursion
 int maxDepth(TreeNode* root)
 {
     if(root == nullptr)
         return 0;
     return max(maxDepth(root->left), maxDepth(root->right)) + 1;
 }
+
+//non recursion
 int maxDepth2(TreeNode* root)
 {
     if(!root)
