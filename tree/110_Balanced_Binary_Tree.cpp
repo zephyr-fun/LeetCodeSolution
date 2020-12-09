@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-09 08:59:00
  * LastEditors: zephyr
- * LastEditTime: 2020-12-09 09:27:23
+ * LastEditTime: 2020-12-09 09:32:09
  * FilePath: \undefinedd:\GithubWorkSpace\LeetCodeSolution\tree\110_Balanced_Binary_Tree.cpp
  */
 #include <iostream>
@@ -34,7 +34,7 @@ bool isBalanced(TreeNode* root)
     return abs(height(root->left)-height(root->right)) <=1 && isBalanced(root->left) && isBalanced(root->right);
 }
 
-//recursion from bottom to top avoid repeated computing
+// recursion from bottom to top avoid repeated computing
 int height2(TreeNode* root)
 {
     if(!root)
@@ -48,4 +48,12 @@ int height2(TreeNode* root)
 bool isBalanced2(TreeNode* root)
 {
     return height(root) >= 0;
+}
+
+// pure version
+bool isBalanced3(TreeNode* root) {
+    return !root ? true : abs(depth(root->left) - depth(root->right)) <= 1 && isBalanced(root->left) && isBalanced(root->right);
+}
+int depth3(TreeNode* cur) { //maximum depth
+    return !cur ? 0 : max(depth(cur->left), depth(cur->right)) + 1;
 }
