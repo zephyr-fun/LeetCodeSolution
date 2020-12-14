@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-14 15:06:16
  * LastEditors: zephyr
- * LastEditTime: 2020-12-14 15:12:27
+ * LastEditTime: 2020-12-14 15:24:09
  * FilePath: \LeetCodeSolution\tree\199_Binary_Tree_Right_side_view.cpp
  */
 #include <queue>
@@ -48,10 +48,38 @@ vector<int> rightSideView(TreeNode* root)
 // DFS
 vector<int> rightSideView(TreeNode* root)
 {
+    vector<int> res;
+    if(!root)
+        return res;
     unordered_map<int, int>firstAtDepth;
     int max_depth = -1;
     stack<TreeNode*> depthNode;
     stack<int> depthStack;
     depthNode.push(root);
     depthStack.push(0);
+    while(!depthNode.empty())
+    {
+        auto node = depthNode.top();
+        depthNode.pop();
+        auto depth = depthStack.top();
+        depthStack.pop();
+        max_depth = max(depth, max_depth);
+        if(firstAtDepth.find(depth) == firstAtDepth.end())
+            firstAtDepth[depth] = node->val;
+        if(node->left)
+        {
+            depthNode.push(node->left);
+            depthStack.push(depth + 1);
+        }
+        if(node->right)
+        {
+            depthNode.push(node->right);
+            depthStack.push(depth + 1);
+        }
+    }
+    for(int i = 0; i <= max_depth; i++)
+    {
+        res.emplace_back(firstAtDepth[i]);
+    }
+    return res;
 }
