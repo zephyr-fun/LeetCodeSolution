@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-17 10:05:59
  * LastEditors: zephyr
- * LastEditTime: 2020-12-17 10:07:39
+ * LastEditTime: 2020-12-17 10:47:47
  * FilePath: \undefinedd:\GithubWorkSpace\LeetCodeSolution\tree\117_Populating_Next_Right_Pointers_in_Each_Node_II.cpp
  */
 #include <iostream>
@@ -45,6 +45,36 @@ Node* connect(Node* root) {
             if(node->right)
                 q_node.push(node->right);
         }
+    }
+    return root;
+}
+// Linklist way
+void connectLink(Node* &last, Node* &current, Node* &nextStart)
+{
+    if(last)
+        last->next = current;
+    if(!nextStart)
+        nextStart = current;
+    last = current;
+}
+Node* connect2(Node* root) 
+{
+    if(!root)
+        return nullptr;
+    Node* start = root;
+    while(start)
+    {
+        Node* last = nullptr;
+        Node* nextStart = nullptr;
+        Node* head = start;
+        for(head; head != nullptr; head = head->next)
+        {
+            if(head->left)
+                connectLink(last, head->left, nextStart);
+            if(head->right)
+                connectLink(last, head->right, nextStart);
+        }
+        start = nextStart;
     }
     return root;
 }
