@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-21 16:41:44
  * LastEditors: zephyr
- * LastEditTime: 2020-12-21 16:53:38
+ * LastEditTime: 2020-12-21 16:54:31
  * FilePath: \undefinedd:\GithubWorkSpace\LeetCodeSolution\dp\213_House_Robber_II.cpp
  */
 #include <iostream>
@@ -37,4 +37,17 @@ int dynamic(vector<int>& nums, int start, int end)
         dp[i] = max(dp[i-1], dp[i-2]+nums[i]);
     }
     return dp[end-1];
+}
+// version 2
+int dynamic(vector<int>& nums, int start, int end)
+{
+    int first = nums[start];
+    int second = max(nums[start], nums[start+1]);
+    for(int i = start + 2; i < end; i++)
+    {
+        int temp = second;
+        second = max(first + nums[i], second);
+        first = temp;
+    }
+    return second;
 }
