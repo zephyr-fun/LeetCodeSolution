@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-27 10:18:49
  * LastEditors: zephyr
- * LastEditTime: 2020-12-27 10:51:10
+ * LastEditTime: 2020-12-27 11:20:05
  * FilePath: \tree\235_Lowest_Common_Ancestor_of_a_Binary_Search_Tree.cpp
  */
 #include <iostream>
@@ -60,4 +60,20 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
             break;
     }
     return res;
+}
+
+// way 2 : save memory
+TreeNode* lowestCommonAncestor2(TreeNode* root, TreeNode* p, TreeNode* q)
+{
+    TreeNode* ancestor = root;
+    while(true)
+    {
+        if(p->val < ancestor->val && q->val < ancestor->val)
+            ancestor = ancestor->left;
+        else if(p->val > ancestor->val && q->val > ancestor->val)
+            ancestor = ancestor->right;
+        else
+            break;
+    }
+    return ancestor;
 }
