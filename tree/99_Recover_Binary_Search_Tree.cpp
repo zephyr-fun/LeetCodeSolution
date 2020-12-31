@@ -2,11 +2,12 @@
  * Author: zephyr
  * Date: 2020-12-31 10:44:52
  * LastEditors: zephyr
- * LastEditTime: 2020-12-31 11:28:39
+ * LastEditTime: 2020-12-31 11:40:22
  * FilePath: \tree\99_Recover_Binary_Search_Tree.cpp
  */
 #include <iostream>
 #include <vector>
+#include <stack>
 using namespace std;
 
 // Definition for a binary tree node.
@@ -64,4 +65,36 @@ void recoverTree(TreeNode* root) {
     inorder(root);
     pair<int, int> swapped =  findswap(res);
     recover(root, 2, swapped.first, swapped.second);
+}
+
+// way 2 with hidden vector
+void recoverTree(TreeNode* root) {
+    stack<TreeNode*> stk;
+    TreeNode* x = nullptr;
+    TreeNode* y = nullptr;
+    TreeNode* pred = nullptr;
+
+    while(!stk.empty() || root != nullptr)
+    {
+        while(root != nullptr)
+        {
+            stk.push(root);
+            root = root->left;
+        }
+        root = stk.top();
+        stk.pop();
+        if(pred != nullptr && root->val < pred->val)
+        {
+            y = root;
+            if(x == nullptr)
+            {
+                x = pred;
+            }
+            else
+                break;
+        }
+        pred = root;
+        root = root->right;
+    }
+    swap(x->val, y->val);
 }
