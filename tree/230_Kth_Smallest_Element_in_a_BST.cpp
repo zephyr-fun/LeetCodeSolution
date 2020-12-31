@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-31 09:21:57
  * LastEditors: zephyr
- * LastEditTime: 2020-12-31 09:46:03
+ * LastEditTime: 2020-12-31 10:00:34
  * FilePath: \undefinedd:\GithubWorkSpace\LeetCodeSolution\tree\230_Kth_Smallest_Element_in_a_BST.cpp
  */
 #include <iostream>
@@ -35,6 +35,28 @@ int kthSmallest(TreeNode* root, int k) {
     return res[k-1];
 }
 
+// way 1 recursion with early stop
+int kres, ans;
+bool inorder(TreeNode* root)
+{
+    if(root == nullptr)
+        return false;
+    if(inorder(root->left))
+        return true;
+    if(--kres == 0)
+    {
+        ans = root->val;
+        return true;
+    }
+    return inorder(root->right);
+}
+int kthSmallest(TreeNode* root, int k)
+{
+    kres = k;
+    inorder(root);
+    return ans;
+}
+
 // way 2 non recursion
 int kthSmallest(TreeNode* root, int k)
 {
@@ -48,6 +70,7 @@ int kthSmallest(TreeNode* root, int k)
         }
         root = stk.top();
         stk.pop();
+        // early stop
         if(--k == 0)
             return root->val;
         root = root->right;
