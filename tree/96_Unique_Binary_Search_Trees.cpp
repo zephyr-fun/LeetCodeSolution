@@ -2,13 +2,14 @@
  * Author: zephyr
  * Date: 2020-12-25 10:15:41
  * LastEditors: zephyr
- * LastEditTime: 2020-12-25 10:26:38
- * FilePath: \MovieRatingPredictiond:\GithubWorkSpace\LeetCodeSolution\tree\96_Unique_Binary_Search_Trees.cpp
+ * LastEditTime: 2021-01-02 10:06:53
+ * FilePath: \tree\96_Unique_Binary_Search_Trees.cpp
  */
 #include <iostream>
 #include <vector>
 using namespace std;
 
+// way 1 dp(kind of recursion way)
 // $G(n) = \sum^n_{i = 1}{F(i, n)}$
 // $G(0) = 1 G(1) = 1$
 // $F(i, n) = G(i - 1)*G(n - i)$
@@ -27,6 +28,7 @@ int numTrees(int n) {
     return G[n];
 }
 
+// way 2 明安图数
 // $res_0 = 1$
 // $res_n = res_{n - 1}*\frac{2(2n + 1)}{n + 2}$
 int numTrees2(int n)
