@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-31 10:44:52
  * LastEditors: zephyr
- * LastEditTime: 2020-12-31 12:27:23
+ * LastEditTime: 2021-01-03 09:30:22
  * FilePath: \tree\99_Recover_Binary_Search_Tree.cpp
  */
 #include <iostream>
@@ -20,20 +20,36 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 // way 1 space : O(n)
-vector<int> res;
-void inorder(TreeNode* root)
+vector<int> res;// store inorder traversal result
+void inorder(TreeNode* root)// inorder traversal in recursion way
 {
     if(!root)
         return ;
     inorder(root->left);
-    res.emplace_back(root->val);
+    res.emplace_back(root->val);// add root->val into res
     inorder(root->right);
 }
-pair<int, int> findswap(vector<int>& num)
+void inorder(TreeNode* root)// inorder traversal in non recursion way
+{
+    stack<TreeNode*> stk;
+    while(!stk.empty() || root != nullptr)
+    {
+        while(root != nullptr)
+        {
+            stk.push(root);
+            root = root->left;
+        }
+        root = stk.top();
+        stk.pop();
+        res.emplace_back(root->val);
+        root = root->right;
+    }
+}
+pair<int, int> findswap(vector<int>& num)// find out the right position for swap
 {
     int x = -1;
     int y = -1;
-    for(int i = 0; i < num.size() - 1; i++)
+    for(int i = 0; i < num.size() - 1; i++)// at least 1 group, at most 2 gruops
     {
         if(num[i+1] < num[i])
         {
@@ -53,7 +69,7 @@ void recover(TreeNode* root, int count, int x, int y)
         if(root->val == x || root->val == y)
         {
             root->val = root->val == x ? y : x;
-            if(--count == 0)
+            if(--count == 0)// early stop save time
                 return ;
         }
     
