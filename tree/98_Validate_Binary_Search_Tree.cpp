@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-28 08:56:05
  * LastEditors: zephyr
- * LastEditTime: 2021-01-03 09:12:46
+ * LastEditTime: 2021-01-03 09:13:53
  * FilePath: \tree\98_Validate_Binary_Search_Tree.cpp
  */
 #include <iostream>
@@ -71,3 +71,25 @@ bool isValidBST(TreeNode* root)
     return helper(root, LONG_MIN, LONG_MAX);// 给定上下界
 }
 
+// non recursion
+// 保证中序遍历的每一个结果都小于前一个结果即可
+bool isValidBST(TreeNode* root)
+{
+    long long preVal = (long long)INT_MIN - 1; // 初始化preVal需要谨慎，INT_MIN显然不行
+    stack<TreeNode*> stk;
+    while(!stk.empty() || root != nullptr)// 中序遍历
+    {
+        while(root != nullptr)
+        {
+            stk.push(root);
+            root = root->left;
+        }
+        root = stk.top();// 对根节点操作
+        stk.pop();
+        if(root->val <= preVal)// 和前一个结果比较
+            return false;
+        preVal = root->val;// 更新preVal
+        root = root->right;// 去到右节点
+    }
+    return true;
+}
