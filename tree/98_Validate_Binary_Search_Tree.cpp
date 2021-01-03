@@ -2,8 +2,8 @@
  * Author: zephyr
  * Date: 2020-12-28 08:56:05
  * LastEditors: zephyr
- * LastEditTime: 2020-12-28 09:28:01
- * FilePath: \pytorch-fm-masterd:\GithubWorkSpace\LeetCodeSolution\tree\98_Validate_Binary_Search_Tree.cpp
+ * LastEditTime: 2021-01-03 09:12:46
+ * FilePath: \tree\98_Validate_Binary_Search_Tree.cpp
  */
 #include <iostream>
 #include <vector>
@@ -55,3 +55,19 @@ bool isValidBST(TreeNode* root)
     }
     return true;
 }
+// 2nd 
+// recursion
+// 把每次的上下界保存在了lower和upper中，其实是在不断地划分小范围
+bool helper(TreeNode* root, long long lower, long long upper)
+{
+    if(root == nullptr)// root为空，一定是BST
+        return true;
+    if(root->val >= upper || root->val <= lower)// root的值不在范围内，不符合BST要求
+        return false;
+    return helper(root->left, lower, root->val) && helper(root->right, root->val, upper);// root的左子树和右子树都是BST，整棵树才是BST
+}
+bool isValidBST(TreeNode* root)
+{
+    return helper(root, LONG_MIN, LONG_MAX);// 给定上下界
+}
+
