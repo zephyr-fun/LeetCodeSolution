@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-31 10:44:52
  * LastEditors: zephyr
- * LastEditTime: 2021-01-03 09:30:22
+ * LastEditTime: 2021-01-03 09:33:58
  * FilePath: \tree\99_Recover_Binary_Search_Tree.cpp
  */
 #include <iostream>
@@ -83,14 +83,14 @@ void recoverTree(TreeNode* root) {
     recover(root, 2, swapped.first, swapped.second);
 }
 
-// way 2 with hidden vector
+// way 2 with hidden vector, that is we dont need res anymore, instead we use just a TreeNode* pred
 void recoverTree(TreeNode* root) {
     stack<TreeNode*> stk;
     TreeNode* x = nullptr;
     TreeNode* y = nullptr;
     TreeNode* pred = nullptr;
 
-    while(!stk.empty() || root != nullptr)
+    while(!stk.empty() || root != nullptr)// inorder traversal
     {
         while(root != nullptr)
         {
@@ -99,7 +99,7 @@ void recoverTree(TreeNode* root) {
         }
         root = stk.top();
         stk.pop();
-        if(pred != nullptr && root->val < pred->val)
+        if(pred != nullptr && root->val < pred->val)// find out the mis order position
         {
             y = root;
             if(x == nullptr)
