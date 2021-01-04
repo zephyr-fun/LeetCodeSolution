@@ -2,8 +2,8 @@
  * Author: zephyr
  * Date: 2020-12-01 22:26:48
  * LastEditors: zephyr
- * LastEditTime: 2020-12-01 22:30:25
- * FilePath: \LeetCodeSolution\tree\102_Binary_Tree_Level_Order_Traversal.cpp
+ * LastEditTime: 2021-01-04 09:41:44
+ * FilePath: \tree\102_Binary_Tree_Level_Order_Traversal.cpp
  */
 #include <iostream>
 #include <vector>
@@ -18,6 +18,15 @@ using namespace std;
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 vector<vector<int>> levelOrder(TreeNode* root)
 {
     vector<vector<int>> res;
@@ -41,4 +50,15 @@ vector<vector<int>> levelOrder(TreeNode* root)
         }
     }
     return res;
+}
+
+// way 2
+vector<vector<int>> levelOrder(TreeNode* root)
+{
+    vector<vector<int>> res;
+    if(!root)
+        return res;
+    queue<TreeNode*> q_node;
+    q_node.push(root);
+    
 }
