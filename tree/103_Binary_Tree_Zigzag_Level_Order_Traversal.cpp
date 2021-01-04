@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-03 10:35:09
  * LastEditors: zephyr
- * LastEditTime: 2021-01-04 09:59:35
+ * LastEditTime: 2021-01-04 10:00:52
  * FilePath: \tree\103_Binary_Tree_Zigzag_Level_Order_Traversal.cpp
  */
 #include <iostream>
@@ -53,7 +53,7 @@ vector<vector<int>> zigzagLevelOrder(TreeNode* root)
         }
         if(!(level%2))
         {
-            reverse(levelOrder.begin(),levelOrder.end());
+            reverse(levelOrder.begin(),levelOrder.end());// reverse
             res.emplace_back(levelOrder);
         }
         else
