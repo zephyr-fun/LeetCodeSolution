@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-01 22:26:48
  * LastEditors: zephyr
- * LastEditTime: 2021-01-04 09:41:44
+ * LastEditTime: 2021-01-04 09:50:08
  * FilePath: \tree\102_Binary_Tree_Level_Order_Traversal.cpp
  */
 #include <iostream>
@@ -60,5 +60,21 @@ vector<vector<int>> levelOrder(TreeNode* root)
         return res;
     queue<TreeNode*> q_node;
     q_node.push(root);
-    
+    while(!q_node.empty())
+    {
+        int levelsize = q_node.size();
+        vector<int> temp;
+        for(int i = 0; i < levelsize; i++)
+        {
+            auto node = q_node.front();
+            q_node.pop();
+            temp.emplace_back(node->val);
+            if(node->left)
+                q_node.push(node->left);
+            if(node->right)
+                q_node.push(node->right);
+        }
+        res.emplace_back(temp);
+    }
+    return res;
 }
