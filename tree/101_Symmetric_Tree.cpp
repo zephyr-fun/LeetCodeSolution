@@ -2,8 +2,8 @@
  * Author: zephyr
  * Date: 2020-12-01 21:20:23
  * LastEditors: zephyr
- * LastEditTime: 2020-12-01 21:48:44
- * FilePath: \LeetCodeSolution\tree\101_Symmetric_Tree.cpp
+ * LastEditTime: 2021-01-04 09:11:35
+ * FilePath: \tree\101_Symmetric_Tree.cpp
  */
 #include <iostream>
 #include <vector>
@@ -18,6 +18,15 @@ using namespace std;
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 
 //recursion
 bool check(TreeNode* p, TreeNode* q)
