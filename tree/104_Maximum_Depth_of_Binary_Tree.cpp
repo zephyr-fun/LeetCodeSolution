@@ -2,12 +2,22 @@
  * Author: zephyr
  * Date: 2020-12-05 09:18:40
  * LastEditors: zephyr
- * LastEditTime: 2020-12-05 10:24:20
- * FilePath: \LeetCodeSolution\tree\104_Maximum_Depth_of_Binary_Tree.cpp
+ * LastEditTime: 2021-01-05 18:22:57
+ * FilePath: \tree\104_Maximum_Depth_of_Binary_Tree.cpp
  */
 #include <iostream>
 #include <vector>
+#include <queue>
 using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 //recursion
 int maxDepth(TreeNode* root)
 {
