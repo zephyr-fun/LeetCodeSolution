@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-05 09:18:40
  * LastEditors: zephyr
- * LastEditTime: 2021-01-05 18:22:57
+ * LastEditTime: 2021-01-05 18:30:28
  * FilePath: \tree\104_Maximum_Depth_of_Binary_Tree.cpp
  */
 #include <iostream>
@@ -37,7 +37,7 @@ int maxDepth2(TreeNode* root)
     while(!q.empty())
     {
         int levelSize = q.size();
-        for(int i = 1; i <= levelSize; i++)
+        for(int i = 1; i <= levelSize; i++) // note that we count by floor
         {
             auto node = q.front();
             q.pop();
