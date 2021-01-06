@@ -2,13 +2,23 @@
  * Author: zephyr
  * Date: 2020-12-10 16:15:56
  * LastEditors: zephyr
- * LastEditTime: 2020-12-12 14:45:39
- * FilePath: \undefinedd:\GithubWorkSpace\LeetCodeSolution\tree\105_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal.cpp
+ * LastEditTime: 2021-01-06 15:52:35
+ * FilePath: \tree\105_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal.cpp
  */
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <unordered_map>
 using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 
 unordered_map<int, int> index;
 
@@ -46,7 +56,7 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
 }
 
 // second way
-TreeNode* buildTree2(vector<int>& preorder, vector<int>& inorder)
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
 {
     if(!preorder.size())
         return nullptr;
