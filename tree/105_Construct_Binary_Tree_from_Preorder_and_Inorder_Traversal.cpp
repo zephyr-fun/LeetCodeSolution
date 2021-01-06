@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-10 16:15:56
  * LastEditors: zephyr
- * LastEditTime: 2021-01-06 15:52:35
+ * LastEditTime: 2021-01-06 20:50:47
  * FilePath: \tree\105_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal.cpp
  */
 #include <iostream>
@@ -85,4 +85,25 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
         }
     }
     return root;
+}
+
+// 2nd
+TreeNode* buildMyTree(vector<int>& preorder, vector<int>& inorder, int preleft, int preright, int inleft, int inright)
+{
+    if(preleft > preright)
+        return nullptr;
+    TreeNode* root = new TreeNode(preorder[preleft]);
+    int inorderroot = index[preorder[preleft]];
+    int sublefttree = inorderroot - inleft;
+    root->left = buildMyTree(preorder, inorder, preleft + 1, preleft + sublefttree, inleft, inorderroot - 1);
+    root->right = buildMyTree(preorder, inorder, preleft + sublefttree + 1, preright, inorderroot + 1, inright);
+    return root;
+}
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
+{
+    for(int i = 0; i < inorder.size(); i++)
+    {
+        index[inorder[i]] = i;
+    }
+    return buildMyTree(preorder, inorder, 0, preorder.size() - 1, 0, inorder.size() - 1);
 }
