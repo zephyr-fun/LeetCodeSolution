@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-10 16:15:56
  * LastEditors: zephyr
- * LastEditTime: 2021-01-06 20:50:47
+ * LastEditTime: 2021-01-06 21:33:28
  * FilePath: \tree\105_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal.cpp
  */
 #include <iostream>
@@ -88,6 +88,7 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
 }
 
 // 2nd
+// way 1
 TreeNode* buildMyTree(vector<int>& preorder, vector<int>& inorder, int preleft, int preright, int inleft, int inright)
 {
     if(preleft > preright)
@@ -106,4 +107,36 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
         index[inorder[i]] = i;
     }
     return buildMyTree(preorder, inorder, 0, preorder.size() - 1, 0, inorder.size() - 1);
+}
+
+// way 2
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
+{
+    if(!preorder.size())
+        return nullptr;
+    TreeNode* root = new TreeNode(preorder[0]);
+    int inorderindex = 0;
+    stack<TreeNode*> stk;
+    stk.push(root);
+    for(int i = 1; i < preorder.size(); i++)
+    {
+        auto node = stk.top();
+        if(node->val != inorder[inorderindex])
+        {
+            node->left = new TreeNode(preorder[i]);
+            stk.push(node->left);
+        }
+        else
+        {
+            while(!stk.empty() && stk.top()->val == inorder[inorderindex])
+            {
+                node = stk.top();
+                stk.pop();
+                inorderindex++;
+            }
+            node->right = new TreeNode(preorder[i]);
+            stk.push(node->right);
+        }
+    }
+    return root;
 }
