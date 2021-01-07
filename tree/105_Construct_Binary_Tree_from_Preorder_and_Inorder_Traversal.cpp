@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-10 16:15:56
  * LastEditors: zephyr
- * LastEditTime: 2021-01-06 21:33:28
+ * LastEditTime: 2021-01-07 21:43:48
  * FilePath: \tree\105_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal.cpp
  */
 #include <iostream>
@@ -128,7 +128,7 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
         }
         else
         {
-            while(!stk.empty() && stk.top()->val == inorder[inorderindex])
+            while(!stk.empty() && stk.top()->val == inorder[inorderindex]) // you need to know that the stk.top() is the next
             {
                 node = stk.top();
                 stk.pop();
