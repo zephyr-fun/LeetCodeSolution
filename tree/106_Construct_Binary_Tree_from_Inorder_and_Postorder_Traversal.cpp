@@ -2,7 +2,7 @@
  * Author: zephyr
  * Date: 2020-12-12 14:56:36
  * LastEditors: zephyr
- * LastEditTime: 2021-01-09 11:15:34
+ * LastEditTime: 2021-01-09 11:30:18
  * FilePath: \tree\106_Construct_Binary_Tree_from_Inorder_and_Postorder_Traversal.cpp
  */
 #include <iostream>
@@ -109,3 +109,33 @@ TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder)
 }
 
 // way 2 non recursion
+TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder)
+{
+    if(!postorder.size())
+        return nullptr;
+    stack<TreeNode*> stk;
+    int inorderindex = inorder.size() - 1;
+    TreeNode* root = new TreeNode(postorder[postorder.size() - 1]);
+    stk.push(root);
+    for(int i = postorder.size() - 2; i >= 0; i--)
+    {
+        auto node = stk.top();
+        if(node->val != inorder[inorderindex])
+        {
+            node->right = new TreeNode(postorder[i]);// all the way to right
+            stk.push(node->right);
+        }
+        else
+        {
+            while(!stk.empty() && stk.top()->val == inorder[inorderindex])// pay more attention to this stk.top()->val
+            {
+                node = stk.top();
+                stk.pop();
+                inorderindex--;
+            }
+            node->left = new TreeNode(postorder[i]);
+            stk.push(node->left);
+        }
+    }
+    return root;
+}
