@@ -2,8 +2,8 @@
  * Author: zephyr
  * Date: 2020-12-09 08:59:00
  * LastEditors: zephyr
- * LastEditTime: 2020-12-09 09:32:09
- * FilePath: \undefinedd:\GithubWorkSpace\LeetCodeSolution\tree\110_Balanced_Binary_Tree.cpp
+ * LastEditTime: 2021-01-13 22:09:23
+ * FilePath: \tree\110_Balanced_Binary_Tree.cpp
  */
 #include <iostream>
 #include <algorithm>
@@ -19,6 +19,15 @@ using namespace std;
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 
 // recursion from top to bottom
 int height(TreeNode* root)
@@ -54,6 +63,16 @@ bool isBalanced2(TreeNode* root)
 bool isBalanced3(TreeNode* root) {
     return !root ? true : abs(depth(root->left) - depth(root->right)) <= 1 && isBalanced(root->left) && isBalanced(root->right);
 }
-int depth3(TreeNode* cur) { //maximum depth
+int depth(TreeNode* cur) { //maximum depth
+    return !cur ? 0 : max(depth(cur->left), depth(cur->right)) + 1;
+}
+
+// 2nd
+bool isBalanced3(TreeNode* root)
+{
+    return !root ? true : isBalanced3(root->left) && isBalanced3(root->right) && abs(depth(root->left) - depth(root->right)) <= 1;
+}
+int depth(TreeNode* cur)
+{
     return !cur ? 0 : max(depth(cur->left), depth(cur->right)) + 1;
 }
