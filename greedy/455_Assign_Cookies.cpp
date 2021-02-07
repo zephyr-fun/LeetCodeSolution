@@ -1,10 +1,10 @@
-/*
- * @Author: zephyr
- * @Date: 2021-02-01 21:48:48
- * @LastEditTime: 2021-02-07 22:09:37
- * @LastEditors: zephyr
- * @FilePath: \greedy\455_Assign_Cookies.cpp
- * @Description: 455 assign cookies
+/*** 
+ * Author: zephyr
+ * Date: 2021-02-01 21:48:48
+ * LastEditTime: 2021-02-07 22:26:50
+ * LastEditors: zephyr
+ * FilePath: \greedy\455_Assign_Cookies.cpp
+ * Description: 455 assign cookies
  */
 #include <iostream>
 #include <algorithm>
