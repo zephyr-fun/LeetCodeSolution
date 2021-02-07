@@ -1,10 +1,10 @@
-/*
- * @Author: zephyr
- * @Date: 2021-02-07 21:34:16
- * @LastEditTime: 2021-02-07 22:08:54
- * @LastEditors: zephyr
- * @FilePath: \greedy\135_Candy.cpp
- * @Description: 
+/*** 
+ * Author: zephyr
+ * Date: 2021-02-07 21:34:16
+ * LastEditTime: 2021-02-07 22:26:33
+ * LastEditors: zephyr
+ * FilePath: \greedy\135_Candy.cpp
+ * Description: 135 candy
  */
 #include <iostream>
 #include <vector>
