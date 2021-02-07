@@ -1,14 +1,14 @@
 /*
  * @Author: zephyrfun
  * @Date: 2021-02-01 21:48:48
- * @LastEditTime: 2021-02-01 22:00:43
- * @LastEditors: zephyrfun
+ * @LastEditTime: 2021-02-07 21:05:02
+ * @LastEditors: Please set LastEditors
  * @FilePath: \greedy\455_Assign_Cookies.cpp
  */
 #include <iostream>
 #include <algorithm>
 #include <vector>
-
+using namespace std;
 int findContentChildren(vector<int>& g, vector<int>& s) {
     sort(g.begin(), g.end());
     sort(s.begin(), s.end());
