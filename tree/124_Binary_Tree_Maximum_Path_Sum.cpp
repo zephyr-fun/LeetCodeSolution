@@ -45,7 +45,7 @@ public:
             return 0;
         int left = oneSideMax(root->left);
         int right = oneSideMax(root->right);
-        ans = max(ans, left + right + root->val);
+        ans = max(ans, left + right + root->val);//postorder traversal
         return root->val + max(left, right);
     }
 }
