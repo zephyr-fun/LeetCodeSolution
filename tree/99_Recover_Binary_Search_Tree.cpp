@@ -171,3 +171,58 @@ void recoverTree(TreeNode* root)
     }
     swap(x->val, y->val);
 }
+
+// 2022.03.14
+// inorder traversal for BST means that the results will in a single order
+// make this solution based on "Morris traversal"
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode* first = nullptr;
+        TreeNode* second = nullptr;
+        TreeNode* pre = new TreeNode(INT_MIN);
+        bool firstTime = true;
+        while(root != nullptr){
+            if(root->left != nullptr){
+                TreeNode* temp = root->left;
+                while(temp->right != nullptr && temp->right != root){
+                    temp = temp->right;
+                }
+                if(temp->right == nullptr){
+                    temp->right = root;//build a bridge, first time visit this node
+                    root = root->left;
+                }
+                else{
+                    temp->right = nullptr;//remove that bridge, second time visit this node
+                    //inorder traversal
+                    if(pre->val > root->val && firstTime){
+                        first = pre;
+                        firstTime = false;
+                    }
+                    if(pre->val > root->val && !firstTime){
+                        second = root;
+                    }
+                    pre = root;
+                    root = root->right;
+                }
+            }
+            else{
+                //inorder traversal
+                if(pre->val > root->val && firstTime){
+                    first = pre;
+                    firstTime = false;
+                }
+                if(pre->val > root->val && !firstTime){
+                    second = root;
+                }
+                pre = root;
+                root = root->right;
+            }
+        }
+        if(first != nullptr && second != nullptr){
+            int temp = first->val;
+            first->val = second->val;
+            second->val = temp;
+        }
+    }
+};
