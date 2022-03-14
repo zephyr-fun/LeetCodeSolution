@@ -32,3 +32,20 @@ int maxPathSum(TreeNode* root)
     oneSideMax(root);
     return ans;
 }
+// 2022.03.14
+class Solution {
+public:
+    int ans = INT_MIN;
+    int maxPathSum(TreeNode* root) {
+        int onesidemax = oneSideMax(root);
+        return ans;
+    }
+    int oneSideMax(TreeNode* root) {
+        if(root == nullptr)
+            return 0;
+        int left = oneSideMax(root->left);
+        int right = oneSideMax(root->right);
+        ans = max(ans, left + right + root->val);
+        return root->val + max(left, right);
+    }
+}
