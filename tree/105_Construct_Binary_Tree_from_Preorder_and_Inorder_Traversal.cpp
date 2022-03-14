@@ -140,3 +140,27 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
     }
     return root;
 }
+
+// 2022.03.14
+class Solution {
+public:
+    unordered_map<int, int> index;
+    TreeNode* build(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd){
+        if(preStart > preEnd){
+            return ;
+        }
+        TreeNode* root = new TreeNode(preorder[preStart]);// preorder traversal
+        root->left = build(preorder, preStart + 1, preStart + index[preorder[preStart]] - inStart, inorder, inStart, index[preorder[preStart]] - 1);
+        root->right = build(preorder, preStart + index[preorder[preStart]] - inStart + 1, preEnd, inorder, index[preorder[preStart]] + 1, inEnd);
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int size = preorder.size();
+        for(int i = 0; i < size; i++) {
+            index[inorder[i]] = i;
+        }
+        TreeNode* res = build(preorder, 0, size - 1, inorder, 0, size - 1);
+        return res;
+    }
+};
