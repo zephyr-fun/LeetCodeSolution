@@ -64,3 +64,111 @@ vector<int> postorderTraversal2(TreeNode* root)
     }
     return res;
 }
+
+// 2022.03.14
+// recursion, non recursion, Morris
+
+// recursion
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        recursionTraversal(root, res);
+        return res;
+    }
+    void recursionTraversal(TreeNode* root, vector<int>& res){
+        if(root == nullptr){
+            return ;
+        }
+        recursionTraversal(root->left, res);
+        recursionTraversal(root->right, res);
+        res.push_back(root->val);
+        return ;
+    }
+};
+
+// non recursion
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode*> st;
+        if(root != null){
+            st.push(root);
+        }
+        while(!st.empty()){
+            TreeNode* node = st.top();
+            if(node != nullptr){
+                st.pop();
+                st.push(node);
+                st.push(nullptr);
+                if(root->right != nullptr){
+                    st.push(root->right);
+                }
+                if(root->left != nullptr){
+                    st.push(root->left);
+                }
+            }
+            else{
+                st.pop();
+                node = st.top();
+                st.pop();
+                res.push_back(node->val);
+            }
+        }
+        return res;
+    }
+};
+
+// Morris traversal
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> res;
+        TreeNode* head = root;
+        while(root != nullptr){
+            if(root->left != nullptr){
+                TreeNode* temp = root->left;
+                while(temp->right != nullptr && temp->right != root){
+                    temp = temp->right;
+                }
+                if(temp->right == nullptr){
+                    temp->right = root;
+                    root = root->left;
+                }
+                else{
+                    temp->right = nullptr;
+                    // post reverse print
+                    printNode(root->left, res);
+                    root = root->right;
+                }
+            }
+            else{
+                root = root->right;
+            }
+        }
+        // post reverse print
+        printNode(head, res);
+        return res;
+    }
+    void printNode(TreeNode* node, vector<int>& res){
+        TreeNode* tail = reverse(node);
+        TreeNode* cur = tail;
+        while(cur != nullptr){
+            res.push_back(cur->val);
+            cur = cur->right;
+        }
+        reverse(tail);
+    }
+    TreeNode* reverse(TreeNode* node){
+        TreeNode* pre = nullptr;
+        TreeNode* next = nullptr;
+        while(node != nullptr){
+            next = node->right;
+            node->right = pre;
+            pre = node;
+            node = next;
+        }
+        return pre;
+    }
+};
