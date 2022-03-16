@@ -82,3 +82,37 @@ vector<vector<int>> levelOrderBottom(TreeNode* root)
     reverse(res.begin(), res.end());
     return res;
 }
+
+// 2022.03.16
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root){
+        vector<vector<int>> res;
+        queue<TreeNode*> que;
+        stack<vector<int>> st;
+        if(root != nullptr){
+            que.push(root);
+        }
+        while(!que.empty()){
+            int size = que.size();
+            vector<int> temp;
+            for(int i = 0; i < size; i++){
+                TreeNode* node = que.front();
+                que.pop();
+                temp.push_back(node->val);
+                if(node->left != nullptr){
+                    que.push(node->left);
+                }
+                if(node->right != nullptr){
+                    que.push(node->right);
+                }
+            }
+            st.push(temp);
+        }
+        while(!st.empty()){
+            res.push_back(st.top());
+            st.pop();
+        }
+        return res;
+    }
+};
