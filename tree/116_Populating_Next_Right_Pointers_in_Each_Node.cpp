@@ -74,3 +74,26 @@ Node* connect2(Node* root)
     }
     return root;
 }
+
+// 2022.03.16
+class Solution {
+public:
+    Node* connect(Node* root){
+        if(root == nullptr){
+            return root;
+        }
+        Node* mostLeft = root;
+        while(mostLeft->left != nullptr){
+            Node* node = mostLeft;
+            while(node != nullptr){
+                node->left->next = node->right;
+                if(node->next != nullptr){
+                    node->right->next = node->next->left;
+                }
+                node = node->next;
+            }
+            mostLeft = mostLeft->left;
+        }
+        return root;
+    }
+};
