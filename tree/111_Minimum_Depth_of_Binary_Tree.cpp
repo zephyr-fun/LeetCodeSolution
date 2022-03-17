@@ -57,3 +57,47 @@ int minDepth(TreeNode* root)
     }
     return 0;
 }
+
+//2022.03.17
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        int mindepth = 0;
+        queue<TreeNode*> que;
+        if(root != nullptr){
+            que.push(root);
+        }
+        while(!que.empty()){
+            int size = que.size();
+            for(int i = 0; i < size; i++){
+                TreeNode* node = que.front();
+                que.pop();
+                if(node->left == nullptr && node->right == nullptr){
+                    return mindepth + 1;
+                }
+                if(node->left != nullptr){
+                    que.push(node->left);
+                }
+                if(node->right != nullptr){
+                    que.push(node->right);
+                }
+            }
+            mindepth += 1;
+        }
+        return 0;
+    }
+};
+
+// recursion
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        int left = minDepth(root->left);
+        int right = minDepth(root->right);
+        //return min(left, right) + 1; only consider the situation that both child node exsit
+        return (left == 0 || right == 0)?left + right + 1 : min(left, right) + 1;
+    }
+};
