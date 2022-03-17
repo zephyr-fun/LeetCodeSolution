@@ -49,4 +49,45 @@ int maxDepth2(TreeNode* root)
         level += 1; 
     }
     return level;
-}
+};
+
+// 2022.03.17
+// level traversal solution
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        int maxdepth = 0;
+        queue<TreeNode*> que;
+        if(root != nullptr){
+            que.push(root);
+        }
+        while(!que.empty()){
+            int size = que.size();
+            for(int i = 0; i < size; i++){
+                TreeNode* node = que.front();
+                que.pop();
+                if(node->left != nullptr){
+                    que.push(node->left);
+                }
+                if(node->right != nullptr){
+                    que.push(node->right);
+                }
+            }
+            maxdepth += 1;
+        }
+        return maxdepth;
+    }
+};
+
+// recursion
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        int left = maxDepth(root->left);
+        int right = maxDepth(root->right);
+        return max(left, right) + 1;
+    }
+};
