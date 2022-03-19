@@ -76,3 +76,19 @@ int depth(TreeNode* cur)
 {
     return !cur ? 0 : max(depth(cur->left), depth(cur->right)) + 1;
 }
+
+// 2022.03.18
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        int res = getDepth(root);
+        return res > -1 ? true : false;
+    }
+    int getDepth(TreeNode* node) {
+        if(node == nullptr) return 0;
+        int leftHeight = getDepth(node->left);
+        int rightHeight = getDepth(node->right);
+        if(leftHeight ==-1 || rightHeight == -1 || abs(leftHeight - rightHeight) > 1) return -1;
+        return max(leftHeight, rightHeight) + 1;
+    }
+};
