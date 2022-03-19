@@ -83,3 +83,74 @@ vector<vector<int>> pathSum(TreeNode* root, int sum) {
     }
     return res;
 }
+
+// 2022.03.19
+// recursion
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> res;
+        if(root == nullptr){
+            return res;
+        }
+        vector<int> path;
+        traversal(root, targetSum, res, path);
+        return res;
+    }
+    void traversal(TreeNode* node, int rest, vector<vector<int>>& res, vector<int>& path){
+        path.push_back(node->val);
+        if(node->left == nullptr && node->right == nullptr){
+            if(rest - node->val == 0){
+                res.push_back(path);
+                return ;
+            }
+            else{
+                return ;
+            }
+        }
+        if(node->left != nullptr){
+            traversal(node->left, rest - node->val, res, path);
+            path.pop_back(); // backtrack
+        }
+        if(node->right != nullptr){
+            traversal(node->right, rest - node->val, res, path);
+            path.pop_back(); // backtrack
+        }
+    }
+};
+
+// non recursion remains something wrong
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> res;
+        if(root == nullptr){
+            return res;
+        }
+        vector<int> path;
+        stack<pair<TreeNode*, int>> st;
+        st.push(pair<TreeNode*, int>(root, root->val));
+        while(!st.empty()){
+            pair<TreeNode*, int> node = st.top();
+            path.push_back(node.first->val);
+            if(node.first->left == nullptr && node.first->right == nullptr){
+                if(node.second == targetSum){
+                    res.push_back(path);
+                    path.pop_back();
+                }
+                else{
+                    path.pop_back();
+                }
+            }
+            if(node.first->left != nullptr){
+                st.push(pair<TreeNode*, int>(node.first->left, node.first->left->val + node.second));
+                path.pop_back();
+            }
+            if(node.first->right != nullptr){
+                st.push(pair<TreeNode*, int>(node.first->right, node.first->right->val + node.second));
+                path.pop_back();
+            }
+        }
+        return res;
+    }
+};
