@@ -77,3 +77,72 @@ vector<string> binaryTreePaths(TreeNode* root)
     }
     return res;
 }
+
+// 2022.03.18
+// recursion backtrack
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if(root == nullptr){
+            return res;
+        }
+        vector<int> path;
+        preorderTraversal(root, path, res);
+        return res;
+    }
+    void preorderTraversal(TreeNode* node, vector<int>& path, vector<string>& res){
+        //preorder op
+        path.push_back(node->val);
+        if(node->left == nullptr && node->right == nullptr){
+            string temp;
+            for(int i = 0; i < path.size() - 1; i++){
+                temp += to_string(path[i]);
+                temp += "->";
+            }
+            temp += to_string(path[path.size() - 1]);
+            res.push_back(temp);
+        }
+        if(node->left != nullptr){
+            preorderTraversal(node->left, path, res);
+            path.pop_back(); // backtrack
+        }
+        if(node->right != nullptr){
+            preorderTraversal(node->right, path, res);
+            path.pop_back(); //backtrack
+        }
+    }
+};
+
+//  non recursion
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if(root == nullptr){
+            return res;
+        }
+        stack<TreeNode*> treeSt;
+        stack<string> pathSt;
+        treeSt.push(root);
+        pathSt.push(to_string(root->val));
+        while(!treeSt.empty()){
+            TreeNode* node = treeSt.top();
+            treeSt.pop();
+            string path = pathSt.top();
+            pathSt.pop();
+            if(node->left == nullptr && node->right == nullptr){
+                res.push_back(path);
+            }
+            if(node->left != nullptr){
+                treeSt.push(node->left);
+                pathSt.push(path + "->" + to_string(node->left->val));
+            }
+            if(node->right != nullptr){
+                treeSt.push(node->right);
+                pathSt.push(path + "->" + to_string(node->right->val));
+            }
+        }
+        return res;
+    }
+};
