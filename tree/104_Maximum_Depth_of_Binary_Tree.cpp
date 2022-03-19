@@ -91,3 +91,48 @@ public:
         return max(left, right) + 1;
     }
 };
+
+// 2022.03.18
+// recursion
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        int left = maxDepth(root->left);
+        int right = maxDepth(root->right);
+
+        // postorder traversal
+        return max(left, right) + 1;
+    }
+};
+
+// backtrack
+class Solution {
+public:
+    int res;
+    int maxDepth(TreeNode* root) {
+        res = 0;
+        if(root == nullptr) return res;
+        getDepth(root, 1);
+        return res;
+    }
+    void getDepth(TreeNode* root, int depth){
+        // preorder traversal
+        res = depth > res ? depth : res;
+
+        if(root == nullptr) return;
+        if(root->left != nullptr){
+            depth++;
+            getDepth(root->left, depth);
+            depth--;
+        }
+        if(root->right != nullptr){
+            depth++;
+            getDepth(root->right, depth);
+            depth--;
+        }
+    }
+};
+
