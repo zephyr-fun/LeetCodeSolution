@@ -67,3 +67,77 @@ bool isSymmetric2(TreeNode* root)
     }
     return true;
 }
+
+// 2022.03.18
+// recursion
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        return areSymmetric(root->left, root->right);
+    }
+    bool areSymmetric(TreeNode* left, TreeNode* right){
+        if(left != nullptr && right == nullptr) return false;
+        else if(left == nullptr && right != nullptr) return false;
+        else if(left == nullptr && right == nullptr) return true;
+        else if(left->val != right->val) return false;
+        return areSymmetric(left->left, right->right) && areSymmetric(left->right, right->left);
+    }
+};
+
+// make pair of each insides and outsides
+
+// non recursion with queue
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        queue<TreeNode*> que;
+        if(root == nullptr){
+            return true;
+        }
+        que.push(root->left);
+        que.push(root->right);
+        while(!que.empty()){
+            TreeNode* left = que.front();
+            que.pop();
+            TreeNode* right = que.front();
+            que.pop();
+            if(left != nullptr && right == nullptr) return false;
+            else if(left == nullptr && right != nullptr) return false;
+            else if(left == nullptr && right == nullptr) continue;
+            else if(left->val != right->val) return false;
+            que.push(left->left);
+            que.push(right->right);
+            que.push(left->right);
+            que.push(right->left);
+        }
+        return true;
+    }
+};
+
+// non recursion with stack
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        stack<TreeNode*> st;
+        if(root == nullptr){
+            return true;
+        }
+        st.push(root->right);
+        st.push(root->left);
+        while(!st.empty()){
+            TreeNode* left = st.top();
+            st.pop();
+            TreeNode* right = st.top();
+            st.pop();
+            if(left != nullptr && right == nullptr) return false;
+            else if(left == nullptr && right != nullptr) return false;
+            else if(left == nullptr && right == nullptr) continue;
+            else if(left->val != right->val) return false;
+            st.push(right->left);
+            st.push(left->right);
+            st.push(right->right);
+            st.push(left->left);
+        }
+        return true;
+    }
+};
