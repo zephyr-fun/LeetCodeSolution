@@ -69,3 +69,55 @@ int sumOfLeftLeaves(TreeNode* root) {
     }
     return ans;
 }
+
+// 2022.03.19
+// recursion
+class Solution {
+public:
+    int res = 0;
+    int sumOfLeftLeaves(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        dfs(root);
+        return res;
+    }
+    void dfs(TreeNode* node){
+        if(node->left != nullptr && node->left->left == nullptr && node->left->right == nullptr){
+            res += node->left->val;
+        }
+        if(node->left != nullptr){
+            dfs(node->left);
+        }
+        if(node->right != nullptr){
+            dfs(node->right);
+        }
+    }
+};
+
+// non recursion
+class Solution {
+public:
+    int sumOfLeftLeaves(TreeNode* root) {
+        if(root == nullptr){
+            return 0;
+        }
+        int res = 0;
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* node = st.top();
+            st.pop();
+            if(node->left != nullptr && node->left->left == nullptr && node->left->right == nullptr){
+                res += node->left->val;
+            }
+            if(node->right != nullptr){
+                st.push(node->right);
+            }
+            if(node->left != nullptr){
+                st.push(node->left);
+            }
+        }
+        return res;
+    }
+};
