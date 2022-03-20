@@ -164,3 +164,28 @@ public:
         return res;
     }
 };
+
+// 2022.03.20
+//recursion
+class Solution {
+public:
+    unordered_map<int, int> index;
+    TreeNode* build(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd){
+        if(preStart > preEnd){
+            return nullptr;
+        }
+        TreeNode* node = new TreeNode(preorder[preStart]);
+        // make sure that leftTreeLength = index[preorder[preStart]] - 'inStart'
+        node->left = build(preorder, preStart + 1, preStart + index[preorder[preStart]] - inStart, inorder, inStart, index[preorder[preStart]] - 1);
+        node->right = build(preorder, preStart + index[preorder[preStart]] - inStart + 1, preEnd, inorder, index[preorder[preStart]] + 1, inEnd);
+        return node;
+    }
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        for(int i = 0; i < inorder.size(); i++){
+            index[inorder[i]] = i;
+        }
+        TreeNode* res = build(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1);
+        return res;
+    }
+};
