@@ -77,3 +77,66 @@ TreeNode* lowestCommonAncestor2(TreeNode* root, TreeNode* p, TreeNode* q)
     }
     return ancestor;
 }
+
+// 2022.03.21
+// general solution
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr || root == q || root == p) return root;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        if(left != nullptr && right != nullptr){
+            return root;
+        }
+        if(left != nullptr && right == nullptr){
+            return left;
+        }
+        else if(left == nullptr && right != nullptr){
+            return right;
+        }
+        else return nullptr;
+    }
+};
+
+// BST, recursion
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == nullptr){
+            return root;
+        }
+        if(root->val > p->val && root->val > q->val){
+            TreeNode* left = lowestCommonAncestor(root->left, p, q);
+            if(left != nullptr){
+                return left;
+            }
+        }
+        if(root->val < p->val && root->val < q->val){
+            TreeNode* right = lowestCommonAncestor(root->right, p, q);
+            if(right != nullptr){
+                return right;
+            }
+        }
+        return root;
+    }
+};
+
+// BST, non recursion
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        while(root != nullptr){
+            if(root->val > p->val && root->val > q->val){
+                root = root->left;
+            }
+            else if(root->val < p->val && root->val < q->val){
+                root = root->right;
+            }
+            else{
+                return root;
+            }
+        }
+        return nullptr;
+    }
+};
