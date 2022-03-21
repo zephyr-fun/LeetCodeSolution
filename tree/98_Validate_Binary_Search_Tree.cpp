@@ -93,3 +93,38 @@ bool isValidBST(TreeNode* root)
     }
     return true;
 }
+
+// 2022.03.21
+// inorder traversal with recursion manner
+class Solution {
+public:
+    TreeNode* pre;
+    bool isValidBST(TreeNode* root) {
+        if(root == nullptr){
+            return true;
+        }
+        bool left = isValidBST(root->left);
+        if(pre != nullptr && pre->val >= root->val) return false;
+        pre = root;
+        bool right = isValidBST(root->right);
+        return left && right;
+    }
+};
+// preorder traversal with recursion manner
+class Solution {
+public:
+    TreeNode* pre;
+    bool isValidBST(TreeNode* root) {
+        if(root == nullptr){
+            return true;
+        }
+        return helper(root, LONG_MIN, LONG_MAX); // INT_MIN and INT_MAX value overflow
+    }
+    bool helper(TreeNode* node, long long lower, long long upper){
+        if(node == nullptr) return true;
+        if(node->val >= upper || node->val <= lower) return false;
+        bool left = helper(node->left, lower, node->val);
+        bool right = helper(node->right, node->val, upper);
+        return left && right;
+    }
+};
