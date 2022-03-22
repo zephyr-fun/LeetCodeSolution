@@ -65,3 +65,65 @@ TreeNode* sortedArrayToBST(vector<int>& nums)
     TreeNode* root = dfs(nums, 0, nums.size() - 1);
     return root;
 }
+
+// 2022.03.22
+// recursion
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        if(nums.size() == 0){
+            return new TreeNode();
+        }
+        return helper(nums, 0, nums.size() - 1);
+    }
+    TreeNode* helper(vector<int>& nums, int left, int right){
+        if(left > right){
+            return nullptr;
+        }
+        int mid = left + (right - left) / 2;
+        TreeNode* node = new TreeNode(nums[mid]);
+        node->left = helper(nums, left, mid - 1);
+        node->right = helper(nums, mid + 1, right);
+        return node;
+    }
+};
+
+// non recursion
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        if(nums.size() == 0){
+            return new TreeNode();
+        }
+        TreeNode* root = new TreeNode(0);
+        queue<TreeNode*> queNode;
+        queue<int> queLeft;
+        queue<int> queRight;
+        queNode.push(root);
+        queLeft.push(0);
+        queRight.push(nums.size() - 1);
+        while(!queNode.empty()){
+            TreeNode* node = queNode.front();
+            queNode.pop();
+            int left = queLeft.front();
+            queLeft.pop();
+            int right = queRight.front();
+            queRight.pop();
+            int mid = left + (right - left) / 2;
+            node->val = nums[mid];
+            if(left <= mid - 1){
+                node->left = new TreeNode(0);
+                queNode.push(node->left);
+                queLeft.push(left);
+                queRight.push(mid - 1);
+            }
+            if(right >= mid + 1){
+                node->right = new TreeNode(0);
+                queNode.push(node->right);
+                queLeft.push(mid + 1);
+                queRight.push(right);
+            }
+        }
+        return root;
+    }
+};
