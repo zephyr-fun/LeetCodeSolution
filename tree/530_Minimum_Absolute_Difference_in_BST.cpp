@@ -10,7 +10,7 @@
  * };
  */
 // 2022.03.21
-// recursion
+// recursion, inorder traversal, 'PRE'
 class Solution {
 public:
     TreeNode* pre;
@@ -46,7 +46,7 @@ public:
         while(cur != nullptr || !st.empty()){
             if(cur != nullptr){
                 st.push(cur);
-                cur = cur->left;
+                cur = cur->left; // most left, middle, right
             }
             else{
                 cur = st.top();
