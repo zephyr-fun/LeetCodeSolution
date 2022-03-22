@@ -10,7 +10,7 @@
  * };
  */
 // 2022.03.21
-// recursion
+// recursion, reuse root1 as res
 class Solution {
 public:
     TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
