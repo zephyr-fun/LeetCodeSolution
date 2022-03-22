@@ -9,7 +9,7 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-// general solution, not only for BST
+// general solution, not only for BST, any order works
 class Solution {
 public:
     void traversal(TreeNode* node, unordered_map<int, int>& map){
