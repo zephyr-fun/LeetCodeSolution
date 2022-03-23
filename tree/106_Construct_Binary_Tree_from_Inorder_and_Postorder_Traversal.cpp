@@ -162,3 +162,28 @@ public:
         return node;
     }
 };
+// 2022.03.23
+class Solution {
+public:
+    unordered_map<int, int> index;
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if(postorder.size() == 0){
+            return nullptr;
+        }
+        for(int i = 0; i < inorder.size(); i++){
+            index[inorder[i]] = i;
+        }
+        TreeNode* res = build(inorder, 0, inorder.size() - 1, postorder, 0, postorder.size() - 1);
+        return res;
+    }
+    TreeNode* build(vector<int>& inorder, int inStart, int inEnd, vector<int>& postorder, int postStart, int postEnd){
+        if(inStart > inEnd){
+            return nullptr;
+        }
+        TreeNode* node = new TreeNode(postorder[postEnd]);
+        int leftLength = index[postorder[postEnd]] - inStart;
+        node->left = build(inorder, inStart, index[postorder[postEnd]] - 1, postorder, postStart, postStart + leftLength - 1);
+        node->right = build(inorder, index[postorder[postEnd]] + 1, inEnd, postorder, postStart + leftLength, postEnd - 1);
+        return node;
+    }
+};
