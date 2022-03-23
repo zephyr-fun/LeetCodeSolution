@@ -105,3 +105,24 @@ public:
         return root;
     }
 };
+
+// 2022.03.23
+// recursion, non recursion, level traversal
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        helper(root);
+        return root;
+    }
+    void helper(TreeNode* root){
+        if(root == nullptr){
+            return ;
+        }
+        TreeNode* temp;
+        temp = root->left;
+        root->left = root->right;
+        root->right = temp;
+        helper(root->left);
+        helper(root->right);
+    }
+};
