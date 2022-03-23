@@ -34,3 +34,33 @@ public:
         return node;
     }
 };
+// 2022.03.23
+class Solution {
+public:
+    unordered_map<int, int> index;
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        if(preorder.size() == 0){
+            return nullptr;
+        }
+        for(int i = 0; i < postorder.size(); i++){
+            index[postorder[i]] = i;
+        }
+        TreeNode* res = subConstructPP(preorder, 0, preorder.size() - 1, postorder, 0, postorder.size() - 1);
+        return res;
+    }
+    TreeNode* subConstructPP(vector<int>& preorder, int preStart, int preEnd, vector<int>& postorder, int postStart, int postEnd){
+        if(preStart > preEnd){
+            return nullptr;
+        }
+        // extra situation
+        if(preStart == preEnd){
+            return new TreeNode(preorder[preStart]);
+        }
+        
+        TreeNode* node = new TreeNode(preorder[preStart]);
+        int leftLength = index[preorder[preStart + 1]] - postStart + 1;
+        node->left = subConstructPP(preorder, preStart + 1, preStart + leftLength, postorder, postStart, index[preorder[preStart + 1]]);
+        node->right = subConstructPP(preorder, preStart + leftLength + 1, preEnd, postorder, index[preorder[preStart + 1]] + 1, postEnd - 1);
+        return node;
+    }
+};
