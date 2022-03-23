@@ -41,3 +41,47 @@ void preorderTraversal(TreeNode* root, vector<TreeNode*> &l)
         preorderTraversal(root->right, l);
     }
 }
+// 2022.03.23
+// space complex O(1)
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(root == nullptr){
+            return ;
+        }
+        TreeNode* cur = root;
+        while(cur != nullptr){
+            if(cur->left != nullptr){
+                TreeNode* next = cur->left;
+                TreeNode* pre = next;
+                while(pre->right != nullptr){
+                    pre = pre->right;
+                }
+                pre->right = cur->right;
+                cur->left = nullptr;
+                cur->right = next;
+            }
+            cur = cur->right;
+        }
+    }
+};
+// recursion
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(root == nullptr){
+            return ;
+        }
+        flatten(root->left);
+        flatten(root->right);
+        TreeNode* left = root->left;
+        TreeNode* right = root->right;
+        root->left = nullptr;
+        root->right = left;
+        TreeNode* node = root; // in case of root->left == root->right == nullptr
+        while(node->right != nullptr){
+            node = node->right;
+        }
+        node->right = right;
+    }
+};
