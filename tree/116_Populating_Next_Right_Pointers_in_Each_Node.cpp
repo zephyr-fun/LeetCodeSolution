@@ -97,3 +97,45 @@ public:
         return root;
     }
 };
+
+// 2022.03.23
+// space complex O(1)
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == nullptr){
+            return root;
+        }
+        Node* mostLeft = root;
+        while(mostLeft->left != nullptr){
+            Node* node = mostLeft;
+            while(node != nullptr){
+                node->left->next = node->right;
+                if(node->next != nullptr){
+                    node->right->next = node->next->left;
+                }
+                node = node->next;
+            }
+            mostLeft = mostLeft->left;
+        }
+        return root;
+    }
+};
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == nullptr)
+            return root;
+        helper(root->left, root->right);
+        return root;
+    }
+    void helper(Node* node1, Node* node2){
+        if(node1 == nullptr || node2 == nullptr){
+            return;
+        }
+        node1->next = node2;
+        helper(node1->left, node1->right);
+        helper(node2->left, node2->right);
+        helper(node1->right, node2->left);
+    }
+};
