@@ -41,7 +41,7 @@ public:
                     if(sSharp > 0){
                         sSharp--;
                     }
-                    else break; // mark
+                    else break; // this char needs to be compared
                 }
                 i--; // mark
             }
@@ -53,7 +53,7 @@ public:
                     if(tSharp > 0){
                         tSharp--;
                     }
-                    else break; // mark
+                    else break; // this char needs to be compared
                 }
                 j--; // mark
             }
