@@ -12,7 +12,8 @@ public:
             while(sum >= target){
                 subLength = j - i + 1;
                 res = res < subLength ? res : subLength;
-                sum -= nums[i++];
+                sum -= nums[i];
+                i++;
             }
         }
         return res == INT_MAX ? 0 : res;
