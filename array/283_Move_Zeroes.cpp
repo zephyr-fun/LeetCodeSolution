@@ -31,7 +31,8 @@ public:
         // remove 0, record non-zero values
         for(fast = 0; fast <nums.size(); fast++){
             if(nums[fast] != 0){
-                nums[slow++] = nums[fast];
+                nums[slow] = nums[fast];
+                slow++;
             }
         }
         // recover 0
