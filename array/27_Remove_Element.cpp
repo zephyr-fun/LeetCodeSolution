@@ -6,7 +6,8 @@ public:
         int slowIndex = 0;
         for(int fastIndex = 0; fastIndex < nums.size(); fastIndex++){
             if(val != nums[fastIndex]){
-                nums[slowIndex++] = nums[fastIndex];
+                nums[slowIndex] = nums[fastIndex];
+                slowIndex++;
             }
         }
         return slowIndex;
