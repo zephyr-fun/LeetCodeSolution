@@ -52,3 +52,41 @@ public:
         return res;
     }
 };
+// 2022.03.29
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> res;
+        if(s.size() < p.size()){
+            return res;
+        }
+        int count[26] = {0};
+        // init p
+        for(int i = 0; i < p.size(); i++){
+            count[p[i] - 'a']++;
+        }
+        // init piden
+        int pIden = 0;
+        for(int i = 0; i < 26; i++){
+            if(count[i] > 0){
+                pIden++;
+            }
+        }
+        // sliding window
+        for(int left = 0, right = 0, sIden = 0; right < s.size(); right++){
+            // more right
+            if(--count[s[right] - 'a'] == 0){
+                sIden++;
+            }
+            // reduce left
+            if(right - left + 1 > p.size() && ++count[s[left++] - 'a'] == 1){
+                sIden--;
+            }
+            // check
+            if(sIden == pIden){
+                res.push_back(left);
+            }
+        }
+        return res;
+    }
+};
