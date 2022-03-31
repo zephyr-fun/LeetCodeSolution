@@ -36,3 +36,42 @@ public:
         }
     }
 };
+// 2022.03.31
+// KMP
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if(needle.size() == 0){
+            return 0;
+        }
+        int next[needle.size()];
+        getNext(needle, next);
+        int needleIndex = 0;
+        for(int haystackIndex = 0; haystackIndex < haystack.size(); haystackIndex++){
+            while(haystack[haystackIndex] != needle[needleIndex] && needleIndex > 0){
+                needleIndex = next[needleIndex - 1];
+            }
+            if(haystack[haystackIndex] == needle[needleIndex]){
+                needleIndex++;
+            }
+            if(needleIndex == needle.size()){
+                return haystackIndex - needle.size() + 1;
+            }
+        }
+        return -1;
+
+    }
+    void getNext(string& tar, int* next){
+        next[0] = 0;
+        int left = 0;
+        for(int right = 1; right < tar.size(); right++){
+            while(left > 0 && tar[left] != tar[right]){
+                left = next[left - 1];
+            }
+            if(tar[left] == tar[right]){
+                left++;
+            }
+            next[right] = left;
+        }
+    }
+};
