@@ -23,3 +23,29 @@ public:
         return res;
     }
 };
+
+// 2022.04.04
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    void backtracking(vector<int>& nums, int startIndex){
+        res.push_back(path);
+        if(startIndex >= nums.size()){
+            return ;
+        }
+        for(int i = startIndex; i < nums.size(); i++){
+            if(i > startIndex && nums[i] == nums[i - 1]){
+                continue;
+            }
+            path.push_back(nums[i]);
+            backtracking(nums, i + 1);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        backtracking(nums, 0);
+        return res;
+    }
+};
