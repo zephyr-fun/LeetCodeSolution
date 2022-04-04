@@ -49,3 +49,55 @@ public:
         return res;
     }
 };
+
+// 2022.04.04
+class Solution {
+public:
+    vector<string> res;
+    bool isValid(string& s, int start, int end){
+        if(start > end){
+            return false;
+        }
+        if(s[start] == '0' && start != end){ // notice '0' not 0
+            return false;
+        }
+        int temp_num = 0;
+        for(int i = start; i <= end; i++){
+            if(s[i] < '0' || s[i] > '9'){
+                return false;
+            }
+            temp_num = temp_num * 10 + (s[i] - '0');
+            if(temp_num > 255){
+                return false;
+            }
+        }
+        return true;
+    }
+    void backtracking(string& s, int startIndex, int num_points){
+        if(num_points == 3){
+            if(isValid(s, startIndex, s.size() - 1)){
+                res.push_back(s);
+            }
+            return ;
+        }
+        for(int i = startIndex; i < s.size(); i++){
+            if(isValid(s, startIndex, i)){
+                s.insert(s.begin() + i + 1, '.');
+                num_points++;
+                backtracking(s, i + 2, num_points); // notice i+2, cause insert a '.'
+                s.erase(s.begin() + i + 1);
+                num_points--;
+            }
+            else{
+                break; // isVaild has Monotonicity
+            }
+        }
+    }
+    vector<string> restoreIpAddresses(string s) {
+        if(s.size() > 12){
+            return res;
+        }
+        backtracking(s, 0, 0);
+        return res;
+    }
+};
