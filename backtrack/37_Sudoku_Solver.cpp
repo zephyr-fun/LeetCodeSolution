@@ -174,3 +174,53 @@ private:
     vector<bitset<9>> cols;
     vector<vector<bitset<9>>> cells;
 };
+
+// 2022.04.05
+class Solution {
+public:
+    bool backtracking(vector<vector<char>>& board){
+        for(int row = 0; row < board.size(); row++){
+            for(int col = 0; col < board[0].size(); col++){
+                if(board[row][col] != '.'){
+                    continue;
+                }
+                for(char k = '1'; k <= '9'; k++){
+                    if(isValid(row, col, k, board)){
+                        board[row][col] = k;
+                        if(backtracking(board)){
+                            return true;
+                        }
+                        board[row][col] = '.';
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    bool isValid(int row, int col, char k, vector<vector<char>>board){
+        for(int i = 0; i < 9; i++){
+            if(board[i][col] == k){
+                return false;
+            }
+        }
+        for(int j = 0; j < 9; j++){
+            if(board[row][j] == k){
+                return false;
+            }
+        }
+        int rowStart = (row / 3) * 3;
+        int colStart = (col / 3) * 3;
+        for(int i = rowStart; i < rowStart + 3; i++){
+            for(int j = colStart; j < colStart + 3; j++){
+                if(board[i][j] == k){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+        backtracking(board);
+    }
+};
