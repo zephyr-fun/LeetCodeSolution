@@ -81,3 +81,45 @@ public:
         return res;
     }
 };
+
+// 2022.04.05
+class Solution {
+public:
+    vector<vector<string>> res;
+    bool isValid(int row, int col, int n, vector<string>& path){
+        for(int i = 0; i < row; i++){
+            if(path[i][col] == 'Q'){
+                return false;
+            }
+        }
+        for(int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--){
+            if(path[i][j] == 'Q'){
+                return false;
+            }
+        }
+        for(int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++){
+            if(path[i][j] == 'Q'){
+                return false;
+            }
+        }
+        return true;
+    }
+    void backtracking(int n, int row, vector<string>& path){
+        if(row == n){
+            res.push_back(path);
+            return ;
+        }
+        for(int col = 0; col < n; col++){
+            if(isValid(row, col, n, path)){
+                path[row][col] = 'Q';
+                backtracking(n, row + 1, path);
+                path[row][col] = '.';
+            }
+        }
+    }
+    int totalNQueens(int n) {
+        vector<string> path(n, string(n, '.'));
+        backtracking(n, 0, path);
+        return res.size();
+    }
+};
