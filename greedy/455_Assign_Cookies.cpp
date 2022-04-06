@@ -23,3 +23,23 @@ int findContentChildren(vector<int>& g, vector<int>& s) {
     }
     return child_index;
 }
+
+// 2022.04.06
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        int cookieIndex = 0;
+        int childIndex = 0;
+        int res = 0;
+        while(cookieIndex < s.size() && childIndex < g.size()){
+            if(s[cookieIndex] >= g[childIndex]){
+                childIndex++;
+                res++;
+            }
+            cookieIndex++;
+        }
+        return res;
+    }
+};
