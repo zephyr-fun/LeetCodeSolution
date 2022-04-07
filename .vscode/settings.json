@@ -10,7 +10,8 @@
         "initializer_list": "cpp",
         "utility": "cpp",
         "unordered_map": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "string": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
