@@ -36,3 +36,43 @@ public:
         return res;
     }
 };
+
+// 2022.04.08
+class Solution {
+public:
+    string simplifyPath(string path) {
+        vector<string> que;
+        int left = 0;
+        while(left < path.size()){
+            while(path[left] == '/' && left < path.size()){
+                left++;
+            }
+            int right = left;
+            while(path[right] != '/' && right < path.size()){
+                right++;
+            }
+            string temp = path.substr(left, right - left);
+            left = right; // first replace left, or below will not update left
+            if(temp == "."){
+                continue;
+            }
+            else if(temp == ".."){
+                if(!que.empty()){
+                    que.pop_back();
+                }
+            }
+            else if(temp != ""){
+                que.push_back(temp);
+            }
+        }
+        string res = "";
+        for(auto s : que){
+            res += "/";
+            res += s;
+        }
+        if(res == ""){
+            res += "/";
+        }
+        return res;
+    }
+};
