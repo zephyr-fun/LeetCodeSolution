@@ -11,7 +11,8 @@
         "utility": "cpp",
         "unordered_map": "cpp",
         "optional": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "limits": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
