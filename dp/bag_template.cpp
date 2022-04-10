@@ -27,6 +27,7 @@ int main() {
     test_2_d_bag_problem1();
 }
 
+// usual useage
 void test_1_weid_bag_problem() {
     vector<int> weight = {1, 3, 4};
     vector<int> value = {15, 20, 30};
