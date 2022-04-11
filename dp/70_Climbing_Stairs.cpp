@@ -30,3 +30,21 @@ public:
         return dp[n];
     }
 };
+
+// 2022.04.11
+class Solution {
+public:
+    int climbStairs(int n) {
+        vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+        int m = 2;
+        for(int j = 0; j <= n; j++){
+            for(int i = 1; i <= m; i++){
+                if(i <= j){
+                    dp[j] += dp[j - i];
+                }
+            }
+        }
+        return dp[n];
+    }
+};
