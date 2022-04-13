@@ -9,8 +9,8 @@ public:
                 minPrice = prices[i];
             }
             if(prices[i] > minPrice + fee){
-                res += prices[i] - minPrice - fee;
-                minPrice = prices[i] - fee;
+                res += prices[i] - minPrice - fee; // -fee
+                minPrice = prices[i] - fee; // -fee
             }
         }
         return res;
