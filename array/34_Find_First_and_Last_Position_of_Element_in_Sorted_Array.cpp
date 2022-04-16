@@ -58,3 +58,53 @@ public:
         return right;
     }
 };
+
+// 2022.04.16
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int left = leftBound(nums, target);
+        int right = rightBound(nums, target);
+        return {left, right};
+    }
+    int leftBound(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] < target) {
+                left = mid + 1;
+            }
+            else if(nums[mid] > target) {
+                right = mid - 1;
+            }
+            else {
+                right = mid - 1; // find left bound
+            }
+        }
+        if(left >= nums.size() || nums[left] != target) { // insure
+            return -1;
+        }
+        return left;
+    }
+    int rightBound(vector<int>& nums, int target) {
+        int left = 0;
+        int right = nums.size() - 1;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] < target) {
+                left = mid + 1;
+            }
+            else if(nums[mid] > target) {
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1; // find right bound
+            }
+        }
+        if(right < 0 || nums[right] != target) { // insure
+            return -1;
+        }
+        return right;
+    }
+};
