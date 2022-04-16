@@ -145,3 +145,51 @@ public:
         }
     }
 };
+
+// 2022.04.16
+class Solution {
+public:
+    bool check(unordered_map<char, int>& hs, unordered_map<char, int>& ht){
+        for(auto it = ht.begin(); it != ht.end(); it++){
+            if(hs[it->first] < it->second){
+                return false;
+            }
+        }
+        return true;
+    }
+    string minWindow(string s, string t) {
+        unordered_map<char, int> hs;
+        unordered_map<char, int> ht;
+        for(int i = 0; i < t.size(); i++) {
+            ht[t[i]]++;
+        }
+        int left = 0;
+        int right = 0;
+        int startIndex = -1;
+        int minLen = INT_MAX;
+        while(left <= right && right < s.size()) {
+            if(hs.empty() && ht.find(s[right]) == ht.end()) {
+                left++;
+                right++;
+            }
+            if(ht.find(s[right]) != ht.end()) {
+                hs[s[right]]++;
+            }
+            while(check(hs, ht) && left <= right) {
+                if(minLen > right - left + 1){
+                    minLen = right - left + 1;
+                    startIndex = left;
+                }
+                if(ht.find(s[left]) != ht.end()){
+                    hs[s[left]]--;
+                }
+                left++;
+            }
+            right++;
+        }
+        if(startIndex == -1){
+            return "";
+        }
+        return s.substr(startIndex, minLen);
+    }
+};
