@@ -90,3 +90,34 @@ public:
         return res;
     }
 };
+
+// 2022.04.18
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> res;
+        int map[26] = {0};
+        for(int i = 0; i < p.size(); i++) {
+            map[p[i] - 'a']++;
+        }
+        int pIden = 0;
+        int sIden = 0;
+        for(int i = 0; i < 26; i++) {
+            if(map[i] > 0) {
+                pIden++;
+            }
+        }
+        for(int left = 0, right = 0; right < s.size(); right++) {
+            if(--map[s[right] - 'a'] == 0) {
+                sIden++;
+            }
+            if(right - left + 1 > p.size() && ++map[s[left++] - 'a'] == 1) {
+                sIden--;
+            }
+            if(sIden == pIden) {
+                res.push_back(left);
+            }
+        }
+        return res;
+    }
+};
