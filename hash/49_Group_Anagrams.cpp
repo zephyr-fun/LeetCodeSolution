@@ -32,3 +32,21 @@ public:
         return res;
     }
 };
+
+// 2022.04.18
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> map;
+        vector<vector<string>> res;
+        for(int i = 0; i < strs.size(); i++) {
+            string str = strs[i];
+            sort(str.begin(), str.end());
+            map[str].push_back(strs[i]);
+        }
+        for(auto it = map.begin(); it != map.end(); it++) {
+            res.push_back(it->second);
+        }
+        return res;
+    }
+};
