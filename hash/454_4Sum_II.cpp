@@ -40,3 +40,25 @@ public:
         return res;
     }
 };
+
+// 2022.04.18
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        int res = 0;
+        unordered_map<int, int> abMap;
+        for(auto a : nums1) {
+            for(auto b : nums2) {
+                abMap[a + b]++;
+            }
+        }
+        for(auto c : nums3) {
+            for(auto d : nums4) {
+                if(abMap.find(0 - (c + d)) != abMap.end()) {
+                    res += abMap[0 - (c + d)];
+                }
+            }
+        }
+        return res;
+    }
+};
