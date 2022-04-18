@@ -37,3 +37,23 @@ public:
         return true;
     }
 };
+
+// 2022.04.18
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<char, int> map;
+        for(int i = 0; i < s.size(); i++) {
+            map[s[i]]++;
+        }
+        for(int i = 0; i < t.size(); i++) {
+            map[t[i]]--;
+        }
+        for(auto it = map.begin(); it != map.end(); it++) {
+            if(it->second != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
