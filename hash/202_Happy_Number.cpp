@@ -53,3 +53,31 @@ public:
         
     }
 };
+
+// 2022.04.18
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_set<int> set;
+        while(true) {
+            int sum = 0;
+            while(n > 0) {
+                int temp = n % 10;
+                sum += temp * temp;
+                n /= 10;
+            }
+            if(sum == 1) {
+                return true;
+            }
+            else {
+                if(set.find(sum) != set.end()) {
+                    return false;
+                }
+                else {
+                    set.insert(sum);
+                    n = sum;
+                }
+            }
+        }
+    }
+};
