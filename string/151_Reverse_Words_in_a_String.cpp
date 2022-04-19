@@ -45,3 +45,56 @@ public:
         return s;
     }
 };
+
+// 2022.04.19
+class Solution {
+public:
+    void subReverse(string& s, int start, int end) {
+        while(start < end) {
+            s[start] ^= s[end];
+            s[end] ^= s[start];
+            s[start] ^= s[end];
+            start++;
+            end--;
+        }
+    }
+    void removeExtraSpaces(string& s) {
+        int slow = 0;
+        int fast = 0;
+        // remove pre spaces
+        while(s.size() > 0 && fast < s.size() && s[fast] == ' ') {
+            fast++;
+        }
+        // remove inter spaces
+        for(; fast < s.size(); fast++) {
+            if(fast - 1 > 0 && s[fast] == ' ' && s[fast] == s[fast - 1]) {
+                continue;
+            }
+            else {
+                s[slow++] = s[fast];
+            }
+        }
+        // remove post spaces
+        if(slow - 1 > 0 && s[slow - 1] == ' ') {
+            s.resize(slow - 1);
+        }
+        else {
+            s.resize(slow);
+        }
+    }
+    string reverseWords(string s) {
+        removeExtraSpaces(s);
+        int left = 0;
+        int right = 0;
+        while(right < s.size()) {
+            while(s[right] != ' ' && right < s.size()) {
+                right++;
+            }
+            subReverse(s, left, right - 1);
+            left = right + 1;
+            right++; // right != ' '
+        }
+        subReverse(s, 0, s.size() - 1);
+        return s;
+    }
+};
