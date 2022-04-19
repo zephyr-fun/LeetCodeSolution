@@ -27,3 +27,31 @@ public:
         return s;
     }
 };
+
+// 2022.04.19
+class Solution {
+public:
+    string reverseLeftWords(string s, int n) {
+        string res = s + s;
+        return res.substr(n, s.size());
+    }
+};
+
+class Solution {
+public:
+    void subReverse(string& s, int start, int end) {
+        while(start < end) {
+            s[start] ^= s[end];
+            s[end] ^= s[start];
+            s[start] ^= s[end];
+            start++;
+            end--;
+        }
+    }
+    string reverseLeftWords(string s, int n) {
+        subReverse(s, 0, n - 1);
+        subReverse(s, n, s.size() - 1);
+        subReverse(s, 0, s.size() - 1);
+        return s;
+    }
+};
