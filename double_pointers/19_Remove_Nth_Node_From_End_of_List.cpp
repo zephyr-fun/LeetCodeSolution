@@ -39,7 +39,16 @@ public:
         ListNode* slow = dummy;
         ListNode* fast = dummy;
         while(n-- && fast != nullptr) {
-            
+            fast = fast->next;
         }
+        fast = fast->next;
+        while(fast != nullptr) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        ListNode* temp = slow->next;
+        slow->next = slow->next->next;
+        delete temp;
+        return dummy->next;
     }
 };
