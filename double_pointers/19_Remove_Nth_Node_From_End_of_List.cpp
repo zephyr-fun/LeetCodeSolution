@@ -29,3 +29,17 @@ public:
         return dummy->next;
     }
 };
+
+// 2022.04.19
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* slow = dummy;
+        ListNode* fast = dummy;
+        while(n-- && fast != nullptr) {
+            
+        }
+    }
+};
