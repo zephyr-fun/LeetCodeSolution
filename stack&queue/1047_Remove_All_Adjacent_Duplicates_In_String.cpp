@@ -34,3 +34,20 @@ public:
         return res;
     }
 };
+
+// 2022.04.20
+class Solution {
+public:
+    string removeDuplicates(string s) {
+        string sStack;
+        for(auto c : s) {
+            if(!sStack.empty() && sStack.back() == c) {
+                sStack.pop_back();
+            }
+            else {
+                sStack += c;
+            }
+        }
+        return sStack;
+    }
+};
