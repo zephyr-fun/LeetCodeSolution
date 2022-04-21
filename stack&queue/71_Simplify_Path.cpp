@@ -76,3 +76,43 @@ public:
         return res;
     }
 };
+
+// 2022.04.20
+class Solution {
+public:
+    string simplifyPath(string path) {
+        vector<string> files;
+        int left = 0;
+        while(left < path.size()) {
+            while(path[left] == '/' && left < path.size()) {
+                left++;
+            }
+            int right = left;
+            while(path[right] != '/' && right < path.size()) {
+                right++;
+            }
+            string temp = path.substr(left, right - left);
+            left = right;
+            if(temp == ".") {
+                continue;
+            }
+            else if(temp == "..") {
+                if(!files.empty()) {
+                    files.pop_back();
+                }
+            }
+            else if(temp != ""){ // avoiding add "" to files
+                files.push_back(temp);
+            }
+        }
+        string res = "";
+        for(auto file : files) {
+            res += "/";
+            res += file;
+        }
+        if(res == "") {
+            res += "/";
+        }
+        return res;
+    }
+};
