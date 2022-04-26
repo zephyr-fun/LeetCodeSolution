@@ -106,3 +106,31 @@ public:
         return root;
     }
 };
+
+// 2022.04.26
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == nullptr) {
+            return root;
+        }
+        Node* node = root;
+        while(node != nullptr) {
+            Node* dummy = new Node(0);
+            Node* pre = dummy;
+            while(node != nullptr) {
+                if(node->left != nullptr) {
+                    pre->next = node->left;
+                    pre = pre->next;
+                }
+                if(node->right != nullptr) {
+                    pre->next = node->right;
+                    pre = pre->next;
+                }
+                node = node->next;
+            }
+            node = dummy->next;
+        }
+        return root;
+    }
+};
