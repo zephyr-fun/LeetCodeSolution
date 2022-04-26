@@ -81,3 +81,32 @@ public:
         return res;
     }
 };
+
+// 2022.04.26
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+        vector<vector<int>> res;
+        if(root == nullptr) {
+            return res;
+        }
+        queue<Node*> que;
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            vector<int> temp;
+            for(int i = 0; i < size; i++) {
+                Node* node = que.front();
+                que.pop();
+                temp.push_back(node->val);
+                for(auto child : node->children) {
+                    if(child != nullptr) {
+                        que.push(child);
+                    }
+                }
+            }
+            res.push_back(temp);
+        }
+        return res;
+    }
+};
