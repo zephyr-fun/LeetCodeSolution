@@ -178,3 +178,95 @@ public:
         return res;
     }
 };
+
+// 2022.04.26
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+};
+
+// recursion
+class Solution {
+public:
+    void traversal(TreeNode* root, vector<int>& res) {
+        if(root == nullptr) {
+            return ;
+        }
+        traversal(root->left, res);
+        res.push_back(root->val);
+        traversal(root->right, res);
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        traversal(root, res);
+        return res;
+    }
+};
+
+// non recursion
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) {
+            return res;
+        }
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()) {
+            TreeNode* node = st.top();
+            if(node != nullptr) {
+                st.pop();
+                if(node->right != nullptr) {
+                    st.push(node->right);
+                }
+                st.push(node);
+                st.push(nullptr);
+                if(node->left != nullptr) {
+                    st.push(node->left);
+                }
+            }
+            else {
+                st.pop();
+                node = st.top();
+                st.pop();
+                res.push_back(node->val);
+            }
+        }
+        return res;
+    }
+};
+
+// Morris
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        while(root != nullptr) {
+            if(root->left != nullptr) {
+                TreeNode* temp = root->left;
+                while(temp->right != nullptr && temp->right != root) {
+                    temp = temp->right;
+                }
+                if(temp->right == nullptr) {
+                    temp->right = root;
+                    root = root->left;
+                }
+                else {
+                    res.push_back(root->val);
+                    temp->right = nullptr;
+                    root = root->right;
+                }
+            }
+            else {
+                res.push_back(root->val);
+                root = root->right;
+            }
+        }
+        return res;
+    }
+};
