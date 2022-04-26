@@ -139,3 +139,26 @@ public:
         helper(node1->right, node2->left);
     }
 };
+
+// 2022.04.26
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == nullptr) {
+            return root;
+        }
+        Node* leftMost = root;
+        while(leftMost->left != nullptr) {
+            Node* node = leftMost;
+            while(node != nullptr) {
+                node->left->next = node->right;
+                if(node->next != nullptr) {
+                    node->right->next = node->next->left;
+                }
+                node = node->next;
+            }
+            leftMost = leftMost->left;
+        }
+        return root;
+    }
+};
