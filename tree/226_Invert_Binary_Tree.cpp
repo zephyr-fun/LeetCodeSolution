@@ -126,3 +126,29 @@ public:
         helper(root->right);
     }
 };
+
+// 2022.04.26
+// class Solution {
+// public:
+//     TreeNode* invertTree(TreeNode* root) {
+//         if(root == nullptr) {
+//             return nullptr;
+//         }
+//         root->left = invertTree(root->right);
+//         root->right = invertTree(root->left);// root->left already changes
+//         return root;
+//     }
+// };
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(root == nullptr){
+            return root;
+        }
+        TreeNode* left = invertTree(root->left);
+        TreeNode* right = invertTree(root->right);
+        root->left = right;
+        root->right = left;
+        return root;
+    }
+};
