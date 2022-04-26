@@ -39,3 +39,33 @@ public:
         return res;
     }
 };
+
+// 2022.04.26
+class Solution {
+public:
+    vector<int> largestValues(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) {
+            return res;
+        }
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            int levelMax = INT_MIN;
+            for(int i = 0; i < size; i++) {
+                TreeNode* node = que.front();
+                que.pop();
+                levelMax = levelMax > node->val ? levelMax : node->val;
+                if(node->left != nullptr) {
+                    que.push(node->left);
+                }
+                if(node->right != nullptr) {
+                    que.push(node->right);
+                }
+            }
+            res.push_back(levelMax);
+        }
+        return res;
+    }
+};
