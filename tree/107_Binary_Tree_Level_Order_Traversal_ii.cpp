@@ -116,3 +116,35 @@ public:
         return res;
     }
 };
+
+// 2022.04.26
+// stack also works
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> res;
+        if(root == nullptr) {
+            return res;
+        }
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            vector<int> temp;
+            for(int i = 0; i < size; i++) {
+                TreeNode* node = que.front();
+                que.pop();
+                temp.push_back(node->val);
+                if(node->left != nullptr) {
+                    que.push(node->left);
+                }
+                if(node->right != nullptr) {
+                    que.push(node->right);
+                }
+            }
+            res.push_back(temp);
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
