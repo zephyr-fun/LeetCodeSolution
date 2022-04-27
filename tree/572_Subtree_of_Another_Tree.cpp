@@ -168,3 +168,99 @@ public:
         return false;
     }
 };
+
+
+// 2022.04.27
+// recursion
+class Solution {
+public:
+    bool isSameTree(TreeNode* node, TreeNode* subNode) {
+        if(node == nullptr && subNode == nullptr) {
+            return true;
+        }
+        if(node == nullptr || subNode == nullptr || node->val != subNode->val) {
+            return false;
+        }
+        return isSameTree(node->left, subNode->left) && isSameTree(node->right, subNode->right);
+    }
+    bool dfs(TreeNode* node, TreeNode* subRoot) {
+        if(node == nullptr) {
+            return false;
+        }
+        return isSameTree(node, subRoot) || dfs(node->left, subRoot) || dfs(node->right, subRoot);
+    }
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        return dfs(root, subRoot);
+    }
+};
+
+// kmp
+class Solution {
+public:
+    int maxElement, lNull, rNull;
+    vector<int> sOrder, tOrder;
+    void getMaxElement(TreeNode* root) {
+        if(root == nullptr) {
+            return ;
+        }
+        maxElement = max(root->val, maxElement);
+        getMaxElement(root->left);
+        getMaxElement(root->right);
+    }
+    void getPreorder(TreeNode* root, vector<int>& order) {
+        if(root == nullptr) {
+            return ;
+        }
+        order.push_back(root->val);
+        if(root->left != nullptr) {
+            getPreorder(root->left, order);
+        }
+        else {
+            order.push_back(lNull);
+        }
+        if(root->right != nullptr) {
+            getPreorder(root->right, order);
+        }
+        else {
+            order.push_back(rNull);
+        }
+    }
+    bool kmp() {
+        int sLen = sOrder.size();
+        int tLen = tOrder.size();
+        vector<int> next(tLen, 0);
+        for(int left = 0, right = 1; right < tLen; right++) {
+            while(left > 0 && tOrder[left] != tOrder[right]) {
+                left = next[left - 1];
+            }
+            if(tOrder[left] == tOrder[right]){
+                left++;
+            }
+            next[right] = left;
+        }
+        for(int sIndex = 0, tIndex = 0; sIndex < sLen; sIndex++) {
+            while(tIndex > 0 && sOrder[sIndex] != tOrder[tIndex]){
+                tIndex = next[tIndex - 1];
+            }
+            if(sOrder[sIndex] == tOrder[tIndex]) {
+                tIndex++;
+            }
+            if(tIndex == tLen) {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if(root == nullptr) {
+            return false;
+        }
+        getMaxElement(root);
+        getMaxElement(subRoot);
+        lNull = maxElement + 1;
+        rNull = maxElement + 2;
+        getPreorder(root, sOrder);
+        getPreorder(subRoot, tOrder);
+        return kmp();
+    }
+};
