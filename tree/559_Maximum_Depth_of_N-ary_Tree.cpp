@@ -55,3 +55,22 @@ public:
         }
     }
 };
+
+// 2022.04.27
+class Solution {
+public:
+    int maxDepth(Node* root) {
+        // would never exec this part of code
+        if(root == nullptr) {
+            return 0;
+        }
+        // would never exec this part of code
+
+        int tempMax = 0; // so init tempMax = 0 matters
+        for(auto child : root->children) {
+            int temp = maxDepth(child);
+            tempMax = max(tempMax, temp);
+        }
+        return tempMax + 1;
+    }
+};
