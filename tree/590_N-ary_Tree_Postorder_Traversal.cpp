@@ -71,3 +71,22 @@ public:
         return res;
     }
 };
+
+// 2022.04.27
+class Solution {
+public:
+    void traversal(Node* root, vector<int>& res) {
+        if(root == nullptr) {
+            return ;
+        }
+        for(auto child : root->children) {
+            traversal(child, res);
+        }
+        res.push_back(root->val);
+    }
+    vector<int> postorder(Node* root) {
+        vector<int> res;
+        traversal(root, res);
+        return res;
+    }
+};
