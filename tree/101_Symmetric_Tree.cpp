@@ -141,3 +141,90 @@ public:
         return true;
     }
 };
+
+// 2022.04.27
+// recursion
+class Solution {
+public:
+    bool compare(TreeNode* left, TreeNode* right) {
+        if(left == nullptr && right != nullptr) {
+            return false;
+        }
+        else if(left != nullptr && right == nullptr) {
+            return false;
+        }
+        else if(left == nullptr && right == nullptr) {
+            return true;
+        }
+        else if(left->val != right->val){
+            return false;
+        }
+        bool outside = compare(left->left, right->right);
+        bool inside = compare(left->right, right->left);
+        return outside && inside;
+
+    }
+    bool isSymmetric(TreeNode* root) {
+        return compare(root->left, root->right);
+    }
+};
+
+// non recursion, iteration with queue
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr) {
+            return true;
+        }
+        queue<TreeNode*> que;
+        que.push(root->left);
+        que.push(root->right);
+        while(!que.empty()) {
+            TreeNode* left = que.front();
+            que.pop();
+            TreeNode* right = que.front();
+            que.pop();
+            if(left == nullptr && right == nullptr) {
+                continue;
+            }
+            if(left == nullptr || right == nullptr || left->val != right->val) {
+                return false;
+            }
+            que.push(left->left);
+            que.push(right->right);
+            que.push(left->right);
+            que.push(right->left);
+        }
+        return true;
+    }
+};
+
+// non recursion, iteration with stack
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(root == nullptr) {
+            return true;
+        }
+        stack<TreeNode*> st;
+        st.push(root->left);
+        st.push(root->right);
+        while(!st.empty()) {
+            TreeNode* left = st.top();
+            st.pop();
+            TreeNode* right = st.top();
+            st.pop();
+            if(left == nullptr && right == nullptr) {
+                continue;
+            }
+            if(left == nullptr || right == nullptr || left->val != right->val) {
+                return false;
+            }
+            st.push(left->left);
+            st.push(right->right);
+            st.push(left->right);
+            st.push(right->left);
+        }
+        return true;
+    }
+};
