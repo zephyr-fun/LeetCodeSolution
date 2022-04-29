@@ -61,3 +61,59 @@ public:
         return res;
     }
 };
+
+// 2022.04.29
+// iteration
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        queue<TreeNode*> que;
+        int res;
+        if(root == nullptr) {
+            return 0;
+        }
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            for(int i = 0; i < size; i++) {
+                TreeNode* node = que.front();
+                que.pop();
+                if(i == 0) {
+                    res = node->val;
+                }
+                if(node->left != nullptr) {
+                    que.push(node->left);
+                }
+                if(node->right != nullptr) {
+                    que.push(node->right);
+                }
+            }
+        }
+        return res;
+    }
+};
+
+// recursion
+class Solution {
+public:
+    int maxDepth = INT_MIN;
+    int value;
+    void traversal(TreeNode* root, int depth) {
+        if(root->left == nullptr && root->right == nullptr) {
+            if(depth > maxDepth) {
+                value = root->val;
+                maxDepth = depth;
+            }
+        }
+        if(root->left != nullptr) {
+            traversal(root->left, depth + 1);
+        }
+        if(root->right != nullptr) {
+            traversal(root->right, depth + 1);
+        }
+    }
+    int findBottomLeftValue(TreeNode* root) {
+        traversal(root, 0);
+        return value;
+    }
+};
