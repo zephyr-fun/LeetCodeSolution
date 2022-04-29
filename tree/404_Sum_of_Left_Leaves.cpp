@@ -121,3 +121,28 @@ public:
         return res;
     }
 };
+
+
+// 2022.04.29
+class Solution {
+public:
+    int res;
+    void dfs(TreeNode* root) {
+        if(root->left != nullptr && root->left->left == nullptr && root->left->right == nullptr) {
+            res += root->left->val;
+        }
+        if(root->left != nullptr) {
+            dfs(root->left);
+        }
+        if(root->right != nullptr) {
+            dfs(root->right);
+        }
+    }
+    int sumOfLeftLeaves(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        dfs(root);
+        return res;
+    }
+};
