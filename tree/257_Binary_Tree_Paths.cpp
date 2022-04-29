@@ -146,3 +146,37 @@ public:
         return res;
     }
 };
+
+// 2022.04.29
+class Solution {
+public:
+    void traversal(TreeNode* root, vector<int>& path, vector<string>& res) {
+        path.push_back(root->val);
+        if(root->left == nullptr && root->right == nullptr) {
+            string temp;
+            for(int i = 0; i < path.size() - 1; i++) {
+                temp += to_string(path[i]);
+                temp += "->";
+            }
+            temp += to_string(path[path.size() - 1]);
+            res.push_back(temp);
+        }
+        if(root->left != nullptr) {
+            traversal(root->left, path, res);
+            path.pop_back();
+        }
+        if(root->right != nullptr) {
+            traversal(root->right, path, res);
+            path.pop_back();
+        }
+    }
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> res;
+        if(root == nullptr) {
+            return res;
+        }
+        vector<int> path;
+        traversal(root, path, res);
+        return res;
+    }
+};
