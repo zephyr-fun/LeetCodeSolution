@@ -154,3 +154,33 @@ public:
         return res;
     }
 };
+
+// 2022.04.29
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    void traversal(TreeNode* root, int rest) {
+        path.push_back(root->val);
+        if(root->left == nullptr && root->right == nullptr) {
+            if(rest - root->val == 0) {
+                res.push_back(path);
+            }
+        }
+        if(root->left != nullptr) {
+            traversal(root->left, rest - root->val);
+            path.pop_back();
+        }
+        if(root->right != nullptr) {
+            traversal(root->right, rest - root->val);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        if(root == nullptr) {
+            return res;
+        }
+        traversal(root, targetSum);
+        return res;
+    }
+};
