@@ -78,3 +78,22 @@ public:
         return nullptr;
     }
 };
+
+// 2022.04.29
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        while(root != nullptr) {
+            if(root->val == val) {
+                return root;
+            }
+            else if(root->val < val) {
+                root = root->right;
+            }
+            else if(root->val > val) {
+                root = root->left;
+            }
+        }
+        return nullptr;
+    }
+};
