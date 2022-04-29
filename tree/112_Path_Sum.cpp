@@ -137,3 +137,36 @@ public:
         return false;
     }
 };
+
+// 2022.04.29
+class Solution {
+public:
+    bool traversal(TreeNode* root, int nowSum) {
+        if(root->left == nullptr && root->right == nullptr) {
+            if(nowSum - root->val == 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // notice
+        bool left = false;
+        bool right = false;
+        // notice
+        if(root->left != nullptr) {
+            left = traversal(root->left, nowSum - root->val);
+        }
+        if(root->right != nullptr) {
+            right = traversal(root->right, nowSum - root->val);
+        }
+        
+        return left || right;
+    }
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if(root == nullptr) {
+            return false;
+        }
+        return traversal(root, targetSum);
+    }
+};
