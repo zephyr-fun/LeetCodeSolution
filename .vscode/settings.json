@@ -12,7 +12,8 @@
         "unordered_map": "cpp",
         "optional": "cpp",
         "string": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "bitset": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
