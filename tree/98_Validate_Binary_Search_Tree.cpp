@@ -113,7 +113,6 @@ public:
 // preorder traversal with recursion manner
 class Solution {
 public:
-    TreeNode* pre;
     bool isValidBST(TreeNode* root) {
         if(root == nullptr){
             return true;
@@ -126,5 +125,52 @@ public:
         bool left = helper(node->left, lower, node->val);
         bool right = helper(node->right, node->val, upper);
         return left && right;
+    }
+};
+
+// 2022.04.29
+// inorder traversal for BST
+class Solution {
+public:
+    TreeNode* pre;
+    bool helper(TreeNode* root) {
+        if(root == nullptr) {
+            return true;
+        }
+        bool left = helper(root->left);
+        if(pre != nullptr && pre->val >= root->val) {
+            return false;
+        }
+        pre = root;
+        bool right =  helper(root->right);
+        return left && right;
+    }
+    bool isValidBST(TreeNode* root) {
+        bool res = helper(root);
+        return res;
+    }
+};
+
+// feature
+class Solution {
+public:
+    bool helper(TreeNode* root, long long low, long long up) {
+        if(root == nullptr) {
+            return true;
+        }
+        if(root->val > up || root->val < low) {
+            return false;
+        }
+        bool left = helper(root->left);
+        if(pre != nullptr && pre->val >= root->val) {
+            return false;
+        }
+        pre = root;
+        bool right =  helper(root->right);
+        return left && right;
+    }
+    bool isValidBST(TreeNode* root) {
+        bool res = helper(root);
+        return res;
     }
 };
