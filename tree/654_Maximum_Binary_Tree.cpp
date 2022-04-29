@@ -63,3 +63,33 @@ public:
         return node;
     }
 };
+
+
+// 2022.04.29
+class Solution {
+public:
+    TreeNode* helper(vector<int>& nums, int left, int right) {
+        if(left > right) {
+            return nullptr;
+        }
+        int max = INT_MIN;
+        int index;
+        for(int i = left; i <= right; i++) {
+            if(nums[i] > max) {
+                max = nums[i];
+                index = i;
+            }
+        }
+        TreeNode* root = new TreeNode(max);
+        root->left = helper(nums, left, index - 1);
+        root->right = helper(nums, index + 1, right);
+        return root;
+    }
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        if(nums.size() == 0) {
+            return nullptr;
+        }
+        TreeNode* res = helper(nums, 0, nums.size() - 1);
+        return res;
+    }
+};
