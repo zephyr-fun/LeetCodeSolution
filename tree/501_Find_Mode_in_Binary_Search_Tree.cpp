@@ -140,3 +140,77 @@ public:
         return res;
     }
 };
+
+// 2022.04.30
+class Solution {
+public:
+    bool static cmp(pair<int, int>& a, pair<int, int>& b) {
+        return a.second > b.second;
+    }
+    void helper(TreeNode* root, unordered_map<int, int>& map) {
+        if(root == nullptr) {
+            return ;
+        }
+        helper(root->left, map);
+        map[root->val]++;
+        helper(root->right, map);
+    }
+    vector<int> findMode(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) {
+            return res;
+        }
+        unordered_map<int, int> map;
+        helper(root, map);
+        vector<pair<int, int>> vec(map.begin(), map.end());
+        sort(vec.begin(), vec.end(), cmp);
+        res.push_back(vec[0].first);
+        for(int i = 1; i < vec.size(); i++) {
+            if(vec[i].second == vec[0].second) {
+                res.push_back(vec[i].first);
+            }
+        }
+        return res;
+    }
+};
+
+// BST
+class Solution {
+public:
+    TreeNode* pre = nullptr;
+    int maxCount = 0;
+    int count = 0;
+    void helper(TreeNode* cur, vector<int>& res) {
+        if(cur == nullptr) {
+            return ;
+        }
+        helper(cur->left, res);
+        if(pre == nullptr) {
+            count = 1;
+        }
+        else if(pre->val == cur->val) {
+            count++;
+        }
+        else {
+            count = 1;
+        }
+        pre = cur;
+        if(count == maxCount) {
+            res.push_back(cur->val);
+        }
+        if(count > maxCount) {
+            maxCount = count;
+            res.clear();
+            res.push_back(cur->val);
+        }
+        helper(cur->right, res);
+    }
+    vector<int> findMode(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) {
+            return res;
+        }
+        helper(root, res);
+        return res;
+    }
+};
