@@ -97,3 +97,47 @@ public:
         return node;
     }
 };
+
+// 2022.04.30
+class Solution {
+public:
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root == nullptr) {
+            return nullptr;
+        }
+        if(root->val == key) {
+            if(root->left == nullptr && root->right == nullptr) {
+                delete root;
+                return nullptr;
+            }
+            else if(root->left == nullptr) {
+                TreeNode* retNode = root->right;
+                delete root;
+                return retNode;
+            }
+            else if(root->right == nullptr) {
+                TreeNode* retNode = root->left;
+                delete root;
+                return retNode;
+            }
+            else {
+                // both side exists
+                TreeNode* temp = root->right;
+                while(temp->left != nullptr) {
+                    temp = temp->left;
+                }
+                temp->left = root->left;
+                TreeNode* retNode = root->right;
+                delete root;
+                return retNode;
+            }
+        }
+        if(root->val > key) {
+            root->left = deleteNode(root->left, key);
+        }
+        if(root->val < key) {
+            root->right = deleteNode(root->right, key);
+        }
+        return root;
+    }
+};
