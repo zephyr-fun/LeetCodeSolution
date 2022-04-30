@@ -161,16 +161,12 @@ public:
         if(root->val > up || root->val < low) {
             return false;
         }
-        bool left = helper(root->left);
-        if(pre != nullptr && pre->val >= root->val) {
-            return false;
-        }
-        pre = root;
-        bool right =  helper(root->right);
+        bool left = helper(root->left, low, root->val);
+        bool right =  helper(root->right, root->val, up);
         return left && right;
     }
     bool isValidBST(TreeNode* root) {
-        bool res = helper(root);
+        bool res = helper(root, LONG_MIN, LONG_MAX);
         return res;
     }
 };
