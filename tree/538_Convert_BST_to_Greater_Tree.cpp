@@ -60,3 +60,21 @@ public:
         return root;
     }
 };
+
+// 2022.04.30
+class Solution {
+public:
+    TreeNode* pre = nullptr;
+    TreeNode* convertBST(TreeNode* root) {
+        if(root == nullptr) {
+            return nullptr;
+        }
+        convertBST(root->right);
+        if(pre != nullptr) {
+            root->val += pre->val;
+        }
+        pre = root;
+        convertBST(root->left);
+        return root;
+    }
+};
