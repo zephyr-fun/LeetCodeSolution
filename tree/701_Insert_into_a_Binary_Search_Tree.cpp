@@ -56,3 +56,33 @@ public:
         return head;
     }
 };
+
+// 2022.04.30
+class Solution {
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        TreeNode* node = new TreeNode(val);
+        TreeNode* cur = root;
+        while(root != nullptr) {
+            if(root->val > val) {
+                if(root->left != nullptr) {
+                    root = root->left;
+                }
+                else {
+                    root->left = node;
+                    return cur;
+                }
+            }
+            else if(root->val < val) {
+                if(root->right != nullptr) {
+                    root = root->right;
+                }
+                else {
+                    root->right = node;
+                    return cur;
+                }
+            }
+        }
+        return node;
+    }
+};
