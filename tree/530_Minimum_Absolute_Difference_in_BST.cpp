@@ -61,3 +61,25 @@ public:
         return res;
     }
 };
+
+// 2022.04.30
+class Solution {
+public:
+    TreeNode* pre;
+    int minValue = 0x3f3f3f3f;
+    void helper(TreeNode* root) {
+        if(root == nullptr) {
+            return ;
+        }
+        helper(root->left);
+        if(pre != nullptr && abs(root->val - pre->val) < minValue) {
+            minValue = abs(root->val - pre->val);
+        }
+        pre = root;
+        helper(root->right);
+    }
+    int getMinimumDifference(TreeNode* root) {
+        helper(root);
+        return minValue;
+    }
+};
