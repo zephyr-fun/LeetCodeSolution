@@ -13,7 +13,11 @@
         "optional": "cpp",
         "string": "cpp",
         "limits": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "regex": "cpp",
+        "valarray": "cpp",
+        "chrono": "cpp",
+        "random": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
