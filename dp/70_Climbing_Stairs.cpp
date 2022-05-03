@@ -48,3 +48,38 @@ public:
         return dp[n];
     }
 };
+
+// 2022.05.03
+class Solution {
+public:
+    int climbStairs(int n) {
+        // dp[i] refers to the nums of ways to get to ith stairs
+        vector<int> dp(n + 1, 0);
+        dp[1] = 1;
+        dp[2] = 2;
+        for(int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
+    }
+};
+// optim space
+class Solution {
+public:
+    int climbStairs(int n) {
+        // dp[i] refers to the nums of ways to get to ith stairs
+        if(n <= 2) {
+            return n;
+        }
+        vector<int> dp(2, 0);
+        dp[0] = 1;
+        dp[1] = 2;
+        for(int i = 3; i <= n; i++) {
+            dp[0] = dp[0] + dp[1];
+            dp[0] ^= dp[1];
+            dp[1] ^= dp[0];
+            dp[0] ^= dp[1];
+        }
+        return dp[1];
+    }
+};
