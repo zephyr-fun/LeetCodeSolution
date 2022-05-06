@@ -137,3 +137,41 @@ public:
         return res;
     }
 };
+
+// 2022.05.06
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int len = 1;
+        int size = nums.size();
+        if(size == 0) {
+            return 0;
+        }
+        // d[len] refers to the minimum x of len subsequence
+        vector<int> d(size + 1, 0);
+        d[len] = nums[0];
+        for(int i = 1; i < size; i++) {
+            if(nums[i] > d[len]) {
+                len++;
+                d[len] = nums[i];
+            }
+            else {
+                int left = 1;
+                int right = len;
+                int pos = 0;
+                while(left <= right) {
+                    int mid = left + (right - left) / 2;
+                    if(d[mid] < nums[i]) {
+                        pos = mid;
+                        left = mid + 1;
+                    }
+                    else {
+                        right = mid - 1;
+                    }
+                }
+                d[pos + 1] = nums[i];
+            }
+        }
+        return len;
+    }
+};
