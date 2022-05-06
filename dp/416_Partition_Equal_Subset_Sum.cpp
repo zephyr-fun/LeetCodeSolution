@@ -54,3 +54,51 @@ public:
         return false;
     }
 };
+
+// 2022.05.06
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+        }
+        if(sum % 2 == 1) {
+            return false;
+        }
+        int target = sum / 2;
+        vector<int> dp(target + 1, 0);
+        dp[0] = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            for(int j = target; j >= nums[i]; j--) {
+                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+            }
+        }
+        return dp[target] == target ? true : false;
+    }
+};
+
+// replace vector with array
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            sum += nums[i];
+        }
+        if(sum % 2 == 1) { // % 2 or & 1
+            return false;
+        }
+        int target = sum / 2;
+        // vector<int> dp(target + 1, 0);
+        int dp[20002];
+        memset(dp, 0, sizeof(dp));
+        dp[0] = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            for(int j = target; j >= nums[i]; j--) {
+                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+            }
+        }
+        return dp[target] == target ? true : false;
+    }
+};
