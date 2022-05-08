@@ -45,3 +45,18 @@ public:
         return dp[maxv];
     }
 };
+
+// 2022.05.08
+class Solution {
+public:
+    int cnt[10001];
+    int deleteAndEarn(vector<int>& nums) {
+        int size = nums.size();
+        int maxv = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            cnt[nums[i]]++;
+            maxv = max(maxv, nums[i]);
+        }
+        vector
+    }
+};
