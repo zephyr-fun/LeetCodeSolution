@@ -57,6 +57,11 @@ public:
             cnt[nums[i]]++;
             maxv = max(maxv, nums[i]);
         }
-        vector
+        vector<int> dp(maxv + 1, 0);
+        dp[1] = cnt[1];
+        for(int i = 2; i <= maxv; i++) {
+            dp[i] = max(dp[i - 1], dp[i - 2] + i * cnt[i]);
+        }
+        return dp[maxv];
     }
 };
