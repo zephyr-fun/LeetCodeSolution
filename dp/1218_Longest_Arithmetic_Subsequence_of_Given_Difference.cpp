@@ -65,3 +65,24 @@ public:
         return max(dp[size - 1][0], dp[size - 1][1]);
     }
 };
+
+// 2022.05.10
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        int size = arr.size();
+        int map[40009];
+        memset(map, -1, sizeof(map));
+        int M = 40009 / 2;
+        vector<int> dp(size, 1);
+        int res = 0;
+        for(int i = 0; i < size; i++) {
+            if(map[arr[i] - difference + M] != -1) {
+                dp[i] = dp[map[arr[i] - difference + M]] + 1; // no need for max
+            }
+            map[arr[i] + M] = i;
+            res = max(res, dp[i]);
+        }
+        return res;
+    }
+};
