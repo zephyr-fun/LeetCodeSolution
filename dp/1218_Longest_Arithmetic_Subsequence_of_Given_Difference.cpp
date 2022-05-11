@@ -86,3 +86,25 @@ public:
         return res;
     }
 };
+
+// 2022.05.11
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        // dp[i] refers to the maximum length with must select arr[i]
+        vector<int> dp(arr.size(), 1);
+        // how to calc range of map? -1e4 <= arr[i], difference <= 1e4, 4*1e4
+        int map[40009];
+        memset(map, -1, sizeof(map));
+        int M = 40009 / 2;
+        int res = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            if(map[arr[i] - difference + M] != -1) {
+                dp[i] = dp[map[arr[i] - difference + M]] + 1;
+            }
+            map[arr[i] + M] = i;
+            res = max(res, dp[i]);
+        }
+        return res;
+    }
+};
