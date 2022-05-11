@@ -9,3 +9,17 @@ public:
         return 2 * (n / 2 + 1 - lastRemaining(n / 2));
     }
 };
+
+// 2022.05.11
+// f[i] + f'[i] = i + 1
+// f[i] = f'[i / 2] * 2
+// f[i] = 2 * (i / 2 + 1 - f[i / 2])
+class Solution {
+public:
+    int lastRemaining(int n) {
+        if(n == 1) {
+            return 1;
+        }
+        return 2 * (n / 2 + 1 - lastRemaining(n / 2));
+    }
+};
