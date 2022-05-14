@@ -97,3 +97,50 @@ public:
         return target.size() - len;
     }
 };
+
+// 2022.05.14
+class Solution {
+public:
+    int minOperations(vector<int>& target, vector<int>& arr) {
+        unordered_map<int, int> map;
+        for(int i = 0; i < target.size(); i++) {
+            map[target[i]] = i;
+        }
+        vector<int> lis;
+        for(int i = 0; i < arr.size(); i++) {
+            if(map.find(arr[i]) != map.end()) {
+                lis.push_back(map[arr[i]]);
+            }
+        }
+        int size = lis.size();
+        if(size == 0) {
+            return target.size();
+        }
+        int len = 1;
+        vector<int> dp(size + 1, 0);
+        dp[1] = lis[0];
+        for(int i = 2; i <= size; i++) {
+            if(lis[i - 1] > dp[len]) {
+                len++;
+                dp[len] = lis[i - 1];
+            }
+            else {
+                int left = 1;
+                int right = len;
+                int pos = 0;
+                while(left <= right) {
+                    int mid = left + (right - left) / 2;
+                    if(dp[mid] < lis[i - 1]) {
+                        pos = mid;
+                        left = mid + 1;
+                    }
+                    else {
+                        right = mid - 1;
+                    }
+                }
+                dp[pos + 1] = lis[i - 1];
+            }
+        }
+        return target.size() - len;
+    }
+};
