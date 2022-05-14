@@ -15,6 +15,34 @@ public:
 class Solution {
 public:
     int sumOddLengthSubarrays(vector<int>& arr) {
+        vector<int> prefix = {0};
+        for(int i = 0; i < arr.size(); i++) {
+            prefix.push_back(prefix.back() + arr[i]);
+        }
+        int res = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            for(int size = 1; i + size - 1 < arr.size(); size += 2) {
+                res += prefix[i + size] - prefix[i];
+            }
+        }
+        return res;
+    }
+}; 
 
+// O(n)
+class Solution {
+public:
+    int sumOddLengthSubarrays(vector<int>& arr) {
+        vector<int> prefix = {0};
+        for(int i = 0; i < arr.size(); i++) {
+            prefix.push_back(prefix.back() + arr[i]);
+        }
+        int res = 0;
+        for(int i = 0; i < arr.size(); i++) {
+            for(int size = 1; i + size - 1 < arr.size(); size += 2) {
+                res += prefix[i + size] - prefix[i];
+            }
+        }
+        return res;
     }
 }; 
