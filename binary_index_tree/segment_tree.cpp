@@ -87,3 +87,23 @@ class NumArray {
         return res;
     }
 };
+
+// huahua version
+struct SegmentTreeNode
+{
+    int start;
+    int end;
+    int sum; // can be max, min, abs
+    SegmentTreeNode* left;
+    SegmentTreeNode* right;
+};
+
+SegmentTreeNode* build(int start, int end, vector<int>& vals) {
+    if(start == end) {
+        return SegmentTreeNode(start, end, vals[start]);
+    }
+    mid = start + (end - start) / 2;
+    SegmentTreeNode* left = build(start, mid, vals);
+    SegmentTreeNode* right = build(mid, end, vals);
+    return SegmentTreeNode(start, end, left.sum + right.sum, left, right);
+}

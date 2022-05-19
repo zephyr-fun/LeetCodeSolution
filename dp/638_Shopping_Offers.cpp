@@ -93,3 +93,52 @@ public:
         return dp[needs];
     }
 };
+
+// 2022.05.20
+class Solution {
+public:
+    vector<int> _price;
+    vector<vector<int>> _special;
+    int _kind; 
+    map<vector<int>, int> map;
+    int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        _price = price;
+        int kind = price.size();
+        _kind = kind;
+        for(auto bag : special) {
+            int sum = 0;
+            for(int i = 0; i < kind; i++) {
+                sum += bag[i] * price[i];
+            }
+            if(sum > bag[kind]) {
+                _special.push_back(bag);
+            }
+        }
+        return dfs(needs);
+    }
+    int dfs(vector<int>& needs) {
+        if(map.find(needs) == map.end()) {
+            int minPrice = 0;
+            for(int i = 0; i < _kind; i++) {
+                minPrice += needs[i] * _price[i];
+            }
+            // cout << "minPrice" << minPrice << endl;
+            for(auto bag : _special) {
+                int bagVal = bag[_kind];
+                // cout << "bagVal" << bagVal << endl;
+                vector<int> nextNeeds;
+                for(int i = 0; i < _kind; i++) {
+                    if(bag[i] > needs[i]) {
+                        break;
+                    }
+                    nextNeeds.push_back(needs[i] - bag[i]);
+                }
+                if(nextNeeds.size() == _kind) {
+                    minPrice = min(minPrice, dfs(nextNeeds) + bagVal);
+                }
+            }
+            map[needs] = minPrice;
+        }
+        return map[needs];
+    }
+};
