@@ -36,7 +36,6 @@ public:
         // dp[len] refers to the minimum x required to compose a subsequence of length len
         vector<int> dp(envelopes.size() + 1, 0x3f3f3f3f);
         dp[1] = envelopes[0][1];
-        int res = 1;
         int len = 1;
         for(int i = 1; i < envelopes.size(); i++) {
             if(envelopes[i][1] > dp[len]) {
@@ -59,6 +58,47 @@ public:
                 }
                 dp[pos + 1] = envelopes[i][1];
             }
+        }
+        return len;
+    }
+};
+
+// 2022.05.20
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) {
+        sort(envelopes.begin(), envelopes.end(), [](vector<int>& a, vector<int>& b) {
+            if(a[0] == b[0]) {
+                return a[1] > b[1];
+            }
+            return a[0] < b[0];
+        });
+        // dp[len] refers to minimum number with len
+        vector<int> dp(envelopes.size() + 1, 0);
+        int len = 1;
+        dp[len] = envelopes[0][1];
+        for(int i = 1; i < envelopes.size(); i++) {
+            if(envelopes[i][1] > dp[len]) {
+                len++;
+                dp[len] = envelopes[i][1];
+            }
+            else {
+                int left = 1;
+                int right = len;
+                int pos = 0; // good good
+                while(left <= right) {
+                    int mid = left + (right - left) / 2;
+                    if(dp[mid] >= envelopes[i][1]) {
+                        right = mid - 1;
+                    }
+                    else {
+                        pos = mid;
+                        left = mid + 1;
+                    }
+                }
+                dp[pos + 1] = envelopes[i][1];
+            }
+            // remember to comment debug code, so that O(nlogn) won't turn to O(n^2)
         }
         return len;
     }
