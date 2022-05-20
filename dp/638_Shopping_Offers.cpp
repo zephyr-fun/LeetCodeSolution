@@ -142,3 +142,45 @@ public:
         return map[needs];
     }
 };
+
+// again
+class Solution {
+public:
+    map<vector<int>, int> map;
+    int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        int kind = price.size();
+        vector<vector<int>> validSpecial;
+        for(auto bag : special) {
+            int sum = 0;
+            for(int i = 0; i < kind; i++) {
+                sum += price[i] * bag[i];
+            }
+            if(sum > bag[kind]) {
+                validSpecial.push_back(bag);
+            }
+        }
+        return dfs(price, validSpecial, needs, kind);
+    }
+    int dfs(vector<int>& price, vector<vector<int>>& validSpecial, vector<int>& needs, int kind) {
+        if(map.find(needs) == map.end()) {
+            int minPrice = 0;
+            for(int i = 0; i < kind; i++) {
+                minPrice += price[i] * needs[i];
+            }
+            for(auto bag : validSpecial) {
+                vector<int> nextNeeds;
+                for(int i = 0; i < kind; i++) {
+                    if(bag[i] > needs[i]) {
+                        break;
+                    }
+                    nextNeeds.push_back(needs[i] - bag[i]);
+                }
+                if(nextNeeds.size() == kind) {
+                    minPrice = min(minPrice, dfs(price, validSpecial, nextNeeds, kind) + bag[kind]);
+                }
+            }
+            map[needs] = minPrice;
+        }
+        return map[needs];
+    }
+};
