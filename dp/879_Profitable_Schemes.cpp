@@ -64,3 +64,58 @@ public:
     }
 
 };
+
+// 2022.05.20
+class Solution {
+public:
+    int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+        int mod = 1e9 + 7;
+        // dp[i][j][k] refers to the total plan, considering the frist i work, with j people,  at least k profit
+        int numWork = profit.size();
+        vector<vector<vector<int>>> dp(numWork + 1, vector<vector<int>>(n + 1, vector<int>(minProfit + 1, 0)));
+        for(int j = 0; j <= n; j++) {
+            dp[0][j][0] = 1;
+        }    
+        for(int i = 1; i <= numWork; i++) {
+            int curNeed = group[i - 1];
+            int curProfit = profit[i - 1];
+            for(int j = 0; j <= n; j++) {
+                for(int k = 0; k <= minProfit; k++) {
+                    dp[i][j][k] = dp[i - 1][j][k];
+                    if(j >= curNeed) {
+                        dp[i][j][k] += dp[i - 1][j - curNeed][max(0, k - curProfit)];
+                        dp[i][j][k] %= mod;
+                    }
+                }
+            }
+        }
+        return dp[numWork][n][minProfit];
+    }
+};
+
+// optim i dim
+class Solution {
+public:
+    int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+        int mod = 1e9 + 7;
+        int numWork = profit.size();
+        // dp[j][k] refers to total plans of considering first i work, with j people, at least k profit
+        vector<vector<int>> dp(n + 1, vector<int>(minProfit + 1, 0));
+        for(int j = 0; j <= n; j++) {
+            dp[j][0] = 1; // with first 0 work
+        }
+        for(int i = 1; i <= numWork; i++) {
+            int curNeed = group[i - 1];
+            int curProfit = profit[i - 1];
+            for(int j = n; j >= 0; j--) {
+                for(int k = minProfit; k >= 0; k--) {
+                    if(j >= curNeed) {
+                        dp[j][k] += dp[j - curNeed][max(0, k - curProfit)];
+                        dp[j][k] %= mod;
+                    }
+                }
+            }
+        }
+        return dp[n][minProfit];
+    }
+};
