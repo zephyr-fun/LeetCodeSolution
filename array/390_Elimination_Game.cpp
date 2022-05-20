@@ -23,3 +23,14 @@ public:
         return 2 * (n / 2 + 1 - lastRemaining(n / 2));
     }
 };
+
+// 2022.05.20
+class Solution {
+public:
+    int lastRemaining(int n) {
+        if(n == 1) {
+            return 1; // f(1) = 1
+        }
+        return 2 * (n / 2 + 1 - lastRemaining(n / 2)); // f(i) = 2 * (i / 2 + 1 - f(i / 2))
+    }
+};
