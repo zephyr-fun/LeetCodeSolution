@@ -93,3 +93,59 @@ public:
         return res;
     }
 };
+
+// 2022.05.22
+class Solution {
+public:
+    int maxTurbulenceSize(vector<int>& arr) {
+        int size = arr.size();
+        // dp[i][j] refers to with selecting first i nums, j{0, 1} max len
+        vector<vector<int>> dp(size + 1, vector<int>(2, 0));
+        dp[1][0] = 1; // up
+        dp[1][1] = 1; // down
+        int res = 1;
+        for(int i = 1; i < size; i++) {
+            dp[i + 1][0] = 1;
+            dp[i + 1][1] = 1;
+            if(arr[i] > arr[i - 1]) {
+                dp[i + 1][0] = dp[i][1] + 1;
+            }
+            else if(arr[i] < arr[i - 1]) {
+                dp[i + 1][1] = dp[i][0] + 1;
+            }
+            res = max(res, max(dp[i + 1][0], dp[i + 1][1]));
+        }
+        return res;
+    }
+};
+
+// optim i dim
+class Solution {
+public:
+    int maxTurbulenceSize(vector<int>& arr) {
+        int size = arr.size();
+        // dp[i][j] refers to with selecting first i nums, j{0, 1} len
+        int dp[2];
+        dp[0] = 1;
+        dp[1] = 1;
+        int res = 1;
+        for(int i = 1; i < size; i++) {
+            int a = dp[0];
+            int b = dp[1];
+            if(arr[i] > arr[i - 1]) {
+                dp[0] = b + 1;
+                dp[1] = 1;
+            }
+            else if(arr[i] < arr[i - 1]){
+                dp[0] = 1;
+                dp[1] = a + 1;
+            }
+            else {
+                dp[0] = 1;
+                dp[1] = 1;
+            }
+            res = max(res, max(dp[0], dp[1]));
+        }
+        return res;
+    }
+};
