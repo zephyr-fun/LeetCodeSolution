@@ -1,4 +1,6 @@
 // 2022.05.27
+// Convert "exactly k" to "at most k" - "at most k-1"
+https://leetcode.cn/problems/subarrays-with-k-different-integers/solution/k-ge-bu-tong-zheng-shu-de-zi-shu-zu-by-l-ud34/
 class Solution {
 public:
     int subarraysWithKDistinct(vector<int>& nums, int k) {
