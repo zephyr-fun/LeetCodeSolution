@@ -97,3 +97,63 @@ public:
         return res;
     }
 };
+
+// 2022.05.28
+class Solution {
+public:
+    int countNumbersWithUniqueDigits(int n) {
+        int f[10][10];
+        for(int i = 1; i < 10; i++) {
+            for(int j = 1; j < 10; j++) {
+                int cur = 1;
+                for(int k = i; k <= j; k++) {
+                    cur *= k;
+                }
+                f[i][j] = cur;
+            }
+        }
+        int x = int(pow(10, n) - 1);
+        int t = x;
+        vector<int> nums;
+        while(t != 0) {
+            nums.push_back(t % 10);
+            t /= 10;
+        }
+        int len = nums.size();
+        if(len <= 1) {
+            return x + 1;
+        }
+        int res = 0;
+        // same len
+        for(int i = len - 1, p = 1, s = 0; i >= 0; i--, p++) { // s for state, record the used number, p for processed number
+            int cur = nums[i];
+            int cnt = 0;
+            for(int j = cur - 1; j >= 0; j--) {
+                if(i == len - 1 && j == 0) {
+                    continue;
+                }
+                if(((s >> j) & 1) == 0) {
+                    cnt++;
+                }
+            }
+            int a = 10 - p; // exclude already used number, get valid number
+            int b = a - (len - p) + 1; // e.g. 7,6,5,4
+            res += b <= a ? cnt * f[b][a] : cnt;
+            if(((s >> cur) & 1) == 1) {
+                break;
+            }
+            s |= (1 << cur);
+            if(i == 0) {
+                res++;
+            }
+        }
+        // less len
+        res += 10;
+        for(int i = 2, last = 9; i < len; i++) {
+            int cur = last * (10 - i + 1);
+            res += cur;
+            last = cur;
+        }
+        return res;
+    }
+};
