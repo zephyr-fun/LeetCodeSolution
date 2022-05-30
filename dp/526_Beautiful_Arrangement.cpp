@@ -92,3 +92,36 @@ public:
         return dp[mask - 1];
     }
 };
+
+// 2022.05.30
+class Solution {
+public:
+    int getCnt(int state) {
+        int cnt = 0;
+        while(state != 0) {
+            int lowbit = state & (-state);
+            cnt++;
+            state -= lowbit;
+        }
+        return cnt;
+    }
+    int countArrangement(int n) {
+        //dp[j] with first i num, selecting state j, total plans
+        int mask = 1 << n;
+        vector<int> dp(mask, 0);
+        dp[0] = 1;
+        for(int state = 1; state < mask; state++) {
+            int cnt = getCnt(state);
+            for(int k = 1; k <= n; k++) {
+                if((state & (1 << (k - 1))) == 0) {
+                    continue;
+                }
+                if(cnt % k != 0 && k % cnt != 0) {
+                    continue;
+                }
+                dp[state] += dp[state & (~(1 << (k - 1)))];
+            }
+        }
+        return dp[mask - 1];
+    }
+};
