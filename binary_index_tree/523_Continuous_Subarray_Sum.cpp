@@ -48,3 +48,21 @@ public:
         return false;
     }
 };
+
+// 2022.05.31
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        unordered_set<int> set;
+        vector<int> prefix(nums.size() + 1, 0);
+        prefix[1] = nums[0];
+        for(int i = 2; i <= nums.size(); i++) {
+            prefix[i] = prefix[i - 1] + nums[i - 1];
+            set.insert(prefix[i - 2] % k);
+            if(set.count(prefix[i] % k)) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
