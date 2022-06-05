@@ -88,27 +88,7 @@ class NumArray {
     }
 };
 
-// huahua version
-struct SegmentTreeNode
-{
-    int start;
-    int end;
-    int sum; // can be max, min, abs
-    SegmentTreeNode* left;
-    SegmentTreeNode* right;
-};
-
-SegmentTreeNode* build(int start, int end, vector<int>& vals) {
-    if(start == end) {
-        return SegmentTreeNode(start, end, vals[start]);
-    }
-    mid = start + (end - start) / 2;
-    SegmentTreeNode* left = build(start, mid, vals);
-    SegmentTreeNode* right = build(mid, end, vals);
-    return SegmentTreeNode(start, end, left.sum + right.sum, left, right);
-}
-
-// templete
+// template
 class Node {
 public:
     Node* leftNode;
@@ -205,4 +185,63 @@ public:
         }
         return ans;
     }
+};
+
+// template
+class SegmentTree {
+public:
+    SegmentTree(vector<int>& arr, int start, int end, int node_idx): tree(2 * arr.size(), 0) {
+        build_tree(arr, start, end, node_idx); // node_idx = 1
+    }
+
+    void build_tree(vector<int>& arr, int start, int end, int node_idx) {
+        if(start == end) {
+            tree[node_idx] = arr[start];
+        }
+        else {
+            int left_node = 2 * node_idx;
+            int right_node = 2 * node_idx + 1;
+            int mid = start + (end - start) / 2;
+            build_tree(arr, start, mid, left_node);
+            build_tree(arr, mid + 1, end, right_node);
+            tree[node_idx] = tree[left_node] + tree[right_node];
+        }
+    }
+
+    int query(int start, int end, int left, int right, int node_idx) {
+        if(left > end || right < start) {
+            return 0;
+        }
+        else if(left <= start && right >= end) {
+            return tree[node_idx];
+        }
+        else {
+            int left_node = 2 * node_idx;
+            int right_node = 2 * node_idx + 1;
+            int mid = start + (end - start) / 2;
+            int left_sum = query(start, mid, left, right);
+            int right_sum = query(mid + 1, end, left, right);
+            return left_sum + right_sum;
+        }
+    }
+
+    void update(int start, int end, int node_idx, int update_idx, int val) {
+        if(start == end) {
+            tree[node_idx] = val;
+        }
+        else {
+            int left_node = 2 * node_idx;
+            int right_node = 2 * node_idx + 1;
+            int mid = start + (end - start) / 2;
+            if(update_idx > mid) {
+                update(mid + 1, end, right_node, update_idx, val);
+            }
+            else {
+                update(start, mid, node_idx, update_idx, val);
+            }
+            tree[node_idx] = tree[left_node] + tree[right_node];
+        }
+    }
+private:
+    vector<int> tree;
 };
