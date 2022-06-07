@@ -47,3 +47,26 @@ public:
  * NumArray* obj = new NumArray(nums);
  * int param_1 = obj->sumRange(left,right);
  */
+
+// 2022.06.07
+class NumArray {
+public:
+    NumArray(vector<int>& nums): sum_(nums.size() + 1, 0) { // n + 1 avoid overflow
+        int n = nums.size();
+        for(int i = 1; i <= n; i++) {
+            sum_[i] = sum_[i - 1] + nums[i - 1];
+        }
+    }
+    
+    int sumRange(int left, int right) {
+        return sum_[right + 1] - sum_[left];
+    }
+private:
+    vector<int> sum_;
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * int param_1 = obj->sumRange(left,right);
+ */
