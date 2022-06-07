@@ -57,3 +57,88 @@ public:
         return visit[n_ - 1][n_ - 1];
     }
 };
+
+// UnionFindSet
+class UnionFindSet {
+public:
+    UnionFindSet(int n): rank_(n + 1, 0), parent_(n + 1, 0) {
+        for(int i = 0; i < parent_.size(); i++) {
+            parent_[i] = i;
+        }
+    }
+
+    int Find(int u) {
+        if(u != parent_[u]) {
+            parent_[u] = Find(parent_[u]);
+        }
+        return parent_[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank_[pu] < rank_[pv]) {
+            parent_[pu] = pv;
+        }
+        else if(rank_[pu] > rank_[pv]) {
+            parent_[pv] = pu;
+        }
+        else {
+            parent_[pv] = pu;
+            rank_[pu]++;
+        }
+        return true;
+    }
+
+private:
+    vector<int> rank_;
+    vector<int> parent_;
+};
+class Solution {
+public:
+    int n;
+    int getIdx(int i, int j) {
+        return i * n + j;
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        n = grid.size();
+        UnionFindSet set(n * n);
+        vector<vector<int>> edge;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(j + 1 < n) {
+                    vector<int> temp;
+                    temp.emplace_back(getIdx(i, j));
+                    temp.emplace_back(getIdx(i, j + 1));
+                    temp.emplace_back(max(grid[i][j], grid[i][j + 1]));
+                    edge.emplace_back(temp);
+                }
+                if(i + 1 < n) {
+                    vector<int> temp;
+                    temp.emplace_back(getIdx(i, j));
+                    temp.emplace_back(getIdx(i + 1, j));
+                    temp.emplace_back(max(grid[i][j], grid[i + 1][j]));
+                    edge.emplace_back(temp);
+                }
+            }
+        }
+        sort(edge.begin(), edge.end(), [](vector<int>& a, vector<int>& b) {
+            return a[2] < b[2];
+        });
+        int start = getIdx(0, 0);
+        int end = getIdx(n - 1, n - 1);
+        for(auto ed : edge) {
+            int a = ed[0];
+            int b = ed[1];
+            int w = ed[2];
+            set.Union(a, b);
+            if(set.Find(start) == set.Find(end)) {
+                return w;
+            }
+        }
+        return 0;
+    }
+};
