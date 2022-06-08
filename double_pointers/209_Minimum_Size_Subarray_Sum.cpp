@@ -42,6 +42,7 @@ public:
 };
 
 // 2022.06.08
+// sliding window
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
@@ -61,6 +62,40 @@ public:
                 res = min(res, right - left);
             }
             
+        }
+        return res == 0x3f3f3f3f ? 0 : res;
+    }
+};
+
+// O(nlogn) binary search + prefixSum
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int res = 0x3f3f3f3f;
+        int n = nums.size();
+        vector<int> prefix(n + 1, 0);
+        for(int i = 1; i <= n; i++) {
+            prefix[i] = prefix[i - 1] + nums[i - 1];
+        }
+        for(int i = 0; i < n; i++) {
+            int prefixSum = prefix[i + 1];
+            if(prefixSum < target) {
+                continue;
+            }
+            int left = 0;
+            int right = i;
+            int pos = -1;
+            while(left <= right) {
+                int mid = left + (right - left) / 2;
+                if(prefixSum - prefix[mid] >= target) {
+                    pos = mid;
+                    left = mid + 1;
+                }
+                else {
+                    right = mid - 1;
+                }
+            }
+            res = min(res, i - pos + 1);
         }
         return res == 0x3f3f3f3f ? 0 : res;
     }
