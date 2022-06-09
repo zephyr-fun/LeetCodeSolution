@@ -65,3 +65,28 @@ public:
         return res;
     }
 };
+
+// 2022.06.09
+// diff
+class Solution {
+public:
+    vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
+        vector<int> diff(n, 0);
+        vector<int> res(n, 0);
+        for(auto booking : bookings) {
+            int left = booking[0] - 1;
+            int right = booking[1] - 1;
+            int delta = booking[2];
+            diff[left] += delta;
+            if(right + 1 < n) {
+                diff[right + 1] -= delta;
+            }
+        }
+        int cur = 0;
+        for(int i = 0; i < n; i++) {
+            cur += diff[i];
+            res[i] = cur;
+        }
+        return res;
+    }
+};
