@@ -19,3 +19,20 @@ public:
         return res;
     }
 };
+
+// dp
+class Solution {
+public:
+    int minFlipsMonoIncr(string s) {
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(2, 0));
+        dp[0][0] = s[0] == '0' ? 0 : 1;
+        dp[0][1] = s[0] == '0' ? 1 : 0;
+        for(int i = 1; i < n; i++) {
+            char c = s[i];
+            dp[i][0] = dp[i - 1][0] + (c == '0' ? 0 : 1);
+            dp[i][1] = min(dp[i - 1][0], dp[i - 1][1]) + (c == '1' ? 0 : 1);
+        }
+        return min(dp[n - 1][0], dp[n - 1][1]);
+    }
+};
