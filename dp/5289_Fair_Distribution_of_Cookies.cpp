@@ -28,19 +28,18 @@ public:
 };
 
 // dp
-// https://leetcode.cn/problems/find-minimum-time-to-finish-all-jobs/solution/zhuang-ya-dp-jing-dian-tao-lu-xin-shou-j-3w7r/
 class Solution {
 public:
-    int minimumTimeRequired(vector<int>& jobs, int k) {
-        int n = jobs.size();
+    int distributeCookies(vector<int>& cookies, int k) {
+        int n = cookies.size();
         vector<int> tot(1 << n, 0);
         for(int i = 1; i < (1 << n); i++) {
             for(int j = 0; j < n; j++) {
-                if((i & (1 << j)) == 0) { // note the priority of & opt
+                if((i & (1 << j)) == 0) {
                     continue;
                 }
                 int left = i - (1 << j);
-                tot[i] = tot[left] + jobs[j];
+                tot[i] = tot[left] + cookies[j];
                 break;
             }
         }
