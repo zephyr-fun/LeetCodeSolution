@@ -186,17 +186,25 @@ private:
 };
 class NumArray {
 public:
-    NumArray(vector<int>& nums) {
-
+    NumArray(vector<int>& nums): tree(nums.size()) {
+        int n = nums.size();
+        nums_ = nums;
+        for(int i = 1; i <= n; i++) {
+            tree.update(i, nums[i - 1]);
+        }
     }
     
     void update(int index, int val) {
-
+        tree.update(index + 1, val - nums_[index]);
+        nums_[index] = val;
     }
     
     int sumRange(int left, int right) {
-
+        return tree.query(right + 1) - tree.query(left);
     }
+private:
+    vector<int> nums_;
+    FenWickTree tree;
 };
 
 /**
