@@ -157,3 +157,51 @@ private:
  * obj->update(index,val);
  * int param_2 = obj->sumRange(left,right);
  */
+
+// 2022.06.13
+class FenWickTree {
+public:
+    FenWickTree(int n): sum_(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sum_.size()) {
+            sum_[idx] += delta;
+            idx += lowbit(idx);
+        }
+    }
+
+    int query(int idx) {
+        int sum = 0;
+        while(idx > 0) {
+            sum += sum_[idx];
+            idx -= lowbit(idx);
+        }
+        return sum;
+    }
+private:
+    vector<int> sum_;
+    int lowbit(int x) {
+        return x & (-x);
+    }
+};
+class NumArray {
+public:
+    NumArray(vector<int>& nums) {
+
+    }
+    
+    void update(int index, int val) {
+
+    }
+    
+    int sumRange(int left, int right) {
+
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
