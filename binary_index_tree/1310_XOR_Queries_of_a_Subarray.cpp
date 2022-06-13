@@ -83,3 +83,23 @@ public:
         return res;
     }
 };
+
+// 2022.06.13
+class Solution {
+public:
+    vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+        int n = arr.size();
+        int m = queries.size();
+        vector<int> prefix(n + 1, 0);
+        for(int i = 1; i <= n; i++) {
+            prefix[i] = prefix[i - 1] ^ arr[i - 1];
+        }
+        vector<int> res;
+        for(auto& query : queries) {
+            int left = query[0];
+            int right = query[1];
+            res.emplace_back(prefix[right + 1] ^ prefix[left]);
+        }
+        return res;
+    }
+};
