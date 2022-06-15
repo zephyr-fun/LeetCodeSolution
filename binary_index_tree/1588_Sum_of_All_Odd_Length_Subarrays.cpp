@@ -64,3 +64,22 @@ public:
         return res;
     }
 };
+
+// 2022.06.15
+class Solution {
+public:
+    int sumOddLengthSubarrays(vector<int>& arr) {
+        int n = arr.size();
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            int left = i + 1;
+            int right = n - i;
+            int leftEven = (left + 1) / 2;
+            int rightEven = (right + 1) / 2;
+            int leftOdd = left / 2;
+            int rightOdd = right / 2;
+            res += (leftEven * rightEven + leftOdd * rightOdd) * arr[i];
+        }
+        return res;
+    }
+};
