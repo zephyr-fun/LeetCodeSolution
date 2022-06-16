@@ -27,3 +27,39 @@ public:
         return dp[n][m];
     }
 };
+
+// 2022.06.16
+// The above version writes the boundary processing into the main loop, 
+// which is a bit difficult to understand, 
+// and the following version is the code to break out the processing
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int n = s.size();
+        int m = p.size();
+        vector<vector<bool>> dp(n + 1, vector<bool>(m + 1, false));
+        dp[0][0] = true;
+        s = " " + s;
+        p = " " + p;
+        // init
+        for(int j = 1; j <= m; j++) {
+            if(p[j] == '*') {
+                dp[0][j] = true;
+            }
+            else {
+                break;
+            }
+        }
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+                if(p[j] == '*') {
+                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+                }
+                else {
+                    dp[i][j] = dp[i - 1][j - 1] && (s[i] == p[j] || p[j] == '?');
+                }
+            }
+        }
+        return dp[n][m];
+    }
+};
