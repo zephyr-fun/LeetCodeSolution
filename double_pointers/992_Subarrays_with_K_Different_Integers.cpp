@@ -31,3 +31,36 @@ public:
         return res;
     }
 };
+
+// 2022.06.17
+// at most - at most = exactly
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        return atMostKDistinct(nums, k) - atMostKDistinct(nums, k - 1);
+    }
+    int atMostKDistinct(vector<int>& nums, int k) {
+        int n = nums.size();
+        int cnt = 0;
+        int left = 0;
+        int right = 0;
+        int res = 0;
+        vector<int> freq(n + 1, 0);
+        while(right < n) {
+            if(freq[nums[right]] == 0) {
+                cnt++;
+            }
+            freq[nums[right]]++;
+            while(left <= right && cnt > k) {
+                freq[nums[left]]--;
+                if(freq[nums[left]] == 0) {
+                    cnt--;
+                }
+                left++;
+            }
+            res += right - left + 1;
+            right++;
+        }
+        return res;
+    }
+};
