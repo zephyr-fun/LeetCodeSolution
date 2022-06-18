@@ -165,3 +165,84 @@ public:
         return dist[m * n - 1];
     }
 };
+
+// 2022.06.18
+class UnionFindSet {
+public:
+    UnionFindSet(int n): parent(n + 1, 0), rank(n + 1, 0) {
+        for(int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+    int Find(int u) {
+        if(u != parent[u]) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        }
+        else if(rank[pv] < rank[pv]) {
+            parent[pv] = pu;
+        }
+        else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+        return true;
+    }
+private:
+    vector<int> parent;
+    vector<int> rank;
+};
+class Solution {
+public:
+    int n;
+    int m;
+    int getIdx(int i, int j) {
+        return i * m + j;
+    }
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        n = heights.size();
+        m = heights[0].size();
+        vector<vector<int>> edges;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i + 1 < n) {
+                    vector<int> temp;
+                    temp.emplace_back(getIdx(i, j));
+                    temp.emplace_back(getIdx(i + 1, j));
+                    temp.emplace_back(abs(heights[i][j] - heights[i + 1][j]));
+                    edges.emplace_back(temp);
+                }
+                if(j + 1 < m) {
+                    vector<int> temp;
+                    temp.emplace_back(getIdx(i, j));
+                    temp.emplace_back(getIdx(i, j + 1));
+                    temp.emplace_back(abs(heights[i][j] - heights[i][j + 1]));
+                    edges.emplace_back(temp);
+                }
+            }
+        }
+        sort(edges.begin(), edges.end(), [](vector<int>& a, vector<int>& b) {
+            return a[2] < b[2];
+        });
+        UnionFindSet set(n * m);
+        for(auto& edge : edges) {
+            set.Union(edge[0], edge[1]);
+            int pu = set.Find(0);
+            int pv = set.Find(n * m - 1);
+            if(pu == pv) {
+                return edge[2];
+            }
+        }
+        return 0;
+    }
+};
