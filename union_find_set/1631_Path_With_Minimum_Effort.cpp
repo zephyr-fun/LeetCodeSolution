@@ -246,3 +246,44 @@ public:
         return 0;
     }
 };
+
+// binary search + path
+class Solution {
+private:
+    static constexpr int dirs[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int n = heights.size();
+        int m = heights[0].size();
+        int left = 0;
+        int right = 999999;
+        int res = 0;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            vector<bool> seen(n * m, false);
+            queue<pair<int, int>> que;
+            que.emplace(0, 0);
+            seen[0] = true;
+            while(!que.empty()) {
+                auto [x, y] = que.front();
+                que.pop();
+                for(int i = 0; i < 4; i++) {
+                    int nx = x + dirs[i][0];
+                    int ny = y + dirs[i][1];
+                    if(nx < n && nx >= 0 && ny < m && ny >= 0 && !seen[nx * m + ny] && abs(heights[x][y] - heights[nx][ny]) <= mid) {
+                        que.emplace(nx, ny);
+                        seen[nx * m + ny] = true;
+                    }
+                }
+            }
+            if(seen[n * m - 1]) {
+                res = mid;
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
+};
