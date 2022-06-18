@@ -216,6 +216,7 @@ public:
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < m; j++) {
                 if(i + 1 < n) {
+                    // vector<int> temp = {getIdx(i, j), getIdx(i + 1, j), abs(heights[i][j] - heights[i + 1][j])};
                     vector<int> temp;
                     temp.emplace_back(getIdx(i, j));
                     temp.emplace_back(getIdx(i + 1, j));
@@ -223,6 +224,7 @@ public:
                     edges.emplace_back(temp);
                 }
                 if(j + 1 < m) {
+                    // vector<int> temp = {getIdx(i, j), getIdx(i, j + 1), abs(heights[i][j] - heights[i][j + 1])};
                     vector<int> temp;
                     temp.emplace_back(getIdx(i, j));
                     temp.emplace_back(getIdx(i, j + 1));
