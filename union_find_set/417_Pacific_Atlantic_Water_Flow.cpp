@@ -247,3 +247,64 @@ public:
         }
     }
 };
+
+// 2022.06.18
+// bfs
+class Solution {
+private:
+    static constexpr int dirs[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+public:
+    int n;
+    int m;
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        n = heights.size();
+        m = heights[0].size();
+        vector<bool> seenP(n * m, false);
+        vector<bool> seenA(n * m, false);
+        queue<pair<int, int>> queP;
+        queue<pair<int, int>> queA;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i == 0 || j == 0) {
+                    queP.emplace(i, j);
+                    seenP[i * m + j] = true;
+                }
+                if(i == n - 1 || j == m - 1) {
+                    queA.emplace(i, j);
+                    seenA[i * m + j] = true;
+                }
+            }
+        }
+        fill(seenP, queP, heights);
+        fill(seenA, queA, heights);
+        vector<vector<int>> res;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(seenA[i * m + j] && seenP[i * m + j]) {
+                    vector<int> temp;
+                    temp.emplace_back(i);
+                    temp.emplace_back(j);
+                    // vector<int> temp = {i, j};
+                    res.emplace_back(temp);
+                }
+            }
+        }
+        return res;
+    }
+    void fill(vector<bool>& seen, queue<pair<int, int>>& que, vector<vector<int>>& heights) {
+        while(!que.empty()) {
+            auto [x, y] = que.front();
+            que.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < n && nx >= 0 && ny < m && ny >= 0 && !seen[nx * m + ny] && heights[nx][ny] >= heights[x][y]) {
+                    que.emplace(nx, ny);
+                    seen[nx * m + ny] = true;
+                }
+            }
+        }
+    }
+};
+
+// UnionFindSet
