@@ -308,3 +308,89 @@ public:
 };
 
 // UnionFindSet
+// actually no need
+class UnionFindSet {
+public:
+    UnionFindSet(int n): parent(n + 7, 0), rank(n + 7, 0) {
+        for(int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+
+    int Find(int u) {
+        if(u != parent[u]) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        }
+        else if(rank[pv] < rank[pu]) {
+            parent[pv] = pu;
+        }
+        else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+        return true;
+    }
+private:
+    vector<int> parent;
+    vector<int> rank;
+};
+class Solution {
+private:
+    static constexpr int dirs[4][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+public:
+    int n;
+    int m;
+    vector<vector<int>> heights_;
+    void dfs(UnionFindSet& set, vector<vector<bool>>& res, int x, int y) {
+        set.Union(x * m + y, n * m);
+        res[x][y] = true;
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dirs[i][0];
+            int ny = y + dirs[i][1];
+            if(nx < n && nx >= 0 && ny < m && ny >= 0 && !res[nx][ny] && heights_[x][y] <= heights_[nx][ny]) {
+                dfs(set, res, nx, ny);
+            }
+        }
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        heights_ = heights;
+        n = heights.size();
+        m = heights[0].size();
+        UnionFindSet setP(n * m);
+        UnionFindSet setA(n * m);
+        vector<vector<bool>> res1(n, vector<bool>(m, false));
+        vector<vector<bool>> res2(n, vector<bool>(m, false));
+        vector<vector<int>> res;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if((i == 0 || j == 0) && !res1[i][j]) {
+                    dfs(setP, res1, i, j);
+                }
+                if((i == n - 1 || j == m - 1) && !res2[i][j]) {
+                    dfs(setA, res2, i, j);
+                }
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(setP.Find(i * m + j) == setP.Find(n * m) && setA.Find(i * m + j) == setA.Find(n * m)) {
+                    vector<int> temp = {i, j};
+                    res.emplace_back(temp);
+                }
+            }
+        }
+        return res;
+    }
+};
