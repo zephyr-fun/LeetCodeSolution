@@ -10,10 +10,11 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "D:/MinGW64/mingw64/bin/g++.exe",
-            "cStandard": "gnu17",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "gcc-x64"
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "D:\\mingw64\\bin\\gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
         }
     ],
     "version": 4
