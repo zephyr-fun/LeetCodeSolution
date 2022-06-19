@@ -106,3 +106,49 @@ public:
         return {val2, val1};
     }
 };
+
+// 2022.06.19
+// TLE
+class Solution {
+public:
+    int rob(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        if(root->left == nullptr && root->right == nullptr) {
+            return root->val;
+        }
+        int val1 = root->val;
+        if(root->left) {
+            val1 += rob(root->left->left) + rob(root->left->right);
+        }
+        if(root->right) {
+            val1 += rob(root->right->left) + rob(root->right->right);
+        }
+        int val2 = rob(root->left) + rob(root->right);
+        return max(val1, val2);
+    }
+};
+
+// Note where the process is repeated in the above calculation
+// gf -> son -> "gs"
+// son -> "gs" ->ggs
+
+// dp
+class Solution {
+public:
+    vector<int> robTree(TreeNode* cur) {
+        if(cur == nullptr) {
+            return {0, 0};
+        }
+        vector<int> left = robTree(cur->left);
+        vector<int> right = robTree(cur->right);
+        int val1 = max(left[0], left[1]) + max(right[0], right[1]);
+        int val2 = cur->val + left[0] + right[0];
+        return {val1, val2};
+    }
+    int rob(TreeNode* root) {
+        vector<int> res = robTree(root);
+        return max(res[0], res[1]);
+    }
+};
