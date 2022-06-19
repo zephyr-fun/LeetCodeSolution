@@ -54,3 +54,24 @@ private:
         return x & (-x);
     }
 };
+
+class Solution {
+public:
+    int numTeams(vector<int>& rating) {
+        int n = rating.size();
+        int N = 1e5 + 7;
+        FenwickTree tree1(N);
+        FenwickTree tree2(N);
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            tree1.update(rating[i], 1);
+        }
+        for(int i = 0; i < n; i++) {
+            tree1.update(rating[i], -1);
+            res += tree2.query(rating[i] - 1) * (tree1.query(N - 1) - tree1.query(rating[i]));
+            res += (tree2.query(N - 1) - tree2.query(rating[i])) * tree1.query(rating[i] - 1);
+            tree2.update(rating[i], 1);
+        }
+        return res;
+    }
+};
