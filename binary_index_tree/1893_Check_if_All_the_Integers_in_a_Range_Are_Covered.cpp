@@ -165,7 +165,7 @@ public:
         sort(ranges.begin(), ranges.end(), [](vector<int>& a, vector<int>& b) {
             return a[1] < b[1];
         });
-        unordered_set<int> set;
+        unordered_set<int> set; // drop repeat, avoid range overlap
         FenwickTree diffTree(max(ranges[ranges.size() - 1][1], right) + 1);
         for(int i = 0; i < ranges.size(); i++) {
             vector<int> range = ranges[i];
@@ -178,6 +178,30 @@ public:
         }
         if((diffTree.query(right) - diffTree.query(left - 1)) != (right - left + 1)) {
             return false;
+        }
+        return true;
+    }
+};
+
+// 2022.06.20
+// diff array
+class Solution {
+public:
+    bool isCovered(vector<vector<int>>& ranges, int left, int right) {
+        vector<int> diff(57, 0);
+        for(auto range : ranges) {
+            diff[range[0]]++;
+            diff[range[1] + 1]--;
+        }
+        int cur = 0;
+        for(int i = 0; i < left; i++) {
+            cur += diff[i];
+        }
+        for(int i = left; i <= right; i++) {
+            cur += diff[i];
+            if(cur <= 0) {
+                return false;
+            }
         }
         return true;
     }
