@@ -49,3 +49,22 @@ public:
         return res;
     }
 };
+
+// 2022.06.20
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> res(n, -1);
+        stack<int> st;
+        for(int i = 0; i < 2 * n; i++) {
+            while(!st.empty() && nums[st.top() % n] < nums[i % n]) {
+                int temp = st.top() % n;
+                st.pop();
+                res[temp] = nums[i % n];
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
