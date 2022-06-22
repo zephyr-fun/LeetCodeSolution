@@ -117,3 +117,25 @@ public:
         return value;
     }
 };
+
+// 2022.06.22
+class Solution {
+public:
+    int layer = -1;
+    int res = -1;
+    void traversal(TreeNode* root, int cur) {
+        if(root == nullptr) {
+            return ;
+        }
+        traversal(root->left, cur + 1);
+        if(cur > layer) {
+            layer = cur;
+            res = root->val;
+        }
+        traversal(root->right, cur + 1);
+    }
+    int findBottomLeftValue(TreeNode* root) {
+        traversal(root, 0);
+        return res;
+    }
+};
