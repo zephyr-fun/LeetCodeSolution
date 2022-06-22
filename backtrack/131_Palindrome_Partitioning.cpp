@@ -104,3 +104,43 @@ public:
 };
 
 // dp
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        int n = s.size();
+        // use dp to "preprocess" if(s[i] to s[j]) is a palindrome
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        for(int j = 0; j < n; j++) {
+            for(int i = j; i >= 0; i--) {
+                if(i == j) {
+                    dp[i][j] = true;
+                }
+                else if(j - i + 1 == 2) {
+                    dp[i][j] = s[i] == s[j];
+                }
+                else {
+                    dp[i][j] = (s[i] == s[j]) && dp[i + 1][j - 1];
+                }
+            }
+        }
+        vector<vector<string>> res;
+        vector<string> path;
+        dfs(s, 0, res, path, dp);
+        return res;
+
+    }
+    void dfs(string& s, int startIndex, vector<vector<string>>& res, vector<string>& path, vector<vector<bool>>& dp) {
+        int n = s.size();
+        if(startIndex == n) {
+            res.emplace_back(path);
+            return;
+        }
+        for(int i = startIndex; i < n; i++) {
+            if(dp[startIndex][i]) {
+                path.emplace_back(s.substr(startIndex, i - startIndex + 1));
+                dfs(s, i + 1, res, path, dp);
+                path.pop_back();
+            }
+        }
+    }
+};
