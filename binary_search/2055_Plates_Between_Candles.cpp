@@ -94,3 +94,38 @@ public:
         return res;
     }
 };
+
+// 2022.06.21
+class Solution {
+public:
+    vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
+        int n = s.size();
+        int m = queries.size();
+        vector<int> left(n, -1);
+        vector<int> right(n, -1);
+        vector<int> sum(n + 1, 0);
+        vector<int> res(m, 0);
+        int p = -1;
+        int q = -1;
+        for(int i = 0, j = n - 1; i < n; i++, j--) {
+            if(s[i] == '|') {
+                p = i;
+            }
+            if(s[j] == '|') {
+                q = j;
+            }
+            left[i] = p;
+            right[j] = q;
+            sum[i + 1] = sum[i] + (s[i] == '*' ? 1 : 0);
+            // cout << "i" << left[i] << "j" << right[j] << "sum" << sum[i + 1] << endl;
+        }
+        for(int i = 0; i < m; i++) {
+            int leftBound = right[queries[i][0]];
+            int rightBound = left[queries[i][1]];
+            if(leftBound != -1 && leftBound < rightBound) {
+                res[i] = sum[rightBound + 1] - sum[leftBound];
+            }
+        }
+        return res;
+    }
+};
