@@ -68,3 +68,39 @@ public:
         return res;
     }
 };
+
+// 2022.06.22
+// backtracking
+class Solution {
+public:
+    vector<vector<string>> res;
+    vector<string> path;
+    bool palindrome(string& s, int start, int end) {
+        for(int i = start, j = end; i <= j; i++, j--) {
+            if(s[i] != s[j]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    void backtracking(string& s, int startIndex) {
+        if(startIndex >= s.size()) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = startIndex; i < s.size(); i++) {
+            if(palindrome(s, startIndex, i)) {
+                string temp = s.substr(startIndex, i - startIndex + 1);
+                path.emplace_back(temp);
+                backtracking(s, i + 1);
+                path.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        backtracking(s, 0);
+        return res;
+    }
+};
+
+// dp
