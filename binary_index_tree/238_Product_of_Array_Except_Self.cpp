@@ -21,3 +21,24 @@ public:
         return res;
     }
 };
+
+// 2022.06.24
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> prefix(n + 1, 0);
+        vector<int> surfix(n + 1, 0);
+        prefix[0] = 1;
+        surfix[n] = 1;
+        for(int i = 1, j = n - 1; i <= n; i++, j--) {
+            prefix[i] = prefix[i - 1] * nums[i - 1];
+            surfix[j] = surfix[j + 1] * nums[j];
+        }
+        vector<int> res(n, 0);
+        for(int i = 0; i < n; i++) {
+            res[i] = prefix[i] * surfix[i + 1];
+        }
+        return res;
+    }
+};
