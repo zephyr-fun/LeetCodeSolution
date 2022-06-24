@@ -100,3 +100,61 @@ public:
         return res == 0x3f3f3f3f ? 0 : res;
     }
 };
+
+// 2022.06.24
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int len = 0x3f3f3f3f;
+        int left = 0;
+        int right = 0;
+        int cur = 0;
+        while(right < n) {
+            cur += nums[right];
+            right++;
+            while(cur - nums[left] >= target) {
+                cur -= nums[left];
+                left++;
+            }
+            if(cur >= target) {
+                len = min(len, right - left);
+            }
+        }
+        return len == 0x3f3f3f3f ? 0 : len;
+    }
+};
+
+// prefixSum + binary search
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int res = 0x3f3f3f3f;
+        vector<int> sum(n + 1, 0);
+        for(int i = 1; i <= n; i++) {
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        for(int i = 0; i < n; i++) {
+            int preSum = sum[i + 1];
+            if(preSum < target) {
+                continue;
+            }
+            int left = 0;
+            int right = i;
+            int pos = -1;
+            while(left <= right) {
+                int mid = left + (right - left) / 2;
+                if(preSum - sum[mid] >= target) {
+                    pos = mid;
+                    left = mid + 1;
+                }
+                else {
+                    right = mid - 1;
+                }
+            }
+            res = min(res, i + 1 - pos);
+        }
+        return res == 0x3f3f3f3f ? 0 : res;
+    }
+};
