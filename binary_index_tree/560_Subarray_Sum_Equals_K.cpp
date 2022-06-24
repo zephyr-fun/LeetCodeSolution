@@ -49,3 +49,24 @@ public:
         return res;
     }
 };
+
+// 2022.06.24
+// hash + preSum
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        unordered_map<int, int> map;
+        vector<int> preSum(n + 1, 0);
+        map[preSum[0]]++;
+        int res = 0;
+        for(int i = 1; i <= n; i++) {
+            preSum[i] = preSum[i - 1] + nums[i - 1];
+            if(map.find(preSum[i] - k) != map.end()) {
+                res += map[preSum[i] - k];
+            }
+            map[preSum[i]]++;
+        }
+        return res;
+    }
+};
