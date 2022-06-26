@@ -131,3 +131,31 @@ public:
  * MyCalendarThree* obj = new MyCalendarThree();
  * int param_1 = obj->book(start,end);
  */
+
+// 2022.06.26
+// diff array works
+class MyCalendarThree {
+public:
+    map<int, int> map;
+    MyCalendarThree() {
+
+    }
+    
+    int book(int start, int end) {
+        map[start]++;
+        map[end]--;
+        int maxVal = -0x3f3f3f3f;
+        int sum = 0;
+        for(auto [k, v] : map) {
+            sum += v;
+            maxVal = max(maxVal, sum);
+        }
+        return maxVal;
+    }
+};
+
+/**
+ * Your MyCalendarThree object will be instantiated and called as such:
+ * MyCalendarThree* obj = new MyCalendarThree();
+ * int param_1 = obj->book(start,end);
+ */
