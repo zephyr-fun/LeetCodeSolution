@@ -34,3 +34,19 @@ public:
         return res;
     }
 };
+
+// 2022.06.26
+// O(n) dp
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int dp = 0;
+        int n = nums.size();
+        int res = -0x3f3f3f3f;
+        for(int i = 0; i < n; i++) {
+            dp = max(dp, 0) + nums[i];
+            res = max(res, dp);
+        }
+        return res;
+    }
+};
