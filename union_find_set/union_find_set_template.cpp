@@ -23,7 +23,7 @@ public:
         if(ranks_[pu] < ranks_[pv]) {
             parent_[pu] = pv;
         }
-        else if(ranks_[pu] > ranks[pv]) {
+        else if(ranks_[pu] > ranks_[pv]) {
             parent_[pv] = pu;
         }
         else {
