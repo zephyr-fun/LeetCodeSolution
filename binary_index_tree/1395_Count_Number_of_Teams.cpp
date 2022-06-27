@@ -75,3 +75,57 @@ public:
         return res;
     }
 };
+
+// 2022.06.27
+// BIT + discretization
+class FenwickTree {
+public:
+    FenwickTree (int n): sum_(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sum_.size()) {
+            sum_[idx] += delta;
+            idx += lowbit(idx);
+        }
+    }
+
+    int query(int idx) {
+        int sum = 0;
+        while(idx > 0) {
+            sum += sum_[idx];
+            idx -= lowbit(idx);
+        }
+        return sum;
+    }
+private:
+    vector<int> sum_;
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+};
+class Solution {
+public:
+    int numTeams(vector<int>& rating) {
+        int n = rating.size();
+        set<int> sorted(rating.begin(), rating.end());
+        unordered_map<int, int> map;
+        int idx = 0;
+        for(auto it : sorted) {
+            idx++;
+            map[it] = idx;
+        }
+        FenwickTree left(n);
+        FenwickTree right(n);
+        for(int i = 0; i < n; i++) {
+            right.update(map[rating[i]], 1);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            right.update(map[rating[i]], -1);
+            res += left.query(map[rating[i]] - 1) * (right.query(n) - right.query(map[rating[i]]));
+            res += (left.query(n) - left.query(map[rating[i]])) * right.query(map[rating[i]] - 1);
+            left.update(map[rating[i]], 1);
+        }
+        return res;
+    }
+};
