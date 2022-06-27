@@ -46,3 +46,45 @@ public:
         return res;
     }
 };
+
+// 2022.06.27
+// FenwickTree + Discretization
+class FenwickTree {
+public:
+    FenwickTree(int n): sum_(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sum_.size()) {
+            sum_[idx] += delta;
+            idx += lowbit(idx);
+        }
+    }
+
+    int query(int idx) {
+        int sum = 0;
+        while(idx > 0) {
+            sum += sum_[idx];
+            idx -= lowbit(idx);
+        }
+        return sum;
+    }
+private:
+    vector<int> sum_;
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+};
+class Solution {
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        int mod = 1e4 + 7;
+        int n = nums.size();
+        FenwickTree tree(1e5);
+        vector<int> res(n, 0);
+        for(int i = n - 1; i >= 0; i--) {
+            res[i] = tree.query(nums[i] + mod);
+            tree.update(nums[i] + mod + 1, 1);
+        }
+        return res;
+    }
+};
