@@ -85,3 +85,35 @@ public:
         return "";
     }
 };
+
+// 2022.06.27
+// binary search without string hash TLE
+class Solution {
+public:
+    string longestDupSubstring(string s) {
+        int n = s.size();
+        int left = 0;
+        int right = n;
+        string res = "";
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            unordered_map<string, int> map;
+            for(int i = 0; i <= s.size() - mid; i++) {
+                string temp = s.substr(i, mid);
+                map[temp]++;
+                if(map[temp] >= 2) {
+                    res = temp;
+                }
+            }
+            if(res.size() < mid) {
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
+};
+
+// string hash
