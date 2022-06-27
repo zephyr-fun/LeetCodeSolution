@@ -17,3 +17,25 @@ public:
         return res;
     }
 };
+
+// 2022.06.27
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<string, int> map;
+        vector<string> res;
+        if(s.size() < 10) {
+            return res;
+        }
+        for(int i = 0; i <= s.size() - 10; i++) {
+            string temp = s.substr(i, 10);
+            map[temp]++;
+        }
+        for(auto [k, v] : map) {
+            if(v > 1) {
+                res.emplace_back(k);
+            }
+        }
+        return res;
+    }
+};
