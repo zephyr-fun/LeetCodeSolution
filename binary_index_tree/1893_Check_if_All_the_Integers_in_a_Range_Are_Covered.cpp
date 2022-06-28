@@ -206,3 +206,28 @@ public:
         return true;
     }
 };
+
+// 2022.06.28
+// cover = diff
+class Solution {
+public:
+    bool isCovered(vector<vector<int>>& ranges, int left, int right) {
+        int cover[57];
+        memset(cover, 0, sizeof(cover));
+        for(auto range : ranges) {
+            cover[range[0]]++;
+            cover[range[1] + 1]--;
+        }
+        int cur = 0;
+        for(int i = 1; i < left; i++) {
+            cur += cover[i];
+        }
+        for(int i = left; i <= right; i++) {
+            cur += cover[i];
+            if(cur == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
