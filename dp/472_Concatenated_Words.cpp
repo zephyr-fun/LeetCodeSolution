@@ -158,3 +158,34 @@ public:
         return false;
     }
 };
+
+// 2022.06.28
+// dfs
+class Solution {
+public:
+    vector<string> res;
+    unordered_set<string> set;
+    unordered_set<string> resSet;
+    void dfs(string& word, int idx, int cnt) {
+        if(idx == word.size() && cnt != 1) {
+            resSet.insert(word);
+        }
+        for(int i = idx; i < word.size(); i++) {
+            if(set.count(word.substr(idx, i - idx + 1))) {
+                dfs(word, i + 1, cnt + 1);
+            }
+        }
+    }
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        for(auto word : words) {
+            set.insert(word);
+        }
+        for(auto word : words) {
+            dfs(word, 0, 0);
+        }
+        for(auto rs : resSet) {
+            res.emplace_back(rs);
+        }
+        return res;
+    }
+};
