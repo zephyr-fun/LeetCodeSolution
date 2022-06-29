@@ -115,3 +115,41 @@ public:
         }
     }
 };
+
+// 2022.06.29
+class Solution {
+public:
+    const string lettermap[10] = {
+        "",
+        "",
+        "abc",
+        "def",
+        "ghi",
+        "jkl",
+        "mno",
+        "pqrs",
+        "tuv",
+        "wxyz"
+    };
+    void dfs(string& digits, int cur, string& path, vector<string>& res) {
+        if(path.size() == digits.size()) {
+            res.emplace_back(path);
+            return ;
+        }
+        int temp = digits[cur] - '0';
+        for(int i = 0; i < lettermap[temp].size(); i++) {
+            path += lettermap[temp][i];
+            dfs(digits, cur + 1, path, res);
+            path.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        vector<string> res;
+        if(digits.size() == 0) {
+            return res;
+        }
+        string path = "";
+        dfs(digits, 0, path, res);
+        return res;
+    }
+};
