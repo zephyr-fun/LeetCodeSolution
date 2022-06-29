@@ -189,3 +189,137 @@ public:
         }
     }
 };
+
+// 2022.06.29
+// reason why we use set is as following
+// ()()(()
+// delete 4/5 results in the same string ()()()
+class Solution {
+public:
+    unordered_set<string> set;
+    string s;
+    int maxVal;
+    int n;
+    int len;
+    vector<string> removeInvalidParentheses(string s_) {
+        s = s_;
+        n = s.size();
+        int l = 0;
+        int r = 0;
+        int left = 0;
+        int right = 0;
+        for(int i = 0; i < n; i++) {
+            if(s[i] == '(') {
+                l++;
+                left++;
+            }
+            else if(s[i] == ')'){
+                if(l > 0) {
+                    l--;
+                }
+                else {
+                    r++;
+                }
+                right++;
+            }
+        }
+        len = n - l - r;
+        maxVal = min(left, right);
+        dfs(0, "", l, r, 0);
+        return vector<string>(set.begin(), set.end());
+    }
+    void dfs(int cur, string path, int l, int r, int score) {
+        if(l < 0 || r < 0 || score < 0 || score > maxVal) {
+            return ;
+        }
+        if(l == 0 && r == 0) {
+            if(path.size() == len) {
+                set.insert(path);
+                return ;
+            }
+        }
+        if(cur == n) {
+            return ;
+        }
+        if(s[cur] == '(') {
+            dfs(cur + 1, path + '(', l, r, score + 1);
+            dfs(cur + 1, path, l - 1, r, score);
+        }
+        else if(s[cur] == ')') {
+            dfs(cur + 1, path + ')', l, r, score - 1);
+            dfs(cur + 1, path, l, r - 1, score);
+        }
+        else {
+            dfs(cur + 1, path + s[cur], l, r, score);
+        }
+    }
+};
+
+// yxc version
+class Solution {
+public:
+    string s;
+    vector<string> res;
+    vector<string> removeInvalidParentheses(string s_) {
+        s = s_;
+        int n = s.size();
+        int l = 0;
+        int r = 0;
+        for(int i = 0; i < n; i++) {
+            if(s[i] == '(') {
+                l++;
+            }
+            else if(s[i] == ')'){
+                if(l > 0) {
+                    l--;
+                }
+                else {
+                    r++;
+                }
+            }
+        }
+        dfs(0, "", 0, l, r);
+        return res;
+    }
+    void dfs(int cur, string path, int cnt, int l, int r) { // cnt means left - right, which can't be negative in a legal prefix
+        if(cur == s.size()) {
+            if(!cnt) {
+                res.emplace_back(path);
+            }
+            return ;
+        }
+        if(s[cur] != '(' && s[cur] != ')') {
+            dfs(cur + 1, path + s[cur], cnt, l, r);
+        }
+        else if(s[cur] == '(') {
+            int k = cur;
+            while(k < s.size() && s[k] == '(') {
+                k++;
+            }
+            l -= k - cur;
+            for(int i = k - cur; i >= 0; i--) {
+                if(l >= 0) { // l ensures that no more than 'at least num' left brackets are removed
+                    dfs(k, path, cnt, l, r);
+                }
+                path += '(';
+                l++;
+                cnt++;
+            }
+        }
+        else if(s[cur] == ')'){
+            int k = cur;
+            while(k < s.size() && s[k] == ')') {
+                k++;
+            }
+            r -= k - cur;
+            for(int i = k - cur; i >= 0; i--) {
+                if(cnt >= 0 && r >= 0) { // r ensures that no more than 'at least num' left brackets are removed
+                    dfs(k, path, cnt, l, r);
+                }
+                path += ')';
+                r++;
+                cnt--;
+            }
+        }
+    }
+};
