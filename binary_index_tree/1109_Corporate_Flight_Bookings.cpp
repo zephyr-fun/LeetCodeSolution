@@ -90,3 +90,24 @@ public:
         return res;
     }
 };
+
+// 2022.06.29
+// diff arrays
+class Solution {
+public:
+    vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
+        vector<int> diff(n + 1, 0);
+        vector<int> res(n, 0);
+        int m = bookings.size();
+        for(int i = 0; i < m; i++) {
+            diff[bookings[i][0] - 1] += bookings[i][2];
+            diff[bookings[i][1]] -= bookings[i][2];
+        }
+        int sum = 0;
+        for(int i = 0; i < n; i++) {
+            sum += diff[i];
+            res[i] = sum;
+        }
+        return res;
+    }
+};
