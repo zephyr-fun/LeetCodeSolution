@@ -74,3 +74,42 @@ public:
         return res;
     }
 };
+
+// 2022.06.30
+class Solution {
+public:
+    vector<string> res;
+    int n;
+    int t;
+    string s;
+    void dfs(int u, long long prev, long long cur, string path) {
+        if(u == n) {
+            if(cur == t) {
+                res.emplace_back(path);
+            }
+            return;
+        }
+        for(int i = u; i < n; i++) {
+            if(i != u && s[u] == '0') {
+                break;
+            }
+            long long next = stoll(s.substr(u, i - u + 1));
+            if(u == 0) {
+                dfs(i + 1, next, next, path + s.substr(u, i - u + 1));
+            }
+            else {
+                dfs(i + 1, next, cur + next, path + '+' + s.substr(u, i - u + 1));
+                dfs(i + 1, -next, cur - next, path + '-' + s.substr(u, i - u + 1));
+                long long x = cur - prev;
+                dfs(i + 1, next * prev, x + next * prev, path + '*' + s.substr(u, i - u + 1));
+            }
+        }
+    }
+    vector<string> addOperators(string num, int target) {
+        s = num;
+        t = target;
+        n = s.size();
+        dfs(0, 0, 0, "");
+        return res;
+    }
+};
