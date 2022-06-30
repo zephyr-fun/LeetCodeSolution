@@ -66,3 +66,64 @@ public:
         return res;
     }
 };
+
+// 2022.06.30
+// plain dfs
+class Solution {
+public:
+    vector<bool> vis;
+    unordered_set<string> res;
+    string s;
+    vector<string> permutation(string s_) {
+        s = s_;
+        int n = s_.size();
+        vis.resize(n, false);
+        dfs("");
+        return vector<string>(res.begin(), res.end());
+    }
+    void dfs(string path) {
+        if(path.size() == s.size()) {
+            res.insert(path);
+            return ;
+        }
+        for(int i = 0; i < s.size(); i++) {
+            if(vis[i] == false) {
+                vis[i] = true;
+                dfs(path + s[i]);
+                vis[i] = false;
+            }
+        }
+    }
+};
+
+// remove repeat by sort and continue
+class Solution {
+public:
+    vector<bool> vis;
+    vector<string> res;
+    string s;
+    vector<string> permutation(string s_) {
+        s = s_;
+        int n = s.size();
+        vis.resize(n, false);
+        sort(s.begin(), s.end()); // sort
+        dfs("");
+        return res;
+    }
+    void dfs(string path) {
+        if(path.size() == s.size()) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = 0; i < s.size(); i++) {
+            if(vis[i] == false) {
+                vis[i] = true;
+                dfs(path + s[i]);
+                vis[i] = false;
+                while(i < s.size() && s[i] == s[i + 1]) { // remove repeat
+                    i++;
+                }
+            }
+        }
+    }
+};
