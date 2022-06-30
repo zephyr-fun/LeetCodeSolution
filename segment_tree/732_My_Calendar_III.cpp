@@ -159,3 +159,24 @@ public:
  * MyCalendarThree* obj = new MyCalendarThree();
  * int param_1 = obj->book(start,end);
  */
+
+// 2022.06.30
+class MyCalendarThree {
+public:
+    map<int, int> map;
+    MyCalendarThree() {
+
+    }
+    
+    int book(int start, int end) {
+        int maxVal = -0x3f3f3f3f;
+        int cur = 0;
+        map[start]++;
+        map[end]--;
+        for(auto [k, v] : map) {
+            cur += v;
+            maxVal = max(maxVal, cur);
+        }
+        return maxVal;
+    }
+};
