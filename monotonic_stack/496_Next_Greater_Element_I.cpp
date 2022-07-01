@@ -87,3 +87,59 @@ public:
         return res;
     }
 };
+
+// 2022.07.01
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int m = nums2.size();
+        vector<int> help(m, -1);
+        vector<int> res(n, -1);
+        stack<int> st;
+        st.push(0);
+        for(int i = 1; i < m; i++) {
+            while(!st.empty() && nums2[i] > nums2[st.top()]) {
+                int idx = st.top();
+                st.pop();
+                help[idx] = nums2[i];
+            }
+            st.push(i);
+        }
+        unordered_map<int, int> map;
+        for(int i = 0; i < m; i++) {
+            map[nums2[i]] = i;
+        }
+        for(int i = 0; i < n; i++) {
+            res[i] = help[map[nums1[i]]];
+        }
+        return res;
+    }
+};
+
+// optim
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int m = nums2.size();
+        vector<int> res(n, -1);
+        unordered_map<int, int> map;
+        for(int i = 0; i < n; i++) {
+            map[nums1[i]] = i;
+        }
+        stack<int> st;
+        st.push(0);
+        for(int i = 0; i < m; i++) {
+            while(!st.empty() && nums2[i] > nums2[st.top()]) {
+                int idx = st.top();
+                st.pop();
+                if(map.find(nums2[idx]) != map.end()) {
+                    res[map[nums2[idx]]] = nums2[i];
+                }
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
