@@ -44,3 +44,58 @@ public:
         return res;
     }
 };
+
+// 2022.07.01
+// plain dp
+// slow
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        // dp[i] refers to start from i, the minimum step to get to the end
+        vector<int> dp(n, 0);
+        for(int i = n - 2; i >= 0; i--) {
+            int cur = 0x3f3f3f3f;
+            for(int j = i + 1; j < n && j <= i + nums[i]; j++) {
+                cur = min(cur, dp[j]);
+            }
+            dp[i] = cur + 1;
+        }
+        return dp[0];
+    }
+};
+
+// path dp
+// old idea, same as above
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, 0x3f3f3f3f);
+        dp[0] = 0;
+        for(int i = 0; i < n; i++) {
+            int j = i + 1;
+            while(j <= i + nums[i] && j < n) {
+                dp[j] = min(dp[j], dp[i] + 1);
+                j++;
+            }
+        }
+        return dp[n - 1];
+    }
+};
+
+// O(n), holy, dp + double pointer + greedy
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n, 0);
+        for(int i = 1, j = 0; i < n; i++) {
+            while(j + nums[j] < i) {
+                j++;
+            }
+            dp[i] = dp[j] + 1;
+        }
+        return dp[n - 1];
+    }
+};
