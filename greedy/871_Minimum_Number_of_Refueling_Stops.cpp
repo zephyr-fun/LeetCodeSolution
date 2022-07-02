@@ -28,3 +28,35 @@ public:
         return res;
     }
 };
+
+// repeat
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        int remain = startFuel;
+        int loc = 0;
+        int n = stations.size();
+        int res = 0;
+        int idx = 0;
+        priority_queue<int> pque;
+        while(loc < target) {
+            if(remain == 0) {
+                if(!pque.empty()) {
+                    remain += pque.top();
+                    pque.pop();
+                }
+                else {
+                    return -1;
+                }
+                res++;
+            }
+            loc += remain;
+            remain = 0;
+            while(idx < n && stations[idx][0] <= loc) {
+                pque.push(stations[idx][1]);
+                idx++;
+            }
+        }
+        return res;
+    }
+};
