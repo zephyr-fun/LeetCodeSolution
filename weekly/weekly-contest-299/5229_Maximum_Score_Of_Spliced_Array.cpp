@@ -21,3 +21,23 @@ public:
         return max(makeMax(nums1, nums2), makeMax(nums2, nums1));
     }
 };
+
+// 2022.07.02
+class Solution {
+public:
+    int makeOnesideMax(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int dp = 0;
+        int delta = -0x3f3f3f3f;
+        int sum = 0;
+        for(int i = 0; i < n; i++) {
+            sum += nums1[i];
+            dp = max(dp, 0) + nums2[i] - nums1[i];
+            delta = max(delta, dp);
+        }
+        return sum + delta;
+    }
+    int maximumsSplicedArray(vector<int>& nums1, vector<int>& nums2) {
+        return max(makeOnesideMax(nums1, nums2), makeOnesideMax(nums2, nums1));
+    }
+};
