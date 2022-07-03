@@ -24,3 +24,22 @@ public:
         return (dp[n][forget] + mod) % mod;
     }
 };
+
+// O(n) version
+class Solution {
+public:
+    int peopleAwareOfSecret(int n, int delay, int forget) {
+        const int mod = 1e9 + 7;
+        // f[i] refers to new add num on ith day, g[i] is presum of f[i]
+        vector<long long> f(n + 1);
+        vector<long long> g(n + 1);
+        f[1] = g[1] = 1;
+        for(int i = 2; i <= n; i++) {
+            int l = max(0, i - forget);
+            int r = max(0, i - delay);
+            f[i] = (g[r] - g[l] + mod) % mod;
+            g[i] = (g[i - 1] + f[i]) % mod;
+        }
+        return (g[n] - g[max(0, n - forget)] + mod) % mod;
+    }
+};
