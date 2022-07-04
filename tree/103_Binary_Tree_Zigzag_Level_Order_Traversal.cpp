@@ -65,3 +65,38 @@ vector<vector<int>> zigzagLevelOrder(TreeNode* root)
     }
     return res;
 }
+
+// 2022.07.04
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        queue<TreeNode*> que;
+        bool needReverse = false;
+        vector<vector<int>> res;
+        if(root == nullptr) {
+            return res;
+        }
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            vector<int> path;
+            for(int i = 0; i < size; i++) {
+                TreeNode* temp = que.front();
+                que.pop();
+                path.emplace_back(temp->val);
+                if(temp->left != nullptr) {
+                    que.push(temp->left);
+                }
+                if(temp->right != nullptr) {
+                    que.push(temp->right);
+                }
+            }
+            if(needReverse) {
+                reverse(path.begin(), path.end());
+            }
+            res.emplace_back(path);
+            needReverse = !needReverse;
+        }
+        return res;
+    }
+};
