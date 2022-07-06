@@ -57,3 +57,27 @@ public:
         return res;
     }
 };
+
+// 2022.07.06
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        int res = 0;
+        vector<int> vis(n, 1);
+        for(int i = 1; i < n; i++) {
+            if(ratings[i] > ratings[i - 1]) {
+                vis[i] = vis[i - 1] + 1;
+            }
+        }
+        for(int i = n - 2; i >= 0; i--) {
+            if(ratings[i] > ratings[i + 1]) {
+                vis[i] = max(vis[i], vis[i + 1] + 1);
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            res += vis[i];
+        }
+        return res;
+    }
+};
