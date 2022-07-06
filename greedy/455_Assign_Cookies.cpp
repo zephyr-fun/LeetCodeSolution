@@ -43,3 +43,28 @@ public:
         return res;
     }
 };
+
+// 2022.07.06
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        int res = 0;
+        int n = g.size();
+        int m = s.size();
+        int i = 0;
+        int j = 0;
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        while(i < n && j < m) {
+            if(s[j] >= g[i]) {
+                j++;
+                i++;
+                res++;
+            }
+            else {
+                j++;
+            }
+        }
+        return res;
+    }
+};
