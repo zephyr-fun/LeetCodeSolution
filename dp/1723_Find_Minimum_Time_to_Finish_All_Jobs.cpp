@@ -34,3 +34,38 @@ public:
         return dp[k - 1][(1 << n) - 1];
     }
 };
+
+// 2022.07.07
+class Solution {
+public:
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        int n = jobs.size();
+        vector<int> sum(1 << n, 0);
+        vector<vector<int>> dp(k, vector<int>(1 << n, 0));
+        for(int i = 1; i < (1 << n); i++) {
+            for(int j = 0; j < n; j++) {
+                if((i & (1 << j)) == 0) {
+                    continue;
+                }
+                int left = i - (1 << j);
+                sum[i] = sum[left] + jobs[j];
+                break;
+            }
+        }
+        for(int i = 0; i < (1 << n); i++) {
+            dp[0][i] = sum[i];
+        }
+        for(int i = 1; i < k; i++) {
+            for(int j = 0; j < (1 << n); j++) {
+                int minVal = 0x3f3f3f3f;
+                for(int st = j; st; st = (st - 1) & j) {
+                    int left = j - st;
+                    int val = max(dp[i - 1][left], sum[st]);
+                    minVal = min(minVal, val);
+                }
+                dp[i][j] = minVal;
+            }
+        }
+        return dp[k - 1][(1 << n) - 1];
+    }
+};
