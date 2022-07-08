@@ -76,3 +76,126 @@ public:
         return -1;
     }
 };
+
+// 2022.07.08
+class Solution {
+public:
+    unordered_set<string> wordList;
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList_) {
+        for(auto word : wordList_) {
+            wordList.insert(word);
+        }
+        if(!wordList.count(endWord)) {
+            return 0;
+        }
+        queue<string> bque;
+        unordered_map<string, int> bmap;
+        queue<string> eque;
+        unordered_map<string, int> emap;
+        bque.push(beginWord);
+        eque.push(endWord);
+        bmap[beginWord] = 0;
+        emap[endWord] = 0;
+        while(!bque.empty() && !eque.empty()) {
+            int t = -1;
+            if(bque.size() <= eque.size()) {
+                t = update(bque, eque, bmap, emap);
+            }
+            else {
+                t = update(eque, bque, emap, bmap);
+            }
+            if(t != -1) {
+                return t;
+            }
+        }
+        return 0;
+    }
+    int update(queue<string>& que1, queue<string>& que2, unordered_map<string, int>& map1, unordered_map<string, int>& map2) {
+        int size = que1.size();
+        while(size--) {
+            string cur = que1.front();
+            que1.pop();
+            int step = map1[cur];
+            for(int i = 0; i < cur.size(); i++) {
+                for(int j = 0; j < 26; j++) {
+                    if(cur[i] - 'a' == j) {
+                        continue;
+                    }
+                    string temp = cur;
+                    temp[i] = 'a' + j;
+                    if(!wordList.count(temp) || map1.count(temp)) {
+                        continue;
+                    }
+                    if(map2.count(temp)) {
+                        return map2[temp] + step + 1 + 1;
+                    }
+                    que1.push(temp);
+                    map1[temp] = step + 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
+
+// 2022.07.08
+// change start state
+class Solution {
+public:
+    unordered_set<string> wordList;
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList_) {
+        for(auto word : wordList_) {
+            wordList.insert(word);
+        }
+        if(!wordList.count(endWord)) {
+            return 0;
+        }
+        queue<string> bque;
+        unordered_map<string, int> bmap;
+        queue<string> eque;
+        unordered_map<string, int> emap;
+        bque.push(beginWord);
+        eque.push(endWord);
+        bmap[beginWord] = 1; // change
+        emap[endWord] = 0;
+        while(!bque.empty() && !eque.empty()) {
+            int t = -1;
+            if(bque.size() <= eque.size()) {
+                t = update(bque, eque, bmap, emap);
+            }
+            else {
+                t = update(eque, bque, emap, bmap);
+            }
+            if(t != -1) {
+                return t;
+            }
+        }
+        return 0;
+    }
+    int update(queue<string>& que1, queue<string>& que2, unordered_map<string, int>& map1, unordered_map<string, int>& map2) {
+        int size = que1.size();
+        while(size--) {
+            string cur = que1.front();
+            que1.pop();
+            int step = map1[cur];
+            for(int i = 0; i < cur.size(); i++) {
+                for(int j = 0; j < 26; j++) {
+                    if(cur[i] - 'a' == j) {
+                        continue;
+                    }
+                    string temp = cur;
+                    temp[i] = 'a' + j;
+                    if(!wordList.count(temp) || map1.count(temp)) {
+                        continue;
+                    }
+                    if(map2.count(temp)) {
+                        return map2[temp] + step + 1;
+                    }
+                    que1.push(temp);
+                    map1[temp] = step + 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
