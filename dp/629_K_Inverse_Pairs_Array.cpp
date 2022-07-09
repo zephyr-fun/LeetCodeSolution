@@ -1,4 +1,6 @@
 // 2022.07.09
+// acwing sequence dp
+// https://leetcode.cn/problems/k-inverse-pairs-array/solution/gong-shui-san-xie-yi-dao-xu-lie-dp-zhuan-tm01/
 class Solution {
 public:
     int kInversePairs(int n, int k) {
