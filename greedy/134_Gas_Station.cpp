@@ -66,3 +66,24 @@ public:
         return start;
     }
 };
+
+// 2022.07.09
+// rest = 驶离当前加油站时的剩余油量
+// rest 最终代表跑完一圈的剩余油量，假设小于0则不可能跑完一圈
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        int rest = 0;
+        int minRest = 0x3f3f3f3f;
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            rest += gas[i] - cost[i];
+            if(rest < minRest) {
+                minRest = rest;
+                res = i;
+            }
+        }
+        return rest < 0 ? -1 : (res + 1) % n;
+    }
+};
