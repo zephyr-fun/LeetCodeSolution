@@ -36,3 +36,22 @@ public:
         return res;
     }
 };
+
+// monotonic stack
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        prices.emplace_back(-1);
+        int n = prices.size();
+        vector<int> st;
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && st.back() > prices[i]) {
+                res = max(res, st.back() - st.front());
+                st.pop_back();
+            }
+            st.emplace_back(prices[i]);
+        }
+        return res;
+    }
+};
