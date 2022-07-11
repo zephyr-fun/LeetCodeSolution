@@ -143,3 +143,27 @@ public:
         return res;
     }
 };
+
+// 2022.07.11
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        unordered_map<int, int> map;
+        for(int i = 0; i < nums1.size(); i++) {
+            map[nums1[i]] = i;
+        }
+        stack<int> st;
+        vector<int> res(n, -1);
+        for(int i = 0; i < nums2.size(); i++) {
+            while(!st.empty() && st.top() < nums2[i]) {
+                if(map.count(st.top())) {
+                    res[map[st.top()]] = nums2[i];
+                }
+                st.pop();
+            }
+            st.push(nums2[i]);
+        }
+        return res;
+    }
+};
