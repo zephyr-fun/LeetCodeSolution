@@ -5,7 +5,7 @@
 // trie + dfs
 class MagicDictionary {
 public:
-    int son[10007][26];
+    int son[10007][26]; // note vector<int> slow
     bool cnt[10007];
     int idx = 0;
     MagicDictionary() {
