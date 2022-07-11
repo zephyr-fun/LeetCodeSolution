@@ -1,5 +1,5 @@
 // 2022.04.15
-// double pointers, O(n^2), over time
+// double pointers, O(n^2), TLE
 class Solution {
 public:
     int trap(vector<int>& height) {
@@ -86,5 +86,58 @@ public:
             }
         }
         return sum;
+    }
+};
+
+
+// 2022.07.11
+// count by column
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        vector<int> maxLeft(n, 0);
+        vector<int> maxRight(n, 0);
+        maxLeft[0] = height[0];
+        maxRight[n - 1] = height[n - 1];
+        for(int i = 1; i < n; i++) {
+            maxLeft[i] = max(maxLeft[i - 1], height[i]);
+        }
+        for(int i = n - 2; i >= 0; i--) {
+            maxRight[i] = max(maxRight[i + 1], height[i]);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            int cur = min(maxLeft[i], maxRight[i]) - height[i];
+            if(cur > 0) {
+                res += cur;
+            }
+        }
+        return res;
+    }
+};
+
+// count by row(layer)
+// monotonic stack
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        stack<int> st;
+        int res = 0;
+        int n = height.size();
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && height[st.top()] < height[i]) {
+                int cur = st.top();
+                st.pop();
+                while(!st.empty() && height[st.top()] == height[cur]) {
+                    st.pop();
+                }
+                if(!st.empty()) { // may not have st.top(), judge
+                    res += (min(height[st.top()], height[i]) - height[cur]) * (i - st.top() - 1);
+                }
+            }
+            st.push(i);
+        }
+        return res;
     }
 };
