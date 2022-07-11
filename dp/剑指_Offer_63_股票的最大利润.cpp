@@ -37,6 +37,7 @@ public:
     }
 };
 
+// https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/solution/c-li-yong-shao-bing-wei-hu-yi-ge-dan-diao-zhan-tu-/
 // monotonic stack
 class Solution {
 public:
