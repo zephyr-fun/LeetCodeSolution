@@ -71,6 +71,7 @@ public:
             map[arr[i]] = i;
         }
         int res = 0;
+        // i : last number, j : Penultimate number, second number from the back
         // dp[i][j] refers to max length of t, j, i
         vector<vector<int>> dp(n, vector<int>(n, 0));
         for(int i = 0; i < n; i++) {
