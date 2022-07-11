@@ -70,3 +70,66 @@ public:
         return res;
     }
 };
+
+// 2022.07.11
+class Solution {
+public:
+    void clear(stack<int>& st) {
+        while(!st.empty()) {
+            st.pop();
+        }
+    }
+    int largestRectangleArea(vector<int>& heights) {
+        heights.insert(heights.begin(), 0);
+        heights.emplace_back(0);
+        int n = heights.size();
+        stack<int> st;
+        vector<int> left(n, -1);
+        vector<int> right(n, -1);
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && heights[st.top()] > heights[i]) {
+                int cur = st.top();
+                st.pop();
+                right[cur] = i;
+            }
+            st.push(i);
+        }
+        clear(st);
+        for(int i = n - 1; i >= 0; i--) {
+            while(!st.empty() && heights[st.top()] > heights[i]) {
+                int cur = st.top();
+                st.pop();
+                left[cur] = i;
+            }
+            st.push(i);
+        }
+        int res = 0;
+        for(int i = 1; i < n - 1; i++) {
+            res = max(res, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return res;
+    }
+};
+
+// one time code
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        heights.insert(heights.begin(), 0);
+        heights.emplace_back(0);
+        int n = heights.size();
+        stack<int> st;
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && heights[i] < heights[st.top()]) {
+                int cur = st.top();
+                st.pop();
+                int left = st.top();
+                int right = i;
+                res = max(res, (right - left - 1) * heights[cur]);
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
