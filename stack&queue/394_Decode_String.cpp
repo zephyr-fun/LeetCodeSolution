@@ -69,3 +69,40 @@ public:
         return temp;
     }
 };
+
+// 2022.07.12
+// stack
+class Solution {
+public:
+    string decodeString(string s) {
+        int num = 0;
+        string temp = "";
+        stack<pair<string, int>> st;
+        int n = s.size();
+        for(int i = 0; i < n; i++) {
+            if(s[i] >= '0' && s[i] <= '9') {
+                num = num * 10 + s[i] - '0';
+            }
+            else if(s[i] >= 'a' && s[i] <= 'z') {
+                temp += s[i];
+            }
+            else if(s[i] == '[') {
+                st.push({temp, num});
+                num = 0;
+                temp = "";
+            }
+            else {
+                // s[i] == ']'
+                auto [prevS, prevNum] = st.top();
+                st.pop();
+                string ss = "";
+                for(int i = 0; i < prevNum; i++) {
+                    ss += temp;
+                }
+                temp = prevS + ss;
+                num = 0;
+            }
+        }
+        return temp;
+    }
+};
