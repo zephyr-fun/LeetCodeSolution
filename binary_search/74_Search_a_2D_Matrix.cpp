@@ -28,7 +28,7 @@ public:
     }
 };
 
-// abstract BFS
+// abstract BST
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
