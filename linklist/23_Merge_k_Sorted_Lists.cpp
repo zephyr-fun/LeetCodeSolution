@@ -109,3 +109,77 @@ public:
         return dummy->next;
     }
 };
+
+// 2022.07.12
+// heap
+class Solution {
+public:
+    struct cmp{
+        bool operator() (ListNode* a, ListNode* b) {
+            return a->val > b->val;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode*, vector<ListNode*>, cmp> pque;
+        for(auto list : lists) {
+            if(list != nullptr) {
+                pque.push(list);
+            }
+        }
+        ListNode* dummy = new ListNode(-1);
+        ListNode* tail = dummy;
+        while(!pque.empty()) {
+            tail->next = pque.top();
+            pque.pop();
+            tail = tail->next;
+            if(tail->next != nullptr) {
+                pque.push(tail->next);
+            }
+        }
+        return dummy->next;
+    }
+};
+
+// recursion, divide and conquer
+class Solution {
+public:
+    ListNode* mergeTwo(ListNode* a, ListNode* b) {
+        if(a == nullptr || b == nullptr) {
+            return a == nullptr ? b : a;
+        }
+        ListNode* dummy = new ListNode(-1);
+        ListNode* head = dummy;
+        while(a != nullptr && b != nullptr) {
+            if(a->val > b->val) {
+                head->next = b;
+                head = head->next;
+                b = b->next;
+            }
+            else {
+                head->next = a;
+                head = head->next;
+                a = a->next;
+            }
+        }
+        if(a != nullptr) {
+            head->next = a;
+        }
+        else {
+            head->next = b;
+        }
+        return dummy->next;
+    }
+    ListNode* merge(vector<ListNode*>& lists, int l, int r) {
+        if(l == r) {
+            return lists[l];
+        }
+        if(l > r) {
+            return nullptr;
+        }
+        int mid = (l + r) >> 1;
+        return mergeTwo(merge(lists, l, mid), merge(lists, mid + 1, r));
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        return merge(lists, 0, lists.size() - 1);
+    }
+};
