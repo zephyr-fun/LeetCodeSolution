@@ -24,7 +24,8 @@
         "unordered_set": "cpp",
         "algorithm": "cpp",
         "system_error": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "functional": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
