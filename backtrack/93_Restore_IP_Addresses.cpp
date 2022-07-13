@@ -204,3 +204,47 @@ public:
         return res;
     }
 };
+
+// 2022.07.13
+class Solution {
+public:
+    vector<string> res;
+    bool isValid(string s, int start, int end) {
+        if(start > end) {
+            return false;
+        }
+        int sum = 0;
+        for(int i = start; i <= end; i++) {
+            if(i != start && s[start] == '0') {
+                return false;
+            }
+            sum = sum * 10 + s[i] - '0';
+            if(sum > 255) {
+                return false;
+            }
+        }
+        return true;
+    }
+    void dfs(string s, int cur, int cnt) {
+        if(cnt == 3) {
+            if(isValid(s, cur, s.size() - 1)) {
+                res.emplace_back(s);
+            }
+            return ;
+        }
+        for(int i = cur; i < s.size(); i++) {
+            if(i != cur && s[cur] == '0') {
+                break;
+            }
+            if(isValid(s, cur, i)) {
+                s.insert(s.begin() + i + 1, '.');
+                dfs(s, i + 2, cnt + 1);
+                s.erase(s.begin() + i + 1);
+            }
+        }
+    }
+    vector<string> restoreIpAddresses(string s) {
+        dfs(s, 0, 0);
+        return res;
+    }
+};
