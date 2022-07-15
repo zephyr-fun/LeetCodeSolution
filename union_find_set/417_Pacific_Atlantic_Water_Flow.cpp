@@ -394,3 +394,82 @@ public:
         return res;
     }
 };
+
+// 2022.07.17
+// BFS
+class Solution {
+public:
+    int getIdx(int x, int y, int m) {
+        return x * m + y;
+    }
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int n = heights.size();
+        int m = heights[0].size();
+        unordered_set<int> pset;
+        unordered_set<int> aset;
+        vector<vector<int>> res;
+        queue<int> pque;
+        queue<int> aque;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i == 0 || j == 0) {
+                    pque.push(getIdx(i, j, m));
+                    pset.insert(getIdx(i, j, m));
+                }
+                if(i == n - 1 || j == m - 1) {
+                    aque.push(getIdx(i, j, m));
+                    aset.insert(getIdx(i, j, m));
+                }
+            }
+        }
+        while(!pque.empty()) {
+            int x = pque.front() / m;
+            int y = pque.front() % m;
+            pque.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                    continue;
+                }
+                if(heights[x][y] > heights[nx][ny]) {
+                    continue;
+                }
+                if(pset.count(getIdx(nx, ny, m))) {
+                    continue;
+                }
+                pque.push(getIdx(nx, ny, m));
+                pset.insert(getIdx(nx, ny, m));
+            }
+        }
+        while(!aque.empty()) {
+            int x = aque.front() / m;
+            int y = aque.front() % m;
+            aque.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                    continue;
+                }
+                if(heights[x][y] > heights[nx][ny]) {
+                    continue;
+                }
+                if(aset.count(getIdx(nx, ny, m))) {
+                    continue;
+                }
+                aque.push(getIdx(nx, ny, m));
+                aset.insert(getIdx(nx, ny, m));
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(pset.count(getIdx(i, j, m)) && aset.count(getIdx(i, j, m))) {
+                    res.emplace_back(initializer_list<int>{i, j});
+                }
+            }
+        }
+        return res;
+    }
+};
