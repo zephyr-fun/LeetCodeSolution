@@ -195,3 +195,48 @@ public:
         return res;
     }
 };
+
+// 2022.07.19
+class Solution {
+public:
+    static constexpr int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int getIdx(int x, int y, int m) {
+        return x * m + y;
+    }
+    vector<vector<int>> colorBorder(vector<vector<int>>& grid, int row, int col, int color) {
+        int n = grid.size();
+        int m = grid[0].size();
+        int mark = grid[row][col];
+        queue<int> que;
+        unordered_set<int> set;
+        que.push(getIdx(row, col, m));
+        set.insert(getIdx(row, col, m));
+        while(!que.empty()) {
+            int x = que.front() / m;
+            int y = que.front() % m;
+            que.pop();
+            bool isBound = false;
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                    isBound = true;
+                    continue;
+                }
+                if(set.count(getIdx(nx, ny, m))) {
+                    continue;
+                }
+                if(grid[nx][ny] != mark) {
+                    isBound = true;
+                    continue;
+                }
+                que.push(getIdx(nx, ny, m));
+                set.insert(getIdx(nx, ny, m));
+            }
+            if(isBound) {
+                grid[x][y] = color;
+            }
+        }
+        return grid;
+    }
+};
