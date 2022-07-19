@@ -182,3 +182,49 @@ public:
 // cur:13nc:35step:8
 // cur:13nc:13step:8
 // cur:28nc:34step:5
+
+// 2022.07.19
+class Solution {
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = board.size();
+        int m = board[0].size();
+        bool isRight = true;
+        vector<int> grid(n * m + 1, 0);
+        int idx = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = isRight ? 0 : m - 1; isRight ? j < m : j >= 0; isRight ? j++ : j--) {
+                grid[idx] = board[i][j];
+                idx++;
+            }
+            isRight = !isRight;
+        }
+        queue<int> que;
+        unordered_map<int, int> map;
+        que.push(1);
+        map[1] = 0;
+        while(!que.empty()) {
+            int cur = que.front();
+            que.pop();
+            int step = map[cur];
+            if(cur == n * m) {
+                return step;
+            }
+            for(int i = 1; i <= 6; i++) {
+                int next = cur + i;
+                if(next > n * m) {
+                    continue;
+                }
+                if(grid[next] != -1) {
+                    next = grid[next];
+                }
+                if(map.count(next)) {
+                    continue;
+                }
+                que.push(next);
+                map[next] = step + 1;
+            }
+        }
+        return -1;
+    }
+};
