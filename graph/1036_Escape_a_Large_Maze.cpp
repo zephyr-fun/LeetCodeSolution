@@ -126,3 +126,77 @@ public:
         return bfs(source[0], source[1], true) && bfs(target[0], target[1], false);
     }
 };
+
+// 2022.07.19
+class Solution {
+public:
+    static constexpr int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    unordered_set<long long> block;
+    long long s;
+    long long t;
+    int n;
+    int maxVal;
+    long long getIdx(long long x, long long y) {
+        return x * 1e6 + y;
+    }
+    bool update(queue<long long>& que, unordered_set<long long>& cur, unordered_set<long long>& other) {
+        int size = que.size();
+        if(cur.size() >= maxVal) {
+            return true;
+        }
+        for(int i = 0; i < size; i++) {
+            long long x = que.front() / 1e6;
+            long long y = que.front() % (long long) 1e6;
+            if(other.count(que.front())) {
+                return true;
+            }
+            que.pop();
+            for(int i = 0; i < 4; i++) {
+                long long nx = x + dirs[i][0];
+                long long ny = y + dirs[i][1];
+                if(nx < 0 || nx >= 1e6 || ny < 0 || ny >= 1e6) {
+                    continue;
+                }
+                if(block.count(getIdx(nx, ny))) {
+                    continue;
+                }
+                if(cur.count(getIdx(nx, ny))) {
+                    continue;
+                }
+                que.push(getIdx(nx, ny));
+                cur.insert(getIdx(nx, ny));
+            }
+        }
+        return false;
+    }
+    bool isEscapePossible(vector<vector<int>>& blocked, vector<int>& source, vector<int>& target) {
+        for(auto it : blocked) {
+            block.insert(getIdx(it[0], it[1]));
+        }
+        s = getIdx(source[0], source[1]);
+        t = getIdx(target[0], target[1]);
+        n = blocked.size();
+        maxVal = (n + 1) * (n + 2) / 2;
+        queue<long long> sque;
+        queue<long long> tque;
+        unordered_set<long long> sset;
+        unordered_set<long long> tset;
+        sque.push(s);
+        sset.insert(s);
+        tque.push(t);
+        tset.insert(t);
+        while(!sque.empty() && !tque.empty()) {
+            if(sque.size() <= tque.size()) {
+                if(update(sque, sset, tset)) {
+                    return true;
+                }
+            }
+            else {
+                if(update(tque, tset, sset)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
