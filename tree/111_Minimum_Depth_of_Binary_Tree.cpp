@@ -126,3 +126,47 @@ public:
         return (left == 0 || right == 0) ? left + right + 1 : min(left, right) + 1;
     }
 };
+
+// 2022.07.21
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        int level = 0;
+        if(root == nullptr) {
+            return level;
+        }
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()) {
+            int size = que.size();
+            for(int i = 0; i < size; i++) {
+                auto cur = que.front();
+                que.pop();
+                if(cur->left == nullptr && cur->right == nullptr) {
+                    return level + 1;
+                }
+                if(cur->left) {
+                    que.push(cur->left);
+                }
+                if(cur->right) {
+                    que.push(cur->right);
+                }
+            }
+            level++;
+        }
+        return -1;
+    }
+};
+
+// dfs
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        int left = minDepth(root->left);
+        int right = minDepth(root->right);
+        return (left == 0 || right == 0) ? left + right + 1 : min(left, right) + 1;
+    }
+};
