@@ -175,3 +175,58 @@ public:
         return len;
     }
 };
+
+// 2022.07.22
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int res = 0;
+        int n = nums.size();
+        vector<int> dp(n, 1);
+        for(int i = 0; i < n; i++) {
+            for(int j = i; j >= 0; j--) {
+                if(nums[i] > nums[j]) {
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            res = max(res, dp[i]);
+        }
+        return res;
+    }
+};
+
+// optim nlogn
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n + 1, 0);
+        int len = 1;
+        dp[len] = nums[0];
+        for(int i = 1; i < n; i++) {
+            if(nums[i] > dp[len]) {
+                len++;
+                dp[len] = nums[i];
+            }
+            else {
+                int left = 1;
+                int right = len;
+                int pos = 0;
+                while(left <= right) {
+                    int mid = (left + right) >> 1;
+                    if(dp[mid] < nums[i]) {
+                        pos = mid;
+                        left = mid + 1;
+                    }
+                    else {
+                        right = mid - 1;
+                    }
+                }
+                dp[pos + 1] = nums[i];
+            }
+        }
+        return len;
+    }
+};
