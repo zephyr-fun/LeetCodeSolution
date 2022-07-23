@@ -103,3 +103,43 @@ public:
         return len;
     }
 };
+
+// 2022.07.23
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) {
+        sort(envelopes.begin(), envelopes.end(), [](vector<int>& a, vector<int>&b) {
+            if(a[0] == b[0]) {
+                return a[1] > b[1];
+            }
+            return a[0] < b[0];
+        });
+        int n = envelopes.size();
+        vector<int> dp(n + 1);
+        int len = 1;
+        dp[len] = envelopes[0][1];
+        for(int i = 1; i < n; i++) {
+            if(dp[len] < envelopes[i][1]) {
+                len++;
+                dp[len] = envelopes[i][1];
+            }
+            else {
+                int left = 1;
+                int right = len;
+                int pos = 0;
+                while(left <= right) {
+                    int mid = (left + right) >> 1;
+                    if(dp[mid] < envelopes[i][1]) {
+                        pos = mid;
+                        left = mid + 1;
+                    }
+                    else {
+                        right = mid - 1;
+                    }
+                }
+                dp[pos + 1] = envelopes[i][1]; // pos + 1
+            }
+        }
+        return len;
+    }
+};
