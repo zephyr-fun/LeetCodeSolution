@@ -70,3 +70,41 @@ public:
         return -1;
     }
 };
+
+// 2022.07.24
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        unordered_set<string> set;
+        for(auto bk : bank) {
+            set.insert(bk);
+        }
+        unordered_map<string, int> map;
+        map[start] = 0;
+        queue<string> que;
+        que.push(start);
+        while(!que.empty()) {
+            string cur = que.front();
+            que.pop();
+            int step = map[cur];
+            if(cur == end) {
+                return step;
+            }
+            for(int i = 0; i < 8; i++) {
+                for(int j = 0; j < 26; j++) {
+                    string temp = cur;
+                    temp[i] = 'A' + j;
+                    if(!set.count(temp)) {
+                        continue;
+                    }
+                    if(map.count(temp)) {
+                        continue;
+                    }
+                    map[temp] = step + 1;
+                    que.push(temp);
+                }
+            }
+        }
+        return -1;
+    }
+};
