@@ -21,3 +21,25 @@ public:
         return res;
     }
 };
+
+// 2022.07.24
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        unordered_map<char, int> map;
+        int left = 0;
+        int right = 0;
+        int res = 0;
+        while(right < n) {
+            map[s[right]]++;
+            while(left < right && map[s[right]] > 1) {
+                map[s[left]]--;
+                left++;
+            }
+            res = max(res, right - left + 1);
+            right++;
+        }
+        return res;
+    }
+};
