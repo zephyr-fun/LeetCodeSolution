@@ -75,3 +75,42 @@ public:
         return res;
     }
 };
+
+// 2022.07.27
+class Solution {
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<vector<int>> reverseg(n);
+        vector<int> d(n, 0);
+        queue<int> que;
+        vector<int> res;
+        for(int i = 0; i < n; i++) {
+            for(auto u : graph[i]) {
+                reverseg[u].emplace_back(i);
+                d[i]++;
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(d[i] == 0) {
+                que.push(i);
+            }
+        }
+        while(!que.empty()) {
+            int u = que.front();
+            que.pop();
+            for(auto v : reverseg[u]) {
+                d[v]--;
+                if(d[v] == 0) {
+                    que.push(v);
+                }
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(d[i] == 0) {
+                res.emplace_back(i);
+            }
+        }
+        return res;
+    }
+};
