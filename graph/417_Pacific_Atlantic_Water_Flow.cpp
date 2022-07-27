@@ -247,3 +247,79 @@ public:
         }
     }
 };
+
+// 2022.07.27
+// map may consume more space, set works as well
+class Solution {
+public:
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int getIdx(int x, int y, int m) {
+        return x * m + y;
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int n = heights.size();
+        int m = heights[0].size();
+        unordered_map<int, int> pmap;
+        unordered_map<int, int> amap;
+        queue<int> pque;
+        queue<int> aque;
+        vector<vector<int>> res;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i == 0 || j == 0) {
+                    pque.push(getIdx(i, j, m));
+                    pmap[getIdx(i, j, m)] = 0;
+                }
+                if(i == n - 1 || j == m - 1) {
+                    aque.push(getIdx(i, j, m));
+                    amap[getIdx(i, j, m)] = 0;
+                }
+            }
+        }
+        while(!pque.empty()) {
+            int x = pque.front() / m;
+            int y = pque.front() % m;
+            int step = pmap[pque.front()];
+            pque.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(pmap.count(getIdx(nx, ny, m))) {
+                    continue;
+                }
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m || heights[x][y] > heights[nx][ny]) {
+                    continue;
+                }
+                pque.push(getIdx(nx, ny, m));
+                pmap[getIdx(nx, ny, m)] = step + 1;
+            }
+        }
+        while(!aque.empty()) {
+            int x = aque.front() / m;
+            int y = aque.front() % m;
+            int step = amap[aque.front()];
+            aque.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(amap.count(getIdx(nx, ny, m))) {
+                    continue;
+                }
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m || heights[x][y] > heights[nx][ny]) {
+                    continue;
+                }
+                aque.push(getIdx(nx, ny, m));
+                amap[getIdx(nx, ny, m)] = step + 1;
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                int idx = getIdx(i, j, m);
+                if(pmap.count(idx) && amap.count(idx)) {
+                    res.emplace_back(initializer_list<int>{i, j});
+                }
+            }
+        }
+        return res;
+    }
+};
