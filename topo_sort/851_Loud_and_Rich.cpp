@@ -33,3 +33,39 @@ public:
 };
 
 // topo sort
+class Solution {
+public:
+    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+        int n = quiet.size();
+        vector<vector<int>> aja(n);
+        vector<int> in(n, 0);
+        queue<int> que;
+        vector<int> res(n);
+        for(auto r : richer) {
+            int rich = r[0];
+            int poor = r[1];
+            aja[rich].emplace_back(poor);
+            in[poor]++;
+        }
+        for(int i = 0; i < n; i++) {
+            if(in[i] == 0) {
+                que.push(i);
+            }
+        }
+        iota(res.begin(), res.end(), 0);
+        while(!que.empty()) {
+            int rich = que.front();
+            que.pop();
+            for(auto poor : aja[rich]) {
+                if(quiet[res[rich]] < quiet[res[poor]]) {
+                    res[poor] = res[rich];
+                }
+                in[poor]--;
+                if(in[poor] == 0) {
+                    que.push(poor);
+                }
+            }
+        }
+        return res;
+    }
+};
