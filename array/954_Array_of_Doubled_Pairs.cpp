@@ -51,3 +51,29 @@ public:
         return true;
     }
 };
+
+// 2022.07.28
+class Solution {
+public:
+    bool canReorderDoubled(vector<int>& arr) {
+        int mark[400007] = {0};
+        int mod = 2e5;
+        sort(arr.begin(), arr.end(), [](int& a, int& b) {
+            return abs(a) < abs(b);
+        });
+        for(auto a : arr) {
+            if(mark[a + mod] > 0) {
+                mark[a + mod]--;
+            }
+            else {
+                mark[2 * a + mod]++;
+            }
+        }
+        for(int i = 0; i < 400007; i++) {
+            if(mark[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
