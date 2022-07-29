@@ -215,3 +215,78 @@ public:
         return res;
     }
 };
+
+// 2022.07.29
+class UnionFindSet {
+public:
+    UnionFindSet(int n) : parent(n + 1), rank(n + 1, 0) {
+        for(int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+
+    int Find(int u) {
+        if(u != parent[u]) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        }
+        else if(rank[pu] > rank[pv]) {
+            parent[pv] = pu;
+        }
+        else {
+            parent[pv] = pu;
+        }
+        return true;
+    }
+
+private:
+    vector<int> parent;
+    vector<int> rank;
+};
+class Solution {
+public:
+    int getIdx(int i, int j, int n) {
+        return i * n + j;
+    }
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int left = 0;
+        int right = n * n - 1;
+        int res = -1;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            UnionFindSet set(n * n);
+            for(int i = 0; i < n; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(grid[i][j] <= mid) {
+                        if(i + 1 < n && grid[i + 1][j] <= mid) {
+                            set.Union(getIdx(i, j, n), getIdx(i + 1, j, n));
+                        }
+                        if(j + 1 < n && grid[i][j + 1] <= mid) {
+                            set.Union(getIdx(i, j, n), getIdx(i, j + 1, n));
+                        }
+                    }
+                }
+            }
+            if(set.Find(0) == set.Find(n * n - 1)) {
+                res = mid;
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
+};
