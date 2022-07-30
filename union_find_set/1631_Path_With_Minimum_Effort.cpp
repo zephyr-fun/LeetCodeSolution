@@ -289,3 +289,79 @@ public:
         return res;
     }
 };
+
+// 2022.07.30
+class UnionFindSet {
+public:
+    UnionFindSet(int n) : parent(n + 1), rank(n + 1, 0) {
+        for(int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+
+    int Find(int u) {
+        if(u != parent[u]) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        }
+        else if(rank[pu] > rank[pv]) {
+            parent[pv] = pu;
+        }
+        else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+        return true;
+    }
+
+private:
+    vector<int> parent;
+    vector<int> rank;
+
+};
+class Solution {
+public:
+    int getIdx(int i, int j, int m) {
+        return i * m + j;
+    }
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int left = 0;
+        int right = 1e6;
+        int n = heights.size();
+        int m = heights[0].size();
+        int res = 0;
+        while(left <= right) {
+            UnionFindSet set(n * m);
+            int mid = (left + right) >> 1;
+            for(int i = 0; i < n; i++) {
+                for(int j = 0; j < m; j++) {
+                    if(i + 1 < n && abs(heights[i][j] - heights[i + 1][j]) <= mid) {
+                        set.Union(getIdx(i, j, m), getIdx(i + 1, j, m));
+                    }
+                    if(j + 1 < m && abs(heights[i][j] - heights[i][j + 1]) <= mid) {
+                        set.Union(getIdx(i, j, m), getIdx(i, j + 1, m));
+                    }
+                }
+            }
+            if(set.Find(0) == set.Find(n * m - 1)) {
+                res = mid;
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
+};
