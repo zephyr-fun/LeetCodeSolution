@@ -115,3 +115,48 @@ public:
         return -1;
     }
 };
+
+// 2022.08.08
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int k = nums[0];
+        int left = 0;
+        int right = n - 1;
+        int pos = -1;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            if(nums[mid] >= k) {
+                left = mid + 1;
+                pos = mid;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+        if(target >= k) {
+            left = 0;
+            right = pos;
+        }
+        else {
+            left = pos + 1;
+            right = n - 1;
+        }
+        int res = -1;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            if(nums[mid] == target) {
+                res = mid;
+                break;
+            }
+            else if(nums[mid] > target) {
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
+            }
+        }
+        return res;
+    }
+};
