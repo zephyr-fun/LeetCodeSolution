@@ -23,6 +23,10 @@
 class Solution {
 public:
     int maxChunksToSorted(vector<int>& arr) {
+        // store the max value of a chunk in the stack
+        // in which case can you add a new number to current case
+        // if num >= st.top(), num can be a single chunk, and the chunk's max value is num
+        // if num < st.top(), find the most close max value to have num in this chunk, and make it and all behind a whole
         stack<int> st;
         for (auto &num : arr) {
             if (st.empty() || num >= st.top()) {
