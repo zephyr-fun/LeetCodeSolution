@@ -47,3 +47,23 @@ public:
         quick_sort(nums, 0, nums.size() - 1);
     }
 };
+
+// double pointers
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int n = nums.size();
+        int zero = 0;
+        int two = n - 1;
+        for(int i = 0; i <= two; i++) {
+            while(i <= two && nums[i] == 2) {
+                swap(nums[i], nums[two]);
+                two--;
+            }
+            if(nums[i] == 0) {
+                swap(nums[i], nums[zero]);
+                zero++;
+            }
+        }
+    }
+};
