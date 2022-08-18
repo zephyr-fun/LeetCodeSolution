@@ -19,6 +19,9 @@ public:
     }
 };
 
+//DFA
+// https://wenku.baidu.com/view/e9460ad96729647d27284b73f242336c1eb930f0.html
+// https://baike.baidu.com/item/%E5%8D%A1%E8%AF%BA%E5%9B%BE%E5%8C%96%E7%AE%80%E6%B3%95
 // ^
 class Solution {
 public:
