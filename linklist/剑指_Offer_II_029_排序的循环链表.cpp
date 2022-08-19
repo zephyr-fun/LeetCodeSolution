@@ -74,3 +74,59 @@ public:
         return head;
     }
 };
+
+// 2022.08.19
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+    }
+
+    Node(int _val, Node* _next) {
+        val = _val;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+public:
+    Node* insert(Node* head, int insertVal) {
+        Node * t = new Node(insertVal);
+        t->next = t;
+        if(head == nullptr) {
+            return t;
+        }
+        Node* res = head;
+        int minVal = head->val;
+        int maxVal = head->val;
+        while(head->next != res) {
+            head = head->next;
+            minVal = min(minVal, head->val);
+            maxVal = max(maxVal, head->val);
+        }
+        if(minVal == maxVal) {
+            t->next = res->next;
+            res->next = t;
+        }
+        else {
+            while(!(head->val == maxVal && head->next->val == minVal)) {
+                head = head->next;
+            }
+            while(!(insertVal <= minVal || insertVal >= maxVal) && !(head->val <= insertVal && insertVal <= head->next->val)) {
+                head = head->next;
+            }
+            t->next = head->next;
+            head->next = t;
+        }
+        return res;
+    }
+};
