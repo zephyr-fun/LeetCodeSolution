@@ -84,3 +84,88 @@ public:
         return res;
     }
 };
+
+// 2022.08.20
+// no call
+class Solution {
+public:
+    vector<bool> diagA;
+    vector<bool> diagB;
+    vector<bool> col;
+    vector<vector<string>> res;
+    vector<string> path;
+    int n;
+    void backtrack(int num) {
+        if(num == n) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = 0; i < n; i++) {
+            if(!col[i] && !diagA[num - i + n - 1] && !diagB[num + i]) {
+                path[num][i] = 'Q';
+                col[i] = true;
+                diagA[num - i + n - 1] = true;
+                diagB[num + i] = true;
+                backtrack(num + 1);
+                path[num][i] = '.';
+                col[i] = false;
+                diagA[num - i + n - 1] = false;
+                diagB[num + i] = false;
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n_) {
+        n = n_;
+        diagA.resize(2 * n - 1, false);
+        diagB.resize(2 * n - 1, false);
+        col.resize(n, false);
+        path.resize(n, string(n, '.'));
+        backtrack(0);
+        return res;
+    }
+};
+
+// with call
+class Solution {
+public:
+    vector<bool> diagA;
+    vector<bool> diagB;
+    vector<bool> col;
+    vector<vector<string>> res;
+    vector<string> path;
+    int n;
+    bool check(int i, int j) {
+        if(!col[j] && !diagA[i - j + n - 1] && !diagB[i + j]) {
+            return true;
+        }
+        return false;
+    }
+    void backtrack(int num) {
+        if(num == n) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = 0; i < n; i++) {
+            if(check(num, i)) {
+                path[num][i] = 'Q';
+                col[i] = true;
+                diagA[num - i + n - 1] = true;
+                diagB[num + i] = true;
+                backtrack(num + 1);
+                path[num][i] = '.';
+                col[i] = false;
+                diagA[num - i + n - 1] = false;
+                diagB[num + i] = false;
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n_) {
+        n = n_;
+        diagA.resize(2 * n - 1, false);
+        diagB.resize(2 * n - 1, false);
+        col.resize(n, false);
+        path.resize(n, string(n, '.'));
+        backtrack(0);
+        return res;
+    }
+};
