@@ -130,3 +130,38 @@ public:
         return build(0, n - 1, nums);
     }
 };
+
+// 2022.08.20
+// monotonic stack
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        TreeNode* st[1007];
+        int head = 0;
+        int tail = 0;
+        for(auto num : nums) {
+            TreeNode* cur = new TreeNode(num);
+            while(head < tail && num > st[tail - 1]->val) {
+                cur->left = st[tail - 1];
+                tail--;
+            }
+            if(head < tail) {
+                st[tail - 1]->right = cur;
+            }
+            st[tail] = cur;
+            tail++;
+        }
+        return st[head];
+    }
+};
