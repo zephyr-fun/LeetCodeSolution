@@ -65,3 +65,25 @@ public:
         return res;
     }
 };
+
+// 2022.08.22
+class Solution {
+public:
+    int findMaxLength(vector<int>& nums) {
+        int n = nums.size();
+        int cur = 0;
+        int res = 0;
+        unordered_map<int, int> map; // value, first time
+        map[0] = -1;
+        for(int i = 0; i < n; i++) {
+            cur = nums[i] == 0 ? cur - 1 : cur + 1;
+            if(map.count(cur)) {
+                res = max(res, i - map[cur]);
+            }
+            else {
+                map[cur] = i;
+            }
+        }
+        return res;
+    }
+};
