@@ -183,3 +183,41 @@ public:
         }
     }
 };
+
+// 2022.08.20
+class Solution {
+public:
+    int n;
+    string s;
+    vector<vector<string>> res;
+    vector<string> path;
+    bool isPalindrome(int start, int end) {
+        while(start < end) {
+            if(s[start] != s[end]) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+    void backtrack(int cur) {
+        if(cur == n) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = cur; i < n; i++) {
+            if(isPalindrome(cur, i)) {
+                path.emplace_back(s.substr(cur, i - cur + 1));
+                backtrack(i + 1);
+                path.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s_) {
+        s = s_;
+        n = s.size();
+        backtrack(0);
+        return res;
+    }
+};
