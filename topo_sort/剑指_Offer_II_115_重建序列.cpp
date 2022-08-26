@@ -35,3 +35,50 @@ public:
         return true;
     }
 };
+
+// 2022.08.26
+class Solution {
+public:
+    bool sequenceReconstruction(vector<int>& nums, vector<vector<int>>& sequences) {
+        int n = nums.size();
+        vector<int> path;
+        vector<int> d(n + 1, 0);
+        vector<vector<int>> grid(n + 1);
+        for(auto& seq : sequences) {
+            for(int i = 0; i < seq.size() - 1; i++) {
+                grid[seq[i]].emplace_back(seq[i + 1]);
+                d[seq[i + 1]]++;
+            }
+        }
+        queue<int> que;
+        for(int i = 1; i <= n; i++) {
+            if(d[i] == 0) {
+                que.push(i);
+            }
+        }
+        while(!que.empty()) {
+            int size = que.size();
+            if(size > 1) {
+                return false;
+            }
+            int cur = que.front();
+            que.pop();
+            path.emplace_back(cur);
+            for(auto& v : grid[cur]) {
+                d[v]--;
+                if(d[v] == 0) {
+                    que.push(v);
+                }
+            }
+        }
+        if(nums.size() != path.size()) {
+            return false;
+        }
+        for(int i = 0; i < n; i++) {
+            if(nums[i] != path[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
