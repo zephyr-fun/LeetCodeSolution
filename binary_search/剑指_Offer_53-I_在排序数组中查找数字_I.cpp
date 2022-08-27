@@ -41,3 +41,44 @@ public:
         return posr - posl + 1;
     }
 };
+
+// 2022.08.27
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int left = 0;
+        int right = n - 1;
+        int pl = -1;
+        int pr = -1;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            if(nums[mid] < target) {
+                left = mid + 1;
+            }
+            else if(nums[mid] > target) {
+                right = mid - 1;
+            }
+            else {
+                pl = mid;
+                right = mid - 1;
+            }
+        }
+        left = 0;
+        right = n - 1;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            if(nums[mid] < target) {
+                left = mid + 1;
+            }
+            else if(nums[mid] > target) {
+                right = mid - 1;
+            }
+            else {
+                pr = mid;
+                left = mid + 1;
+            }
+        }
+        return pl == -1 ? 0 : pr - pl + 1;
+    }
+};
