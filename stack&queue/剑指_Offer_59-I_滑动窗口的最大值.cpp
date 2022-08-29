@@ -40,3 +40,45 @@ public:
         return res;
     }
 };
+
+// 2022.08.29
+class MyQueue {
+public:
+    void pop(int num) {
+        if(!dq.empty() && dq.front() == num) {
+            dq.pop_front();
+        }
+    }
+
+    void push(int num) {
+        while(!dq.empty() && dq.back() < num) {
+            dq.pop_back();
+        }
+        dq.push_back(num);
+    }
+
+    int front() {
+        return dq.front();
+    }
+
+private:
+    deque<int> dq;
+};
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        int n = nums.size();
+        MyQueue que;
+        vector<int> res;
+        for(int i = 0; i < k; i++) {
+            que.push(nums[i]);
+        }
+        res.emplace_back(que.front());
+        for(int i = k; i < n; i++) {
+            que.pop(nums[i - k]);
+            que.push(nums[i]);
+            res.emplace_back(que.front());
+        }
+        return res;
+    }
+};
