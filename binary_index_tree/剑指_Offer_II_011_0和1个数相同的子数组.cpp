@@ -44,3 +44,27 @@ public:
         return res;
     }
 };
+
+// 2022.08.30
+class Solution {
+public:
+    int findMaxLength(vector<int>& nums) {
+        int map[200005] = {0};
+        int mod = 1e5;
+        int cur = 0;
+        memset(map, 0x3f, sizeof(map));
+        map[mod] = -1;
+        int n = nums.size();
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            cur += nums[i] == 0 ? -1 : 1;
+            if(map[cur + mod] == 0x3f3f3f3f) {
+                map[cur + mod] = i;
+            }
+            else {
+                res = max(i - map[cur + mod], res);
+            }
+        }
+        return res;
+    }
+};
