@@ -106,3 +106,42 @@ public:
         return temp;
     }
 };
+
+// 2022.09.01
+class Solution {
+public:
+    string decodeString(string s) {
+        stack<int> num_st;
+        stack<string> ss_st;
+        string num;
+        string ss;
+        int n = s.size();
+        for(int i = 0; i < n; i++) {
+            if(s[i] >= '0' && s[i] <= '9') {
+                num += s[i];
+            }
+            else if(s[i] == '[') {
+                int temp = stoi(num);
+                num_st.push(temp);
+                num = "";
+                ss_st.push(ss);
+                ss = "";
+            }
+            else if(s[i] == ']') {
+                int temp = num_st.top();
+                num_st.pop();
+                string copy = ss;
+                while(temp > 1) {
+                    ss += copy;
+                    temp--;
+                }
+                ss = ss_st.top() + ss;
+                ss_st.pop();
+            }
+            else {
+                ss += s[i];
+            }
+        }
+        return ss;
+    }
+};
