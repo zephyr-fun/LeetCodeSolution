@@ -193,3 +193,29 @@ public:
         return res;
     }
 };
+
+// 2022.09.11
+// vertical
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        vector<int> leftMax(n);
+        vector<int> rightMax(n);
+        leftMax[0] = 0;
+        rightMax[n - 1] = 0;
+        for(int i = 1, j = n - 2; i < n; i++, j--) {
+            leftMax[i] = max(leftMax[i - 1], height[i - 1]);
+            rightMax[j] = max(rightMax[j + 1], height[j + 1]);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            if(min(leftMax[i], rightMax[i]) > height[i]) {
+                res += min(leftMax[i], rightMax[i]) - height[i];
+            }
+        }
+        return res;
+    }
+};
+
+// horizontal
