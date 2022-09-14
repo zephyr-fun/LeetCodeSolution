@@ -270,3 +270,85 @@ public:
         return res;
     }
 };
+
+// 2022.09.14
+// recrusion
+class Solution {
+public:
+    vector<int> res;
+    void tarversal(TreeNode* cur) {
+        if(cur == nullptr) {
+            return ;
+        }
+        tarversal(cur->left);
+        res.emplace_back(cur->val);
+        tarversal(cur->right);
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        tarversal(root);
+        return res;
+    }
+};
+
+// non recursion
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(root == nullptr) {
+            return res;
+        }
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()) {
+            TreeNode* node = st.top();
+            st.pop();
+            if(node != nullptr) {
+                if(node->right != nullptr) {
+                    st.push(node->right);
+                }
+                st.push(node);
+                st.push(nullptr);
+                if(node->left != nullptr) {
+                    st.push(node->left);
+                }
+            }
+            else {
+                node = st.top();
+                st.pop();
+                res.emplace_back(node->val);
+            }
+        }
+        return res;
+    }
+};
+
+// Morris
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        while(root != nullptr) {
+            if(root->left != nullptr) {
+                TreeNode* temp = root->left;
+                while(temp->right != nullptr && temp->right != root) {
+                    temp = temp->right;
+                }
+                if(temp->right == nullptr) {
+                    temp->right = root;
+                    root = root->left;
+                }
+                else {
+                    res.emplace_back(root->val);
+                    temp->right = nullptr;
+                    root = root->right;
+                }
+            }
+            else {
+                res.emplace_back(root->val);
+                root = root->right;
+            }
+        }
+        return res;
+    }
+};
