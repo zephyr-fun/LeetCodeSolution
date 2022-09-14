@@ -219,3 +219,27 @@ public:
 };
 
 // horizontal
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        stack<int> st;
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && height[i] > height[st.top()]) {
+                int temp = st.top();
+                st.pop();
+                // accelerate
+                while(!st.empty() && height[st.top()] == height[temp]) {
+                    st.pop();
+                }
+                // accelerate
+                if(!st.empty()) {
+                    res += (min(height[i], height[st.top()]) - height[temp]) * (i - st.top() - 1);
+                }
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
