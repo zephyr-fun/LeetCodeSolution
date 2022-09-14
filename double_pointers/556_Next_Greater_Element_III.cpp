@@ -57,3 +57,29 @@ public:
         return res > INT_MAX ? -1 : res;
     }
 };
+
+// 2022.09.14
+class Solution {
+public:
+    int nextGreaterElement(int n) {
+        string num = to_string(n);
+        int cnt = num.size();
+        int idx = cnt - 2;
+        while(idx >= 0) {
+            if(num[idx] < num[idx + 1]) {
+                break;
+            }
+            idx--;
+        }
+        if(idx < 0) {
+            return -1;
+        }
+        int temp = cnt - 1;
+        while(temp >= 0 && num[idx] >= num[temp]) {
+            temp--;
+        }
+        swap(num[idx], num[temp]);
+        reverse(num.begin() + idx + 1, num.end());
+        return stol(num) > INT_MAX ? -1 : stol(num);
+    }
+};
