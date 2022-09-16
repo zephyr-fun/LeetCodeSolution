@@ -47,3 +47,31 @@ public:
         return res;
     }
 };
+
+// 2022.09.16
+// yxc version templete
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> res;
+        sort(intervals.begin(), intervals.end());
+        int st = -1;
+        int ed = -1;
+        for(auto& it : intervals) {
+            if(it[0] > ed) {
+                if(ed != -1) {
+                    res.emplace_back(initializer_list<int>({st, ed}));
+                }
+                st = it[0];
+                ed = it[1];
+            }
+            else {
+                ed = max(ed, it[1]);
+            }
+        }
+        if(ed != -1) {
+            res.emplace_back(initializer_list<int>({st, ed}));
+        }
+        return res;
+    }
+};
