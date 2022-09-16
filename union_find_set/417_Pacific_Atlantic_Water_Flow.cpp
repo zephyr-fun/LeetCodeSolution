@@ -473,3 +473,69 @@ public:
         return res;
     }
 };
+
+// 2022.09.16
+class Solution {
+public:
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    vector<vector<int>> heights;
+    int n;
+    int m;
+    int getIdx(int x, int y) {
+        return x * m + y;
+    }
+    void fill(queue<int>& que, unordered_set<int>& set) {
+        while(!que.empty()) {
+            int x = que.front() / m;
+            int y = que.front() % m;
+            que.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                    continue;
+                }
+                if(set.count(getIdx(nx, ny))) {
+                    continue;
+                }
+                if(heights[x][y] > heights[nx][ny]) {
+                    continue;
+                }
+                set.insert(getIdx(nx, ny));
+                que.push(getIdx(nx, ny));
+            }
+        }
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights_) {
+        heights = heights_;
+        n = heights.size();
+        m = heights[0].size();
+        queue<int> pque;
+        queue<int> aque;
+        unordered_set<int> pset;
+        unordered_set<int> aset;
+        vector<vector<int>> res;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i == 0 || j == 0) {
+                    pque.push(getIdx(i, j));
+                    pset.insert(getIdx(i, j));
+                }
+                if(i == n - 1 || j == m - 1) {
+                    aque.push(getIdx(i, j));
+                    aset.insert(getIdx(i, j));
+                }
+            }
+        }
+        fill(pque, pset);
+        fill(aque, aset);
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(pset.count(getIdx(i, j)) && aset.count(getIdx(i, j))) {
+                    res.emplace_back(initializer_list<int>({i, j}));
+                }
+            }
+        }
+        return res;
+    }
+};
