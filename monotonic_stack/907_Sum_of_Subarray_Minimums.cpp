@@ -33,3 +33,37 @@ public:
         return res;
     }
 };
+
+// 2022.09.22
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int mod = 1e9 + 7;
+        int n = arr.size();
+        vector<int> left(n, -1);
+        vector<int> right(n, n);
+        stack<int> ls;
+        stack<int> rs;
+        for(int i = 0; i < n; i++) {
+            while(!rs.empty() && arr[rs.top()] >= arr[i]) {
+                right[rs.top()] = i;
+                rs.pop();
+            }
+            rs.push(i);
+        }
+        for(int i = n - 1; i >= 0; i--) {
+            while(!ls.empty() && arr[ls.top()] > arr[i]) {
+                left[ls.top()] = i;
+                ls.pop();
+            }
+            ls.push(i);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            // cout << left[i] << right[i] << arr[i] << endl;
+            long long temp = (long long)(i - right[i]) * (long long)(left[i] - i) * (long long)arr[i];
+            res = (temp + res) % mod;
+        }
+        return res;
+    }
+};
