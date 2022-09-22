@@ -162,3 +162,31 @@ public:
         return res;
     }
 };
+
+// 2022.09.22
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> dque;
+        int n = nums.size();
+        for(int i = 0; i < k; i++) {
+            while(!dque.empty() && dque.back() < nums[i]) {
+                dque.pop_back();
+            }
+            dque.push_back(nums[i]);
+        }
+        vector<int> res;
+        res.emplace_back(dque.front());
+        for(int i = k; i < n; i++) {
+            if(!dque.empty() && nums[i - k] == dque.front()) {
+                dque.pop_front();
+            }
+            while(!dque.empty() && dque.back() < nums[i]) {
+                dque.pop_back();
+            }
+            dque.push_back(nums[i]);
+            res.emplace_back(dque.front());
+        }
+        return res;
+    }
+};
