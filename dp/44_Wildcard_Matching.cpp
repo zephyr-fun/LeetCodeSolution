@@ -63,3 +63,41 @@ public:
         return dp[n][m];
     }
 };
+
+// 2022.09.22
+// p[j] == '*'
+// f[i][j] = f[i][j - 1] || f[i - 1][j - 1] || ... || f[0][j - 1]
+// f[i - 1][j] = f[i - 1][j - 1] || f[i - 2][j - 1] || ... || f[0][j - 1]
+// f[i][j] = f[i][j - 1] || f[i - 1][j]
+// p[j] != '*'
+// f[i][j] = f[i - 1][j - 1] && (s[i] == p[j] || p[j] = '?')
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int n = s.size();
+        int m = p.size();
+        vector<vector<bool>> dp(n + 1, vector<bool>(m + 1, false));
+        dp[0][0] = true;
+        s = " " + s;
+        p = " " + p;
+        for(int i = 1; i <= m; i++) {
+            if(p[i] == '*') {
+                dp[0][i] = true;
+            }
+            else {
+                break;
+            }
+        }
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= m; j++) {
+                if(p[j] == '*') {
+                    dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+                }
+                else {
+                    dp[i][j] = dp[i - 1][j - 1] && (s[i] == p[j] || p[j] == '?');
+                }
+            }
+        }
+        return dp[n][m];
+    }
+};
