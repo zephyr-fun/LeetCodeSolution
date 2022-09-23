@@ -160,3 +160,86 @@ private:
     int _size;
     ListNode* _dummy;
 };
+
+// 2022.09.23
+class MyLinkedList {
+public:
+    struct ListNode {
+        int val;
+        ListNode* next;
+        ListNode(int x) : val(x), next(nullptr) {}
+    };
+    MyLinkedList() {
+        _dummy = new ListNode(0);
+        _size = 0;
+    }
+    
+    int get(int index) {
+        if(index < 0 || index > _size - 1) {
+            return -1;
+        }
+        ListNode* cur = _dummy->next;
+        while(index--) {
+            cur = cur->next;
+        }
+        return cur->val;
+    }
+    
+    void addAtHead(int val) {
+        ListNode* node = new ListNode(val);
+        node->next = _dummy->next;
+        _dummy->next = node;
+        _size++;
+    }
+    
+    void addAtTail(int val) {
+        ListNode* cur = _dummy;
+        while(cur->next != nullptr) {
+            cur = cur->next;
+        }
+        cur->next = new ListNode(val);
+        _size++;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index < 0 || index > _size) {
+            return ;
+        }
+        ListNode* node = new ListNode(val);
+        ListNode* cur = _dummy;
+        while(index--) {
+            cur = cur->next;
+        }
+        node->next = cur->next;
+        cur->next = node;
+        _size++;
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index < 0 || index > _size - 1) {
+            return ;
+        }
+        ListNode* cur = _dummy;
+        while(index--) {
+            cur = cur->next;
+        }
+        ListNode* node = cur->next;
+        cur->next = cur->next->next;
+        delete node;
+        _size--;
+    }
+
+private:
+    int _size;
+    ListNode* _dummy;
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
