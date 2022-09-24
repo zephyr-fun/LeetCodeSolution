@@ -60,3 +60,35 @@ public:
         return res;
     }
 };
+
+// 2022.09.24
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        int res = 0;
+        int cur = 0;
+        int rest = startFuel;
+        int idx = 0;
+        int n = stations.size();
+        priority_queue<int> pq;
+        while(cur < target) {
+            // rest--;
+            // cur++;
+            if(rest == 0) {
+                if(pq.empty()) {
+                    return -1;
+                }
+                rest += pq.top();
+                pq.pop();
+                res++;
+            }
+            cur += rest;
+            rest = 0;
+            while(idx < n && cur >= stations[idx][0]) {
+                pq.push(stations[idx][1]);
+                idx++;
+            }
+        }
+        return res;
+    }
+};
