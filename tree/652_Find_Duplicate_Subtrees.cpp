@@ -61,8 +61,8 @@ public:
  */
 class Solution {
 public:
-    int p = 131;
-    int q = 13131;
+    // int p = 131;
+    // int q = 13131;
     unordered_map<string, int> map;
     vector<TreeNode*> res;
     string traversal(TreeNode* cur) {
