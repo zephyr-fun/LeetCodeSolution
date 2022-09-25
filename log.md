@@ -1332,3 +1332,5 @@ Trie templete
 ### LCP 2022
 ### youdao
 ### weekly-contest 312
+### 天堂硅谷·数字经济算法编程大赛
+1124. 表现良好的最长时间段
