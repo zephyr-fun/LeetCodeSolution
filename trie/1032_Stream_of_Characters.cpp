@@ -52,3 +52,50 @@ public:
  * StreamChecker* obj = new StreamChecker(words);
  * bool param_1 = obj->query(letter);
  */
+
+// 2022.09.25
+int son[40020][26];
+int cnt[40020];
+class StreamChecker {
+public:
+    string cur;
+    int idx;
+    StreamChecker(vector<string>& words) {
+        cur = "";
+        idx = 0;
+        memset(son, 0, sizeof(son));
+        memset(cnt, 0, sizeof(cnt));
+        for(auto& word : words) {
+            insert(word);
+        }
+    }
+    
+    void insert(string& s) {
+        int p = 0;
+        for(int i = s.size() - 1; i >= 0; i--) {
+            int u = s[i] - 'a';
+            if(!son[p][u]) {
+                idx++;
+                son[p][u] = idx;
+            }
+            p = son[p][u];
+        }
+        cnt[p]++;
+    }
+
+    bool query(char letter) {
+        cur += letter; // TLE for cur = cur + letter, again
+        int p = 0;
+        for(int i = cur.size() - 1; i >= 0; i--) {
+            int u = cur[i] - 'a';
+            if(!son[p][u]) {
+                return false;
+            }
+            p = son[p][u];
+            if(cnt[p]) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
