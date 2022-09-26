@@ -165,3 +165,31 @@ public:
         return st[head];
     }
 };
+
+// 2022.09.26
+class Solution {
+public:
+    vector<int> nums;
+    TreeNode* traversal(int left, int right) {
+        if(left > right) {
+            return nullptr;
+        }
+        int maxVal = nums[left];
+        int idx = left;
+        for(int i = left; i <= right; i++) {
+            if(nums[i] > maxVal) {
+                maxVal = nums[i];
+                idx = i;
+            }
+        }
+        TreeNode* cur = new TreeNode(maxVal);
+        cur->left = traversal(left, idx - 1);
+        cur->right = traversal(idx + 1, right);
+        return cur;
+    }
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums_) {
+        nums = nums_;
+        int n = nums.size();
+        return traversal(0, n - 1);
+    }
+};
