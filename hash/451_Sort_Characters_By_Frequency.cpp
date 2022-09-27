@@ -46,3 +46,28 @@ public:
         return res;
     }
 };
+
+// 2022.09.27
+class Solution {
+public:
+    string frequencySort(string s) {
+        string res = "";
+        unordered_map<char, int> map;
+        for(auto& c : s) {
+            map[c]++;
+        }
+        vector<pair<char, int>> temp(map.begin(), map.end());
+        sort(temp.begin(), temp.end(), [](pair<char, int>& a, pair<char, int>& b) {
+            if(a.second == b.second) {
+                return a.first < b.first;
+            }
+            return a.second > b.second;
+        });
+        for(auto& t : temp) {
+            for(int i = 0; i < t.second; i++) {
+                res += t.first;
+            }
+        }
+        return res;
+    }
+};
