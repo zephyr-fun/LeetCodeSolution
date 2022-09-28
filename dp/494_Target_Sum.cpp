@@ -122,3 +122,31 @@ public:
         return dp[val];
     }
 };
+
+// 2022.09.28
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = 0;
+        for(auto& num : nums) {
+            sum += num;
+        }
+        if(abs(target) > sum) {
+            return 0;
+        }
+        if((sum + target) % 2 != 0) {
+            return 0;
+        }
+        int val = (sum + target) / 2;
+        vector<int> dp(val + 1, 0);
+        dp[0] = 1;
+        for(int i = 0; i < nums.size(); i++) {
+            for(int j = val; j >= 0; j--) {
+                if(j >= nums[i]) {
+                    dp[j] += dp[j - nums[i]];
+                }
+            }
+        }
+        return dp[val];
+    }
+};
