@@ -86,7 +86,7 @@ public:
 };
 
 // 2022.08.20
-// no call
+// no call iso function
 class Solution {
 public:
     vector<bool> diagA;
@@ -125,7 +125,7 @@ public:
     }
 };
 
-// with call
+// with call iso function
 class Solution {
 public:
     vector<bool> diagA;
@@ -169,3 +169,59 @@ public:
         return res;
     }
 };
+
+// 2022.09.29
+class Solution {
+public:
+    int n;
+    vector<vector<string>> res;
+    vector<string> board;
+
+    bool check(int x, int y) {
+        // 90
+        for(int i = 0; i < x; i++) {
+            if(board[i][y] == 'Q') {
+                return false;
+            }
+        }
+        // 45
+        for(int i = x - 1, j = y - 1; i >= 0 && j >= 0; i--, j--) {
+            if(board[i][j] == 'Q') {
+                return false;
+            }
+        }
+        // 135
+        for(int i = x - 1, j = y + 1; i >= 0 && j < n; i--, j++) {
+            if(board[i][j] == 'Q') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void dfs(int row) {
+        if(row == n) {
+            res.emplace_back(board);
+        }
+        for(int i = 0; i < n; i++) {
+            if(check(row, i)) {
+                board[row][i] = 'Q';
+                dfs(row + 1);
+                board[row][i] = '.';
+            }
+        }
+    }
+
+    vector<vector<string>> solveNQueens(int n_) {
+        n = n_;
+        string temp = "";
+        for(int i = 0; i < n; i++) {
+            temp += '.';
+        }
+        board.resize(n, temp);
+        dfs(0);
+        return res;
+    }
+};
+
+// optim
