@@ -114,3 +114,39 @@ public:
         return res;
     }
 };
+
+// 2022.09.29
+class Solution {
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<vector<int>> rg(n);
+        vector<int> in(n, 0);
+        queue<int> que;
+        for(int i = 0; i < n; i++) {
+            for(auto& u : graph[i]) {
+                rg[u].emplace_back(i);
+                in[i]++;
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(in[i] == 0) {
+                que.push(i);
+            }
+        }
+        vector<int> res;
+        while(!que.empty()) {
+            int cur = que.front();
+            que.pop();
+            res.emplace_back(cur);
+            for(auto& u : rg[cur]) {
+                in[u]--;
+                if(in[u] == 0) {
+                    que.push(u);
+                }
+            }
+        }
+        sort(res.begin(), res.end());
+        return res;
+    }
+};
