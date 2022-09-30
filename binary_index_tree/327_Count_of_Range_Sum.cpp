@@ -177,3 +177,62 @@ public:
         return res;
     }
 };
+
+// 2022.09.30
+typedef long long LL;
+class FenwickTree {
+public:
+    FenwickTree(int n) : sums_(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sums_.size()) {
+            sums_[idx] += delta;
+            idx += lowbit(idx);
+        }
+    }
+
+    int query(int idx) {
+        int sum = 0;
+        while(idx > 0) {
+            sum += sums_[idx];
+            idx -= lowbit(idx);
+        }
+        return sum;
+    }
+private:
+    vector<int> sums_;
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+};
+class Solution {
+public:
+    int countRangeSum(vector<int>& nums, int lower, int upper) {
+        int n = nums.size();
+        vector<LL> preSum(n + 1, 0);
+        for(int i = 1; i <= n; i++) {
+            preSum[i] = preSum[i - 1] + nums[i - 1];
+        }
+        set<LL> allNum;
+        for(auto& pre : preSum) {
+            allNum.insert(pre);
+            allNum.insert(pre - lower);
+            allNum.insert(pre - upper);
+        }
+        unordered_map<LL, int> map;
+        int idx = 0;
+        for(auto& num : allNum) {
+            map[num] = idx;
+            idx++;
+        }
+        int res = 0;
+        FenwickTree tree(allNum.size());
+        for(int i = 0; i <= n; i++) {
+            int left = map[preSum[i] - upper];
+            int right = map[preSum[i] - lower];
+            res += tree.query(right + 1) - tree.query(left);
+            tree.update(map[preSum[i]] + 1, 1);
+        }
+        return res;
+    }
+};
