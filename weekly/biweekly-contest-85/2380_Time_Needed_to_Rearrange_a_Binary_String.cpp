@@ -25,3 +25,23 @@ public:
         return res;
     }
 };
+
+// 2022.10.01
+https://leetcode.cn/problems/time-needed-to-rearrange-a-binary-string/solution/by-endlesscheng-pq2x/
+class Solution {
+public:
+    int secondsToRemoveOccurrences(string s) {
+        int n = s.size();
+        int pre = 0;
+        int f = 0;
+        for(auto& c : s) {
+            if(c == '0') {
+                pre++;
+            }
+            else if(pre) {
+                f = max(f + 1, pre);
+            }
+        }
+        return f;
+    }
+};
