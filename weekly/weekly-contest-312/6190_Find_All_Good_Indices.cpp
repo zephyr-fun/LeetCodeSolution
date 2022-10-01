@@ -57,3 +57,36 @@ public:
 };
 
 // simple version
+class Solution {
+public:
+    vector<int> goodIndices(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int> f(n);
+        vector<int> g(n);
+        f[0] = 1;
+        g[n - 1] = 1;
+        for(int i = 1; i < n; i++) {
+            if(nums[i] <= nums[i - 1]) {
+                f[i] = f[i - 1] + 1;
+            }
+            else {
+                f[i] = 1;
+            }
+        }
+        for(int i = n - 2; i >= 0; i--) {
+            if(nums[i] <= nums[i + 1]) {
+                g[i] = g[i + 1] + 1;
+            }
+            else {
+                g[i] = 1;
+            }
+        }
+        vector<int> res;
+        for(int i = k; i < n - k; i++) {
+            if(f[i - 1] >= k && g[i + 1] >= k) {
+                res.emplace_back(i);
+            }
+        }
+        return res;
+    }
+};

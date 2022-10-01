@@ -8,7 +8,7 @@ public:
                 sum += x;
             }
             else {
-               x = -x; 
+               x = -x;
             }
         }
         sort(nums.begin(), nums.end());
@@ -25,5 +25,36 @@ public:
             }
         }
         return pq.top().first;
+    }
+};
+
+// 2022.10.01
+class Solution {
+public:
+    long long kSum(vector<int>& nums, int k) {
+        int n = nums.size();
+        long long sum = 0;
+        for(auto& num : nums) {
+            if(num > 0) {
+                sum += num;
+            }
+            else {
+                num = -num;
+            }
+        }
+        sort(nums.begin(), nums.end());
+        priority_queue<pair<long long, int>> pque;
+        pque.push(make_pair(sum, 0));
+        while(--k) {
+            auto [cur, i] = pque.top();
+            pque.pop();
+            if(i < n) {
+                pque.push(make_pair(cur - nums[i], i + 1));
+                if(i) {
+                    pque.push(make_pair(cur - nums[i] + nums[i - 1], i + 1));
+                }
+            }
+        }
+        return pque.top().first;
     }
 };
