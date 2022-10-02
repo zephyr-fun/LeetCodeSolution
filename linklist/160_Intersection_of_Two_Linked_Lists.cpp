@@ -44,3 +44,48 @@ public:
 };
 
 // stackn and set also work
+
+// 2022.10.02
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* a = headA;
+        ListNode* b = headB;
+        int cnta = 0;
+        int cntb = 0;
+        while(a) {
+            cnta++;
+            a = a->next;
+        }
+        while(b) {
+            cntb++;
+            b = b->next;
+        }
+        if(cnta > cntb) {
+            return getIntersectionNode(headB, headA);
+        }
+        int diff = cntb - cnta;
+        a = headA;
+        b = headB;
+        while(diff) {
+            b = b->next;
+            diff--;
+        }
+        while(a && b) {
+            if(a == b) {
+                return a;
+            }
+            a = a->next;
+            b = b->next;
+        }
+        return nullptr;
+    }
+};
