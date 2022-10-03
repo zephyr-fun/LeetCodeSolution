@@ -1,4 +1,4 @@
-// 2022.07.30
+image.png// 2022.07.30
 class Solution {
 public:
     void quick_sort(vector<int>& nums, int left, int right) {
@@ -65,5 +65,30 @@ public:
                 zero++;
             }
         }
+    }
+};
+
+// 2022.10.03
+class Solution {
+public:
+    void quick_sort(int l, int r, vector<int>& nums) {
+        if(l >= r) {
+            return ;
+        }
+        int i = l - 1;
+        int j = r + 1;
+        int x = nums[(l + r) >> 1];
+        while(i < j) {
+            while(nums[++i] < x);
+            while(nums[--j] > x);
+            if(i < j) {
+                swap(nums[i], nums[j]);
+            }
+        }
+        quick_sort(l, j, nums);
+        quick_sort(j + 1, r, nums);
+    }
+    void sortColors(vector<int>& nums) {
+        quick_sort(0, nums.size() - 1, nums);
     }
 };
