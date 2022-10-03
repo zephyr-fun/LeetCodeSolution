@@ -38,3 +38,18 @@ public:
         return res;
     }
 };
+
+// 2022.10.01
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& nums) {
+        int n = nums.size();
+        int dp = 0;
+        int res = 0;
+        for(int i = 2; i < n; i++) {
+            dp = nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2] ? dp + 1 : 0;
+            res += dp;
+        }
+        return res;
+    }
+};
