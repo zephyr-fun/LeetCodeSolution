@@ -58,3 +58,36 @@ public:
         return i == j ? 0 : (j - 1) - (i + 1) + 1;
     }
 };
+
+// 2022.10.04
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int MIN = -0x3f3f3f3f;
+        int MAX = 0x3f3f3f3f;
+        int n = nums.size();
+        int i = 0;
+        int j = n - 1;
+        while(i < j && nums[i] <= nums[i + 1]) {
+            i++;
+        }
+        while(i < j && nums[j] >= nums[j - 1]) {
+            j--;
+        }
+        int l = i;
+        int r = j;
+        int minVal = nums[i];
+        int maxVal = nums[j];
+        for(int u = l; u <= r; u++) {
+            while(nums[u] < minVal && i >= 0) {
+                i--;
+                minVal = i == -1 ? MIN : nums[i];
+            }
+            while(nums[u] > maxVal && j < n) {
+                j++;
+                maxVal = j == n ? MAX : nums[j];
+            }
+        }
+        return j == i ? 0 : (j - 1) - (i + 1) + 1;
+    }
+};
