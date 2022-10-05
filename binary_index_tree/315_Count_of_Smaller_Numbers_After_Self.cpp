@@ -137,3 +137,50 @@ public:
         return res;
     }
 };
+
+// 2022.10.05
+class FenwickTree {
+public:
+    FenwickTree(int n) : sums_(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sums_.size()) {
+            sums_[idx] += delta;
+            idx += lowbit(idx);
+        }
+    }
+
+    int query(int idx) {
+        int res = 0;
+        while(idx > 0) {
+            res += sums_[idx];
+            idx -= lowbit(idx);
+        }
+        return res;
+    }
+
+private:
+    vector<int> sums_;
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+};
+class Solution {
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        int n = nums.size();
+        FenwickTree tree(n);
+        vector<int> temp = nums;
+        sort(temp.begin(), temp.end());
+        unordered_map<int, int> map;
+        for(int i = 0; i < n; i++) {
+            map[temp[i]] = i;
+        }
+        vector<int> res(n, 0);
+        for(int i = n - 1; i >= 0; i--) {
+            res[i] = tree.query(map[nums[i]]);
+            tree.update(map[nums[i]] + 1, 1);
+        }
+        return res;
+    }
+};
