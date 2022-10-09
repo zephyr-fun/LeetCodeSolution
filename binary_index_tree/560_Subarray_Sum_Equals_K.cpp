@@ -110,3 +110,23 @@ public:
         return res;
     }
 };
+
+// 2022.10.09
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        unordered_map<int, int> map;
+        int res = 0;
+        int cur = 0;
+        map[0] = 1;
+        for(int i = 0; i < n; i++) {
+            cur += nums[i];
+            if(map.count(cur - k)) {
+                res += map[cur - k];
+            }
+            map[cur]++;
+        }
+        return res;
+    }
+};
