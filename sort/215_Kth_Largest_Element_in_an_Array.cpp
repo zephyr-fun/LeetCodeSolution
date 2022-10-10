@@ -56,3 +56,32 @@ public:
         return quick_sel(nums, 0, n - 1, k);
     }
 };
+
+// 2022.10.10
+class Solution {
+public:
+    int quick_select(vector<int>& nums, int l, int r, int k) {
+        if(l == r) {
+            return nums[l];
+        }
+        int x = nums[(l + r) >> 1];
+        int i = l - 1;
+        int j = r + 1;
+        while(i < j) {
+            // from big to small
+            while(nums[++i] > x);
+            while(nums[--j] < x);
+            if(i < j) {
+                swap(nums[i], nums[j]);
+            }
+        }
+        int sl = j - l + 1;
+        if(k <= sl) {
+            return quick_select(nums, l, j, k);
+        }
+        return quick_select(nums, j + 1, r, k - sl);
+    }
+    int findKthLargest(vector<int>& nums, int k) {
+        return quick_select(nums, 0, nums.size() - 1, k);
+    }
+};
