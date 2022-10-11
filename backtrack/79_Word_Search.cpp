@@ -105,3 +105,109 @@ public:
         return false;
     }
 };
+
+// 2022.10.11
+// unordered_set is slower than vis
+class Solution {
+public:
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    unordered_set<int> set;
+    vector<vector<char>> board;
+    string word;
+    int n;
+    int m;
+    int getIdx(int x, int y, int m) {
+        return x * m + y;
+    }
+    bool search(int x, int y, int num) {
+        if(board[x][y] != word[num]) {
+            return false;
+        }
+        if(num == word.size() - 1) {
+            if(board[x][y] == word[num]) {
+                return true;
+            }
+            return false;
+        }
+        set.insert(getIdx(x, y, m));
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dirs[i][0];
+            int ny = y + dirs[i][1];
+            if(set.count(getIdx(nx, ny, m))) {
+                continue;
+            }
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                continue;
+            }
+            if(search(nx, ny, num + 1)) {
+                return true;
+            }
+        }
+        set.erase(getIdx(x, y, m));
+        return false;
+    }
+    bool exist(vector<vector<char>>& board_, string word_) {
+        board = board_;
+        word = word_;
+        n = board.size();
+        m = board[0].size();
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(search(i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+// (optim) unordered_set is slower than vis
+class Solution {
+public:
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    vector<vector<bool>> vis;
+    vector<vector<char>> board;
+    string word;
+    int n;
+    int m;
+    // int getIdx(int x, int y, int m) {
+    //     return x * m + y;
+    // }
+    bool search(int x, int y, int num) {
+        if(board[x][y] != word[num]) {
+            return false;
+        }
+        if(num == word.size() - 1) {
+            return true;
+        }
+        vis[x][y] = true;
+        for(int i = 0; i < 4; i++) {
+            int nx = x + dirs[i][0];
+            int ny = y + dirs[i][1];
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m || vis[nx][ny]) {
+                continue;
+            }
+            if(search(nx, ny, num + 1)) {
+                return true;
+            }
+        }
+        vis[x][y] = false;
+        return false;
+    }
+    bool exist(vector<vector<char>>& board_, string word_) {
+        board = board_;
+        word = word_;
+        n = board.size();
+        m = board[0].size();
+        vis.resize(n, vector<bool>(m, false));
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(search(i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
