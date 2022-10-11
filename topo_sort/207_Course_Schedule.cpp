@@ -32,3 +32,38 @@ public:
         return true;
     }
 };
+
+// 2022.10.11
+class Solution {
+public:
+    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        vector<int> in(n, 0);
+        vector<vector<int>> grid(n, vector<int>());
+        for(auto& pre : prerequisites) {
+            in[pre[1]]++;
+            grid[pre[0]].emplace_back(pre[1]);
+        }
+        queue<int> que;
+        for(int i = 0; i < n; i++) {
+            if(in[i] == 0) {
+                que.push(i);
+            }
+        }
+        while(!que.empty()) {
+            int cur = que.front();
+            que.pop();
+            for(auto& next : grid[cur]) {
+                in[next]--;
+                if(in[next] == 0) {
+                    que.push(next);
+                }
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(in[i] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
