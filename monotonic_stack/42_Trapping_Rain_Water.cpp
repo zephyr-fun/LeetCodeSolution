@@ -243,3 +243,31 @@ public:
         return res;
     }
 };
+
+// 2022.10.12
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        stack<int> st;
+        int n = height.size();
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && height[i] > height[st.top()]) {
+                int mid = st.top();
+                st.pop();
+                // accelerate
+                while(!st.empty() && height[st.top()] == height[mid]) {
+                    st.pop();
+                }
+                // may not have st.top()
+                if(!st.empty()) {
+                    int left = st.top();
+                    int right = i;
+                    res += (min(height[left], height[right]) - height[mid]) * (right - left - 1);
+                }
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
