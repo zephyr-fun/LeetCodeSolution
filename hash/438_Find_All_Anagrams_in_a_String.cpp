@@ -121,3 +121,53 @@ public:
         return res;
     }
 };
+
+// 2022.10.13
+class Solution {
+public:
+    bool isSame(int* smap, int* pmap) {
+        for(int i = 0; i < 26; i++) {
+            if(smap[i] != pmap[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    vector<int> findAnagrams(string s, string p) {
+        int smap[26];
+        int pmap[26];
+        memset(smap, 0, sizeof(smap));
+        memset(pmap, 0, sizeof(pmap));
+        int right = 0;
+        int n = s.size();
+        int m = p.size();
+        int cnt = 0;
+        vector<int> res;
+        if(n < m) {
+            return res;
+        }
+        for(int i = 0; i < m; i++) {
+            pmap[p[i] - 'a']++;
+        }
+        for(int i = 0; i < m; i++) {
+            if(pmap[s[i] - 'a']) {
+                smap[s[i] - 'a']++;
+            }
+        }
+        if(isSame(smap, pmap)) {
+            res.emplace_back(0);
+        }
+        for(int i = m; i < n; i++) {
+            if(pmap[s[i - m] - 'a']) {
+                smap[s[i - m] - 'a']--;
+            }
+            if(pmap[s[i] - 'a']) {
+                smap[s[i] - 'a']++;
+            }
+            if(isSame(smap, pmap)) {
+                res.emplace_back(i - m + 1);
+            }
+        }
+        return res;
+    }
+};
