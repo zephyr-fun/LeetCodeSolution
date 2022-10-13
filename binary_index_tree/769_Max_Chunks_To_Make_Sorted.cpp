@@ -41,3 +41,44 @@ public:
         return res;
     }
 };
+
+// optim 1
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int n = arr.size();
+        int minVal = n;
+        int maxVal = -1;
+        int res = 0;
+        for(int i = 0, j = 0; i < n; i++) {
+            minVal = min(minVal, arr[i]);
+            maxVal = max(maxVal, arr[i]);
+            if(i == maxVal && j == minVal) {
+                res++;
+                j = i + 1;
+                minVal = n;
+                maxVal = -1;
+            }
+        }
+        return res;
+    }
+};
+
+// optim 2
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int cnt1 = 0;
+        int cnt2 = 0;
+        int n = arr.size();
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            cnt1 += arr[i];
+            cnt2 += i;
+            if(cnt1 == cnt2) {
+                res++;
+            }
+        }
+        return res;
+    }
+};
