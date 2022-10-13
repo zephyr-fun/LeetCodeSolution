@@ -140,7 +140,7 @@ public:
     }
 };
 
-// recursion, divide and conquer
+// recursion, divide and conquer, nice solution
 class Solution {
 public:
     ListNode* mergeTwo(ListNode* a, ListNode* b) {
@@ -181,5 +181,35 @@ public:
     }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         return merge(lists, 0, lists.size() - 1);
+    }
+};
+
+// 2022.10.13
+class Solution {
+public:
+    struct Cmp {
+        bool operator() (ListNode* a, ListNode* b) {
+            return a->val > b->val;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode* res = new ListNode(-1);
+        ListNode* temp = res;
+        priority_queue<ListNode*, vector<ListNode*>, Cmp> pque;
+        for(auto& list : lists) {
+            if(list != nullptr) {
+                pque.push(list);
+            }
+        }
+        while(!pque.empty()) {
+            ListNode* cur = pque.top();
+            pque.pop();
+            temp->next = cur;
+            temp = temp->next;
+            if(cur->next) {
+                pque.push(cur->next);
+            }
+        }
+        return res->next;
     }
 };
