@@ -150,3 +150,32 @@ public:
         return dp[val];
     }
 };
+
+// 2022.10.15
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int n = nums.size();
+        int sum = 0;
+        for(auto& num : nums) {
+            sum += num;
+        }
+        if(abs(target) > sum) {
+            return 0;
+        }
+        // a + b = sum, a - b = target
+        // a = (sum + target) / 2
+        if((sum + target) % 2) {
+            return 0;
+        }
+        int a = (sum + target) / 2;
+        vector<int> dp(a + 1, 0);
+        dp[0] = 1;
+        for(int i = 0; i < n; i++) {
+            for(int j = a; j >= nums[i]; j--) {
+                dp[j] += dp[j - nums[i]];
+            }
+        }
+        return dp[a];
+    }
+};
