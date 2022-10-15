@@ -102,3 +102,26 @@ public:
         return dp[target] == target ? true : false;
     }
 };
+
+// 2022.10.15
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+        for(auto& num : nums) {
+            sum += num;
+        }
+        if(sum % 2) {
+            return false;
+        }
+        int tar = sum / 2;
+        vector<int> dp(tar + 1, 0);
+        for(int i = 0; i < n; i++) {
+            for(int j = tar; j >= nums[i]; j--) {
+                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]);
+            }
+        }
+        return dp[tar] == tar;
+    }
+};
