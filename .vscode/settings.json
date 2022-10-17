@@ -29,7 +29,8 @@
         "sstream": "cpp",
         "mutex": "cpp",
         "shared_mutex": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "set": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
