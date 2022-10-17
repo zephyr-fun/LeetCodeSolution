@@ -165,3 +165,25 @@ public:
         return 3;
     }
 };
+
+// 2022.10.17
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> item(sqrt(n) + 1, 0);
+        int m = item.size();
+        for(int i = 1; i < m; i++) {
+            item[i] = i * i;
+        }
+        vector<int> dp(n + 1, 0x3f3f3f3f);
+        dp[0] = 0;
+        for(int i = 1; i < m; i++) {
+            for(int j = 1; j <= n; j++) {
+                if(j >= item[i]) {
+                    dp[j] = min(dp[j], dp[j - item[i]] + 1);
+                }
+            }
+        }
+        return dp[n];
+    }
+};
