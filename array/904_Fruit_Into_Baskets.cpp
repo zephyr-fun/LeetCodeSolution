@@ -52,3 +52,28 @@ public:
         return res;
     }
 };
+
+// 2022.10.17
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        int left = 0;
+        int right = 0;
+        unordered_map<int, int> map;
+        int res = 0;
+        int n = fruits.size();
+        while(right < n) {
+            map[fruits[right]]++;
+            right++;
+            while(left <= right && map.size() > 2) {
+                map[fruits[left]]--;
+                if(map[fruits[left]] == 0) {
+                    map.erase(fruits[left]);
+                }
+                left++;
+            }
+            res = max(res, right - left);
+        }
+        return res;
+    }
+};
