@@ -107,3 +107,43 @@ public:
         return res;
     }
 };
+
+// 2022.10.18
+// https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/solution/shu-wei-dp-tong-yong-mo-ban-xiang-xi-zhu-e5dg/
+class Solution {
+public:
+    vector<int> dp;
+    vector<string> digits;
+    int m;
+    string s;
+    int dfs(int i, bool is_limit, bool is_num) {
+        if(i == m) {
+            return is_num;
+        }
+        if(!is_limit && is_num && dp[i] >= 0) {
+            return dp[i];
+        }
+        int res = 0;
+        if(!is_num) {
+            res = dfs(i + 1, false, false);
+        }
+        char up = is_limit ? s[i] : '9';
+        for(auto& d : digits) {
+            if(d[0] > up) {
+                break;
+            }
+            res += dfs(i + 1, is_limit && d[0] == up, true);
+        }
+        if(!is_limit && is_num) {
+            dp[i] = res;
+        }
+        return res;
+    }
+    int atMostNGivenDigitSet(vector<string> &digits_, int n) {
+        s = to_string(n);
+        m = s.length();
+        dp.resize(m, -1);
+        digits = digits_;
+        return dfs(0, true, false);
+    }
+};
