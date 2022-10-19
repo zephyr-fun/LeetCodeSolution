@@ -56,3 +56,31 @@ public:
         return res;
     }
 };
+
+// 2022.10.19
+class Solution {
+public:
+    int n;
+    vector<string> res;
+
+    void dfs(int cur, int sum, string s) {
+        if(cur == 2 * n) {
+            if(sum == 0) {
+                res.emplace_back(s);
+            }
+            return ;
+        }
+        if(sum > 0) {
+            dfs(cur + 1, sum - 1, s + ')');
+        }
+        if(sum < n) {
+            dfs(cur + 1, sum + 1, s + '(');
+        }
+    }
+
+    vector<string> generateParenthesis(int n_) {
+        n = n_;
+        dfs(0, 0, "");
+        return res;
+    }
+};
