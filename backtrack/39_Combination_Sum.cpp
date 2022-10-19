@@ -117,3 +117,35 @@ public:
         return res;
     }
 };
+
+// 2022.10.19
+class Solution {
+public:
+    int n;
+    vector<int> candidates;
+    vector<vector<int>> res;
+    vector<int> path;
+    void dfs(int remain, int start) {
+        if(remain == 0) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = start; i < n; i++) {
+            if(candidates[i] <= remain) {
+                path.emplace_back(candidates[i]);
+                dfs(remain - candidates[i], i);
+                path.pop_back();
+            }
+            else {
+                break;
+            }
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates_, int target) {
+        n = candidates_.size();
+        candidates = candidates_;
+        sort(candidates.begin(), candidates.end());
+        dfs(target, 0);
+        return res;
+    }
+};
