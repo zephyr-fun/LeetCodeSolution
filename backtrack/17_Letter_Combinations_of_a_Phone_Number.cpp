@@ -153,3 +153,41 @@ public:
         return res;
     }
 };
+
+// 2022.10.19
+class Solution {
+public:
+    int n;
+    string digits;
+    vector<string> res;
+    vector<string> digi= {"",
+                      "",
+                      "abc",
+                      "def",
+                      "ghi",
+                      "jkl",
+                      "mno",
+                      "pqrs",
+                      "tuv",
+                      "wxyz"};
+    
+    void dfs(int cur, string s) {
+        if(cur == n) {
+            res.emplace_back(s);
+            return ;
+        }
+        for(auto& c : digi[digits[cur] - '0']) {
+            dfs(cur + 1, s + c);
+        }
+    }
+
+    vector<string> letterCombinations(string digits_) {
+        if(digits_.size() == 0) {
+            return res;
+        }
+        digits = digits_;
+        n = digits.size();
+        dfs(0, "");
+        return res;
+    }
+};
