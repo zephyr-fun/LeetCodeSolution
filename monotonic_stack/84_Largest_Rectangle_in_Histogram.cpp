@@ -156,3 +156,26 @@ public:
         return res;
     }
 };
+
+// 2022.10.21
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        heights.insert(heights.begin(), 0);
+        heights.emplace_back(0);
+        int n = heights.size();
+        int res = 0;
+        stack<int> st;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && heights[i] < heights[st.top()]) {
+                int cur = st.top();
+                st.pop();
+                int left = st.top();
+                int right = i;
+                res = max(res, (right - left - 1) * heights[cur]);
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
