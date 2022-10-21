@@ -294,3 +294,50 @@ public:
         return res;
     }
 };
+
+// 2022.10.21
+// v
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        vector<int> left(n, 0);
+        vector<int> right(n, 0);
+        for(int i = 1; i < n; i++) {
+            left[i] = max(left[i - 1], height[i - 1]);
+            right[n - i - 1] = max(right[n - i], height[n - i]);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            res += height[i] < min(left[i], right[i]) ? min(left[i], right[i]) - height[i] : 0;
+        }
+        return res;
+    }
+};
+
+// h
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        stack<int> st;
+        int n = height.size();
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && height[i] > height[st.top()]) {
+                int mid = st.top();
+                st.pop();
+                // accelerate
+                while(!st.empty() && height[st.top()] == height[mid]) {
+                    st.pop();
+                }
+                if(!st.empty()) {
+                    int left = st.top();
+                    int right = i;
+                    res += (min(height[left], height[right]) - height[mid]) * (right - left - 1);
+                }
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
