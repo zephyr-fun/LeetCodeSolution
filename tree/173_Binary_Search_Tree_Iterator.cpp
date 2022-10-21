@@ -57,3 +57,41 @@ private:
  * int param_1 = obj->next();
  * bool param_2 = obj->hasNext();
  */
+
+// 2022.10.21
+// in order traversal(non recursion)
+class BSTIterator {
+public:
+    stack<TreeNode*> st;
+
+    BSTIterator(TreeNode* root) {
+        dfsLeft(root);
+    }
+    
+    int next() {
+        TreeNode* cur = st.top();
+        st.pop();
+        if(cur->right != nullptr) {
+            dfsLeft(cur->right);
+        }
+        return cur->val;
+    }
+    
+    bool hasNext() {
+        return !st.empty();
+    }
+private:
+    void dfsLeft(TreeNode* root) {
+        while(root != nullptr) {
+            st.push(root);
+            root = root->left;
+        }
+    }
+};
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator* obj = new BSTIterator(root);
+ * int param_1 = obj->next();
+ * bool param_2 = obj->hasNext();
+ */
