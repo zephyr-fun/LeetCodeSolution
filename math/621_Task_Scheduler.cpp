@@ -46,3 +46,28 @@ public:
         return max(len1, len2);
     }
 };
+
+// 2022.10.26
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int m = tasks.size();
+        int len1 = m;
+        int len2 = 0;
+        unordered_map<int, int> map;
+        int cnt = 0;
+        int tot = 1;
+        for(int i = 0; i < m; i++) {
+            map[tasks[i]]++;
+            if(map[tasks[i]] > cnt) {
+                cnt = map[tasks[i]];
+                tot = 1;
+            }
+            else if(map[tasks[i]] == cnt) {
+                tot++;
+            }
+        }
+        len2 = (cnt - 1) * (n + 1) + tot;
+        return max(len1, len2);
+    }
+};
