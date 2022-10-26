@@ -50,3 +50,37 @@ public:
         return res;
     }
 };
+
+// 2022.10.25
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n + 1);
+        dp[0] = 0;
+        int res = -0x3f3f3f3f;
+        for(int i = 1; i <= n; i++) {
+            dp[i] = max(dp[i - 1] + nums[i - 1], nums[i - 1]);
+            res = max(res, dp[i]);
+        }
+        return res;
+    }
+};
+
+// optim
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+        int res = -0x3f3f3f3f;
+        for(int i = 0; i < n; i++) {
+            if(sum < 0) {
+                sum = 0;
+            }
+            sum += nums[i];
+            res = max(res, sum);
+        }
+        return res;
+    }
+};
