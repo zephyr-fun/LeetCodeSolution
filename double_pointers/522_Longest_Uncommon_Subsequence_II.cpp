@@ -28,3 +28,33 @@ public:
         return res;
     }
 };
+
+// 2022.11.10
+class Solution {
+public:
+    bool check(string a, string b) {
+        int cnt = 0;
+        for(auto& c : b) {
+            if(a[cnt] == c) {
+                cnt++;
+            }
+        }
+        return cnt == a.size();
+    }
+    int findLUSlength(vector<string>& strs) {
+        int res = -1;
+        for(int i = 0; i < strs.size(); i++) {
+            bool is_sub = false;
+            for(int j = 0; j < strs.size(); j++) {
+                if(i != j && check(strs[i], strs[j])) {
+                    is_sub = true;
+                    break;
+                }
+            }
+            if(!is_sub) {
+                res = max(res, (int)strs[i].size());
+            }
+        }
+        return res;
+    }
+};
