@@ -176,3 +176,31 @@ public:
         }
     }
 };
+
+// 2022.11.13
+class Solution {
+public:
+    int res = 0;
+    void dfs(TreeNode* root, int depth) {
+        if(root == nullptr) {
+            return ;
+        }
+        res = max(res, depth);
+        dfs(root->left, depth + 1);
+        dfs(root->right, depth + 1);
+    }
+    int maxDepth(TreeNode* root) {
+        dfs(root, 1);
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+    }
+};
