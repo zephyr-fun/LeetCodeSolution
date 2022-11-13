@@ -124,3 +124,36 @@ public:
         return cost;
     }
 };
+
+// 2022.11.13
+const int N = 57;
+int dp[N][N][2 * N];
+class Solution {
+public:
+    int cherryPickup(vector<vector<int>>& grid) {
+        int n = grid.size();
+        memset(dp, -0x3f, sizeof(dp));
+        if(grid[0][0] != -1) {
+            dp[1][1][2] = grid[0][0];
+        }
+        for(int step = 3; step <= 2 * n; step++) {
+            for(int i = max(1, step - n); i <= min(n, step - 1); i++) {
+                for(int j = max(1, step - n); j <= min(n, step - 1); j++) {
+                    if(grid[i - 1][step - i - 1] == -1 || grid[j - 1][step - j - 1] == -1) {
+                        continue;
+                    }
+                    int t = grid[i - 1][step - i - 1];
+                    if(i != j) {
+                        t += grid[j - 1][step - j - 1];
+                    }
+                    for(int a = i - 1; a <= i; a++) {
+                        for(int b = j - 1; b <= j; b++) {
+                            dp[i][j][step] = max(dp[i][j][step], dp[a][b][step - 1] + t);
+                        }
+                    }
+                }
+            }
+        }
+        return max(0, dp[n][n][2 * n]);
+    }
+};
