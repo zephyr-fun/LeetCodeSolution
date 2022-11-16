@@ -77,3 +77,35 @@ public:
  * int param_3 = obj->top();
  * int param_4 = obj->getMin();
  */
+
+// 2022.11.16
+class MinStack {
+public:
+    stack<int> st;
+    stack<int> as_st;
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        st.push(val);
+        if(as_st.empty() || val <= as_st.top()) {
+            as_st.push(val);
+        }
+    }
+    
+    void pop() {
+        if(as_st.top() == st.top()) {
+            as_st.pop();
+        }
+        st.pop();
+    }
+    
+    int top() {
+        return st.top();
+    }
+    
+    int getMin() {
+        return as_st.top();
+    }
+};
