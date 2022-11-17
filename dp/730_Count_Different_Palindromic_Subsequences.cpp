@@ -78,3 +78,42 @@ public:
         return dp[0][n - 1];
     }
 };
+
+// 2022.11.17
+// https://leetcode.cn/problems/count-different-palindromic-subsequences/solution/by-ac_oier-lbva/
+class Solution {
+public:
+    int countPalindromicSubsequences(string s) {
+        int mod = 1e9 + 7;
+        int n = s.size();
+        int dp[n][n];
+        int L[4];
+        int R[4];
+        memset(dp, 0, sizeof(dp));
+        memset(L, -1, sizeof(L));
+        for(int i = n - 1; i >= 0; i--) {
+            L[s[i] - 'a'] = i;
+            memset(R, -1, sizeof(R));
+            for(int j = i; j < n; j++) {
+                R[s[j] - 'a'] = j;
+                for(int k = 0; k < 4; k++) {
+                    if(L[k] == -1 || R[k] == -1) {
+                        continue;
+                    }
+                    int l = L[k];
+                    int r = R[k];
+                    if(l == r) {
+                        dp[i][j] = (dp[i][j] + 1) % mod;
+                    }
+                    else if(l == r - 1) {
+                        dp[i][j] = (dp[i][j] + 2) % mod;
+                    }
+                    else {
+                        dp[i][j] = (dp[i][j] + dp[l + 1][r - 1] + 2) % mod;
+                    }
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+};
