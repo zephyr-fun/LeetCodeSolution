@@ -210,3 +210,37 @@ public:
         return res;
     }
 };
+
+// 2022.11.18
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<int, int> index;
+    TreeNode* helper(vector<int>& inorder, int inStart, int inEnd, vector<int>& postorder, int postStart, int postEnd) {
+        if(postStart > postEnd) {
+            return nullptr;
+        }
+        TreeNode* root = new TreeNode(postorder[postEnd]);
+        int leftLength = index[postorder[postEnd]] - inStart;
+        root->left = helper(inorder, inStart, index[postorder[postEnd]] - 1, postorder, postStart, postStart + leftLength - 1);
+        root->right = helper(inorder, index[postorder[postEnd]] + 1, inEnd, postorder, postStart + leftLength, postEnd - 1);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        for(int i = 0; i < inorder.size(); i++) {
+            index[inorder[i]] = i;
+        }
+        TreeNode* res = helper(inorder, 0, inorder.size() - 1, postorder, 0, postorder.size() - 1);
+        return res;
+    }
+};
