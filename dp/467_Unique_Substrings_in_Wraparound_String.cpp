@@ -16,3 +16,30 @@ public:
         return accumulate(dp.begin(), dp.end(), 0);
     }
 };
+
+// 2022.11.21
+class Solution {
+public:
+    int findSubstringInWraproundString(string p) {
+        int maxLen[26];
+        memset(maxLen, 0, sizeof(maxLen));
+        int n = p.size();
+        maxLen[p[0] - 'a']++;
+        for(int i = 1, cnt = 1; i < n; i++) {
+            int cur = p[i] - 'a';
+            int prev = p[i - 1] - 'a';
+            if((cur == 0 && prev == 25) || prev + 1 == cur) {
+                cnt++;
+            }
+            else {
+                cnt = 1;
+            }
+            maxLen[cur] = max(maxLen[cur], cnt);
+        }
+        int res = 0;
+        for(int i = 0; i < 26; i++) {
+            res += maxLen[i];
+        }
+        return res;
+    }
+};
