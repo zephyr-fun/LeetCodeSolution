@@ -189,3 +189,34 @@ public:
         return res;
     }
 };
+
+// 2022.11.22
+class Solution {
+public:
+    unordered_set<string> set;
+    unordered_set<string> resSet;
+    void dfs(string word, int idx, int cnt) {
+        if(idx == word.size() && cnt != 1) {
+            resSet.insert(word);
+            return ;
+        }
+        for(int i = idx; i < word.size(); i++) {
+            if(set.count(word.substr(idx, i - idx + 1))) {
+                dfs(word, i + 1, cnt + 1);
+            }
+        }
+    }
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        for(auto& word : words) {
+            set.insert(word);
+        }
+        for(auto& word : words) {
+            dfs(word, 0, 0);
+        }
+        vector<string> res;
+        for(auto& r : resSet) {
+            res.emplace_back(r);
+        }
+        return res;
+    }
+};
