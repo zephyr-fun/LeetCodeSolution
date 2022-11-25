@@ -105,3 +105,67 @@ public:
         return res[1];
     }
 };
+
+// 2022.11.25
+// class Solution {
+// public:
+//     int findNumberOfLIS(vector<int>& nums) {
+//         int n = nums.size();
+//         vector<int> dp(n + 1, 0x3f3f3f3f);
+//         int len = 1;
+//         dp[1] = nums[0];
+//         for(int i = 1; i < n; i++) {
+//             if(nums[i] > nums[len]) {
+//                 len++;
+//                 dp[len] = nums[i];
+//             }
+//             else {
+//                 int l = 1;
+//                 int r = len;
+//                 int pos = 1;
+//                 while(l <= r) {
+//                     int mid = (l + r) >> 1;
+//                     if(nums[i] > dp[mid]) {
+//                         pos = mid;
+//                         l = mid + 1;
+//                     }
+//                     else {
+//                         r = mid - 1;
+//                     }
+//                 }
+//                 dp[pos + 1] = min(dp[pos + 1], nums[i]);
+//             }
+//         }
+//         return len;
+//     }
+// };
+class Solution {
+public:
+    int findNumberOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> f(n, 1);
+        vector<int> g(n, 1);
+        int maxVal = 1;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < i; j++) {
+                if(nums[j] < nums[i]) {
+                    if(f[i] < f[j] + 1) {
+                        f[i] = f[j] + 1;
+                        g[i] = g[j];
+                    }
+                    else if(f[i] == f[j] + 1) {
+                        g[i] += g[j];
+                    }
+                }
+            }
+            maxVal = max(maxVal, f[i]);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            if(f[i] == maxVal) {
+                res += g[i];
+            }
+        }
+        return res;
+    }
+};
