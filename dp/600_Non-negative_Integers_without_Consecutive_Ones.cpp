@@ -74,3 +74,34 @@ public:
         return res;
     }
 };
+
+// 2022.11.26
+// https://www.acwing.com/video/2095/
+class Solution {
+public:
+    int findIntegers(int n) {
+        vector<int> nums;
+        while(n) {
+            nums.emplace_back(n % 2);
+            n /= 2;
+        }
+        vector<vector<int>> dp(nums.size() + 1, vector<int>(2));
+        dp[1][0] = dp[1][1] = 1;
+        for(int i = 2; i <= nums.size(); i++) {
+            dp[i][0] = dp[i - 1][0] + dp[i - 1][1];
+            dp[i][1] = dp[i - 1][0];
+        }
+        int res = 0;
+        for(int i = nums.size(), last = 0; i > 0; i--) {
+            int x = nums[i - 1];
+            if(x) {
+                res += dp[i][0];
+                if(last) {
+                    return res;
+                }
+            }
+            last = x;
+        }
+        return res + 1;
+    }
+};
