@@ -157,3 +157,24 @@ public:
         return res;
     }
 };
+
+// 2022.11.27
+class Solution {
+public:
+    int countNumbersWithUniqueDigits(int n) {
+        n = min(n, 10);
+        if(!n) {
+            return 1;
+        }
+        vector<int> dp(n + 1, 0);
+        dp[1] = 9;
+        for(int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] * (11 - i);
+        }
+        int res = 1;
+        for(int i = 1; i <= n; i++) {
+            res += dp[i];
+        }
+        return res;
+    }
+};
