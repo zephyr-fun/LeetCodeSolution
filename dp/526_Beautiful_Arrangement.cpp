@@ -125,3 +125,62 @@ public:
         return dp[mask - 1];
     }
 };
+
+// 2022.11.28
+class Solution {
+public:
+    int countArrangement(int n) {
+        int mask = 1 << n;
+        vector<vector<int>> dp(n + 1, vector<int>(mask, 0));
+        dp[0][0] = 1;
+        for(int i = 1; i <= n; i++) {
+            for(int state = 0; state < mask; state++) {
+                for(int k = 1; k <= n; k++) {
+                    if((state & (1 << (k - 1))) == 0) {
+                        continue;
+                    }
+                    if(k % i != 0 && i % k != 0) {
+                        continue;
+                    }
+                    dp[i][state] += dp[i - 1][state & (~(1 << (k - 1)))];
+                }
+            }
+        }
+        return dp[n][mask - 1];
+    }
+};
+
+// optim
+class Solution {
+public:
+    int getCnt(int state) {
+        int res = 0;
+        while(state) {
+            res++;
+            state -= lowbit(state);
+        }
+        return res;
+    }
+    int countArrangement(int n) {
+        int mask = 1 << n;
+        vector<int> dp(mask, 0);
+        dp[0] = 1;
+        for(int state = 1; state < mask; state++) {
+            int cnt = getCnt(state);
+            for(int k = 1; k <= n; k++) {
+                if((state & (1 << (k - 1))) == 0) {
+                    continue;
+                }
+                if(cnt % k != 0 && k % cnt != 0) {
+                    continue;
+                }
+                dp[state] += dp[state & (~(1 << (k - 1)))];
+            }
+        }
+        return dp[mask - 1];
+    }
+private:
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+};
