@@ -27,3 +27,29 @@ public:
         return dp[n];
     }
 };
+
+// 2022.11.30
+// priority_queue
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        priority_queue<int, vector<int>, greater<int>> que;
+        que.push(1);
+        while(n-- > 0) {
+            int x = que.top();
+            que.pop();
+            if(n == 0) {
+                return x;
+            }
+            for(auto p : primes) {
+                if(p <= INT_MAX / x) {
+                    que.push(x * p);
+                }
+                if(x % p == 0) {
+                    break;
+                }
+            }
+        }
+        return -1;
+    }
+};
