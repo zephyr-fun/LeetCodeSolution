@@ -170,3 +170,43 @@ public:
         return traversal(root, targetSum);
     }
 };
+
+// 2022.12.01
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int target;
+    bool dfs(TreeNode* cur, int sum) {
+        if(cur->left == nullptr && cur->right == nullptr) {
+            return sum + cur->val == target;
+        }
+        if(cur->left) {
+            if(dfs(cur->left, sum + cur->val)) {
+                return true;
+            }
+        }
+        if(cur->right) {
+            if(dfs(cur->right, sum + cur->val)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        if(root == nullptr) {
+            return false;
+        }
+        target = targetSum;
+        return dfs(root, 0);
+    }
+};
