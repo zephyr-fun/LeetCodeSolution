@@ -64,3 +64,34 @@ public:
         return res;
     }
 };
+
+// 2022.12.03
+class Solution {
+public:
+    int lessThan(vector<int>& nums, int k) {
+        unordered_map<int, int> map;
+        int n = nums.size();
+        int l = 0;
+        int r = 0;
+        int res = 0;
+        while(r < n) {
+            map[nums[r]]++;
+            r++;
+            while(l < r && map.size() > k) {
+                map[nums[l]]--;
+                if(map[nums[l]] == 0) {
+                    map.erase(nums[l]);
+                }
+                l++;
+            }
+            res += r - l;
+        }
+        return res;
+    }
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        return lessThan(nums, k) - lessThan(nums, k - 1);
+    }
+};
+
+// subject to "1 <= nums[i], k <= nums.length"
+// so we can optim unordered_map with vector<int>
