@@ -43,3 +43,27 @@ public:
         return res;
     }
 };
+
+// 2022.12.05
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        // int cnt[26];
+        // memset(cnt, 0, sizeof(cnt));
+        unordered_map<char, int> map;
+        int res = 0;
+        int l = 0;
+        int r = 0;
+        int n = s.size();
+        while(r < n) {
+            map[s[r]]++;
+            while(l < r && map[s[r]] > 1) {
+                map[s[l]]--;
+                l++;
+            }
+            r++;
+            res = max(res, r - l);
+        }
+        return res;
+    }
+};
