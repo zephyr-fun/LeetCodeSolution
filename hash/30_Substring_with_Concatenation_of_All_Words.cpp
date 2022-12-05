@@ -29,3 +29,35 @@ public:
 };
 
 // optim enumerate
+
+
+// 2022.12.05
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> res;
+        unordered_map<string, int> mapw;
+        int n = s.size();
+        int m = words.size();
+        int w = words[0].size();
+        for(auto& word : words) {
+            mapw[word]++;
+        }
+        for(int i = 0; i <= n - m * w; i++) {
+            unordered_map<string, int> maps;
+            string cur = s.substr(i, m * w);
+            for(int j = 0; j < m * w; j += w) {
+                if(!mapw.count(cur.substr(j, w))) {
+                    break;
+                }
+                maps[cur.substr(j, w)]++;
+            }
+            if(mapw == maps) {
+                res.emplace_back(i);
+            }
+        }
+        return res;
+    }
+};
+
+// sliding window && hash by mod
