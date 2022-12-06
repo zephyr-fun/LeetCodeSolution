@@ -183,3 +183,58 @@ public:
         }
     }
 };
+
+// 2022.12.06
+class Solution {
+public:
+    string s;
+    vector<vector<string>> res;
+    vector<string> path;
+    bool isPalindrome2(int start, int end) {
+        int l = start;
+        int r = end;
+        while(l < r) {
+            if(s[l] == s[r]) {
+                l++;
+                r--;
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool isPalindrome(string temp) {
+        int n = temp.size();
+        int l = 0;
+        int r = n - 1;
+        while(l < r) {
+            if(temp[l] == temp[r]) {
+                l++;
+                r--;
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
+    }
+    void dfs(int cur) {
+        if(cur == s.size()) {
+            res.emplace_back(path);
+            return ;
+        }
+        for(int i = cur; i < s.size(); i++) {
+            if(isPalindrome(cur, i)) {
+                path.emplace_back(s.substr(cur, i - cur + 1));
+                dfs(i + 1);
+                path.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s_) {
+        s = s_;
+        dfs(0);
+        return res;
+    }
+};
