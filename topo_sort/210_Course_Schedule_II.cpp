@@ -29,3 +29,36 @@ public:
         return res.size() == n ? res : vector<int>();
     }
 };
+
+// 2022.12.06
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> res;
+        vector<int> in(numCourses, 0);
+        int n = prerequisites.size();
+        vector<vector<int>> g(numCourses);
+        for(auto& pre : prerequisites) {
+            in[pre[0]]++;
+            g[pre[1]].emplace_back(pre[0]);
+        }
+        stack<int> st;
+        for(int i = 0; i < numCourses; i++) {
+            if(in[i] == 0) {
+                st.push(i);
+            }
+        }
+        while(!st.empty()) {
+            int u = st.top();
+            st.pop();
+            res.emplace_back(u);
+            for(auto& v : g[u]) {
+                in[v]--;
+                if(in[v] == 0) {
+                    st.push(v);
+                }
+            }
+        }
+        return res.size() == numCourses ? res : vector<int>();
+    }
+};
