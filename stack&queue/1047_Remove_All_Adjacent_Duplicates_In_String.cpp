@@ -51,3 +51,20 @@ public:
         return sStack;
     }
 };
+
+// 2022.12.08
+class Solution {
+public:
+    string removeDuplicates(string s) {
+        string stackS = "";
+        for(auto& c : s) {
+            if(stackS.size() && stackS.back() == c) {
+                stackS.pop_back();
+            }
+            else {
+                stackS.push_back(c);
+            }
+        }
+        return stackS;
+    }
+};
