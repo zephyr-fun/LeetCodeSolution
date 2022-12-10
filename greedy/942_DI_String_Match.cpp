@@ -19,3 +19,26 @@ public:
         return res;
     }
 };
+
+// 2022.12.10
+class Solution {
+public:
+    vector<int> diStringMatch(string s) {
+        int n = s.size();
+        int left = 0;
+        int right = n;
+        vector<int> res;
+        for(auto& c : s) {
+            if(c == 'I') {
+                res.emplace_back(left);
+                left++;
+            }
+            else {
+                res.emplace_back(right);
+                right--;
+            }
+        }
+        res.emplace_back(left);
+        return res;
+    }
+};
