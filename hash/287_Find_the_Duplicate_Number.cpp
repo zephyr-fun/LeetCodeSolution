@@ -53,3 +53,19 @@ public:
         return slow;
     }
 };
+
+// 2022.12.10
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int idx = 0;
+        while(idx >= 0) {
+            if(nums[idx] < 0) {
+                return idx;
+            }
+            nums[idx] = -nums[idx];
+            idx = -nums[idx];
+        }
+        return -1;
+    }
+};
