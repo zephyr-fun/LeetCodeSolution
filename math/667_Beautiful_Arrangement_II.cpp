@@ -27,3 +27,26 @@ public:
         return res;
     }
 };
+
+// 2022.12.12
+class Solution {
+public:
+    vector<int> constructArray(int n, int k) {
+        vector<int> res(n, 0);
+        int t = n - k - 1;
+        for(int i = 0; i < t; i++) {
+            res[i] = i + 1;
+        }
+        for(int i = t, a = n - k, b = n; i < n; ) {
+            res[i] = a;
+            i++;
+            a++;
+            if(i < n) {
+                res[i] = b;
+                i++;
+                b--;
+            }
+        }
+        return res;
+    }
+};
