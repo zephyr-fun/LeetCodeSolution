@@ -192,3 +192,47 @@ public:
         return res;
     }
 };
+
+// 2022.12.12
+class Solution {
+public:
+    int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int getIdx(int x, int y, int m) {
+        return x * m + y;
+    }
+    int maxDistance(vector<vector<int>>& grid) {
+        int res = -1;
+        queue<int> que;
+        unordered_map<int, int> map;
+        int n = grid.size();
+        int m = grid[0].size();
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(grid[i][j] == 1) {
+                    que.push(getIdx(i, j, m));
+                    map[getIdx(i, j, m)] = 0;
+                }
+            }
+        }
+        while(!que.empty()) {
+            int x = que.front() / m;
+            int y = que.front() % m;
+            int step = map[que.front()];
+            que.pop();
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                    continue;
+                }
+                if(map.count(getIdx(nx, ny, m))) {
+                    continue;
+                }
+                que.push(getIdx(nx, ny, m));
+                map[getIdx(nx, ny, m)] = step + 1;
+                res = max(res, step + 1);
+            }
+        }
+        return res;
+    }
+};
