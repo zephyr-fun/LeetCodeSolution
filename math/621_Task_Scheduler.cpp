@@ -71,3 +71,26 @@ public:
         return max(len1, len2);
     }
 };
+
+// 2022.12.13
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int maxFrq = 0;
+        int cnt = 0;
+        int frq[26];
+        memset(frq, 0, sizeof(frq));
+        int candiLen = tasks.size();
+        for(auto& c : tasks) {
+            frq[c - 'A']++;
+            if(frq[c - 'A'] > maxFrq) {
+                maxFrq = frq[c - 'A'];
+                cnt = 1;
+            }
+            else if(frq[c - 'A'] == maxFrq) {
+                cnt++;
+            }
+        }
+        return max((maxFrq - 1) * (n + 1) + cnt, candiLen);
+    }
+};
