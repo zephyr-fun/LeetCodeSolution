@@ -37,3 +37,29 @@ public:
         }
     }
 };
+
+// 2022.12.13
+// O(nlogn)
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int left = (n / 2) - (n % 2 == 0 ? 1 : 0);
+        int right = n - 1;
+        vector<int> res(n, 0);
+        for(int i = 0; i < n; i++) {
+            if(i % 2 == 0) {
+                res[i] = nums[left];
+                left--;
+            }
+            else {
+                res[i] = nums[right];
+                right--;
+            }
+        }
+        nums = res;
+    }
+};
+
+// optim
