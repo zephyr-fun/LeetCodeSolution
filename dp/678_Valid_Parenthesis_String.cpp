@@ -59,3 +59,35 @@ public:
         return dp[n][0];
     }
 };
+
+// 2022.12.14
+// acwing yxc version
+// https://www.acwing.com/video/2456/
+// from stack to cnt
+// from cnt to range [low, high]
+class Solution {
+public:
+    bool checkValidString(string s) {
+        int low = 0;
+        int high = 0;
+        for(auto& c : s) {
+            if(c == '(') {
+                low++;
+                high++;
+            }
+            else if(c == ')') {
+                low--;
+                high--;
+            }
+            else {
+                low--;
+                high++;
+            }
+            low = max(low, 0);
+            if(low > high) {
+                return false;
+            }
+        }
+        return low == 0;
+    }
+};
