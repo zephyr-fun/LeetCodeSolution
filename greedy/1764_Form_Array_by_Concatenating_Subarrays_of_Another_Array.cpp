@@ -39,3 +39,40 @@ public:
         return cnt == n;
     }
 };
+
+// 2022.12.17
+class Solution {
+public:
+    bool check(vector<int>& group, vector<int>& nums, int idx) {
+        int cnt = 0;
+        if(nums.size() - idx < group.size()) {
+            return false;
+        }
+        for(auto gp : group) {
+            if(gp != nums[idx]) {
+                return false;
+            }
+            cnt++;
+            idx++;
+        }
+        return cnt == group.size();
+    }
+    bool canChoose(vector<vector<int>>& groups, vector<int>& nums) {
+        int n = groups.size();
+        int m = nums.size();
+        int cnt = 0;
+        int i = 0;
+        int j = 0;
+        while(i < n && j < m) {
+            if(check(groups[i], nums, j)) {
+                j += groups[i].size();
+                i++;
+                cnt++;
+            }
+            else {
+                j++;
+            }
+        }
+        return cnt == n;
+    }
+};
