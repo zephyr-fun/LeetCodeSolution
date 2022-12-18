@@ -57,3 +57,33 @@ public:
         return res;
     }
 };
+
+// 2022.12.18
+// no need
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        int n = s.size();
+        vector<string> res;
+        if(n <= 10) {
+            return res;
+        }
+        unordered_map<string, int> map;
+        string cur;
+        for(int i = 0; i < 10; i++) {
+            cur += s[i];
+        }
+        map[cur]++;
+        for(int i = 10; i < n; i++) {
+            cur = cur.substr(1);
+            cur += s[i];
+            map[cur]++;
+        }
+        for(auto& [k, v] : map) {
+            if(v >= 2) {
+                res.emplace_back(k);
+            }
+        }
+        return res;
+    }
+};
