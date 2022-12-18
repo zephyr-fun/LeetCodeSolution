@@ -86,3 +86,27 @@ public:
         return -1;
     }
 };
+
+// 2022.12.18
+class Solution {
+public:
+    int repeatedStringMatch(string a, string b) {
+        int lower = b.size() / a.size();
+        if(b.size() % a.size() != 0) {
+            lower += 1;
+        }
+        int upper = lower + 1;
+        string low = "";
+        for(int i = 0; i < lower; i++) {
+            low += a;
+        }
+        string up = low + a;
+        if(low.find(b) != string::npos) {
+            return lower;
+        }
+        if(up.find(b) != string::npos) {
+            return upper;
+        }
+        return -1;
+    }
+};
