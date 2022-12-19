@@ -116,4 +116,51 @@ public:
     }
 };
 
-// string hash
+// 2022.12.19
+class Solution {
+public:
+    const int P = 131;
+    vector<unsigned long long> h;
+    vector<unsigned long long> p;
+    unordered_set<unsigned long long> set;
+    string longestDupSubstring(string s) {
+        int n = s.size();
+        h.resize(n + 7);
+        p.resize(n + 7);
+        p[0] = 1;
+        for(int i = 0; i < n; i++) {
+            p[i + 1] = p[i] * P;
+            h[i + 1] = h[i] * P + s[i];
+        }
+        int left = 1;
+        int right = n;
+        string res;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            string temp = check(s, mid, n);
+            if(temp.size() != 0) {
+                res = temp;
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+        return res;
+    }
+    string check(string s, int len, int n) {
+        for(int i = 1; i + len - 1 <= n; i++) {
+            int j = i + len - 1;
+            // align to calc hash of i->j
+            unsigned long long cur = h[j] - h[i - 1] * p[j - i + 1];
+            if(set.count(cur)) {
+                string res = s.substr(i - 1, len);
+                return res;
+            }
+            else {
+                set.insert(cur);
+            }
+        }
+        return "";
+    }
+};
