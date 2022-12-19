@@ -54,3 +54,32 @@ public:
         return res;
     }
 };
+
+// 2022.12.19
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> cur;
+    int k;
+    int n;
+    void dfs(int num, int idx, int left) {
+        if(left == 0 && num == k) {
+            res.emplace_back(cur);
+            return ;
+        }
+        if(idx > left || idx > 9 || num > k) {
+            return ;
+        }
+        for(int i = idx; i <= 9; i++) {
+            cur.emplace_back(i);
+            dfs(num + 1, i + 1, left - i);
+            cur.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k_, int n_) {
+        k = k_;
+        n = n_;
+        dfs(0, 1, n);
+        return res;
+    }
+};
