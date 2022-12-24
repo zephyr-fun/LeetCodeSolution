@@ -56,3 +56,22 @@ public:
         return dummy->next;
     }
 };
+
+// 2022.12.24
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* cur = dummy;
+        while(cur->next && cur->next->next) {
+            ListNode* n1 = cur->next;
+            ListNode* n2 = cur->next->next;
+            cur->next = cur->next->next;
+            n1->next = n2->next;
+            cur->next->next = n1;
+            cur = cur->next->next;
+        }
+        return dummy->next;
+    }
+};
