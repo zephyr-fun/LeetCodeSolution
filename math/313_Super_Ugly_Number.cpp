@@ -53,3 +53,28 @@ public:
         return -1;
     }
 };
+
+// 2022.12.24
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        priority_queue<int, vector<int>, greater<int>> pque;
+        pque.push(1);
+        while(n-- > 0) {
+            int x = pque.top();
+            pque.pop();
+            if(n == 0) {
+                return x;
+            }
+            for(auto& prime : primes) {
+                if(prime <= INT_MAX / x) {
+                    pque.push(x * prime);
+                }
+                if(x % prime == 0) {
+                    break;
+                }
+            }
+        }
+        return -1;
+    }
+};
