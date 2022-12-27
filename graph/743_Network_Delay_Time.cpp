@@ -47,3 +47,39 @@ public:
 };
 
 // plain Dijkstra
+
+
+// 2022.12.27
+// https://leetcode.cn/problems/network-delay-time/solution/gong-shui-san-xie-yi-ti-wu-jie-wu-chong-oghpz/
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<vector<int>> grid(n + 1, vector<int>(n + 1, 0x3f3f3f3f));
+        for(int i = 0; i <= n; i++) {
+            for(int j = 0; j <= n; j++) {
+                grid[i][j] = i == j ? 0 : 0x3f3f3f3f;
+            }
+        }
+        for(auto& time : times) {
+            int u = time[0];
+            int v = time[1];
+            int cost = time[2];
+            grid[u][v] = cost;
+        }
+        floyd(grid);
+        int res = 0;
+        for(int i = 1; i <= n; i++) {
+            res = max(res, grid[k][i]);
+        }
+        return res >= 0x3f3f3f3f / 2 ? -1 : res;
+    }
+    void floyd(vector<vector<int>>& grid) {
+        for(int p = 0; p < grid.size(); p++) {
+            for(int i = 0; i < grid.size(); i++) {
+                for(int j = 0; j < grid.size(); j++) {
+                    grid[i][j] = min(grid[i][j], grid[i][p] + grid[p][j]);
+                }
+            }
+        }
+    }
+};
