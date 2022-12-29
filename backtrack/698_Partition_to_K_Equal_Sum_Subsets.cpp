@@ -70,7 +70,7 @@ public:
             while(i + 1 < nums.size() && nums[i + 1] == nums[i]) {
                 i++;
             }
-            if(!cnt || cnt + nums[i] == target) { // first or last
+            // if(!cnt || cnt + nums[i] == target) { // first or last, why?
                 return false;
             }
         }
