@@ -97,3 +97,34 @@ public:
         return res;
     }
 };
+
+// 2022.12.30
+// dp + topo sort
+class Solution {
+public:
+    int shortestPathLength(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<vector<int>> dp(1 << n, vector<int>(n, 0x3f3f3f3f));
+        queue<pair<int, int>> que;
+        for(int i = 0; i < n; i++) {
+            dp[1 << i][i] = 0;
+            que.push(make_pair(i, 1 << i));
+        }
+        while(!que.empty()) {
+            auto [u, state] = que.front();
+            que.pop();
+            for(auto v : graph[u]) {
+                int nstate = state | (1 << v);
+                if(dp[nstate][v] > dp[state][u] + 1) {
+                    dp[nstate][v] = dp[state][u] + 1;
+                    que.push(make_pair(v, nstate));
+                }
+            }
+        }
+        int res = 0x3f3f3f3f;
+        for(int i = 0; i < n; i++) {
+            res = min(res, dp[(1 << n) - 1][i]);
+        }
+        return res;
+    }
+};
