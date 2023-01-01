@@ -12,7 +12,7 @@ using namespace std;
 
 // dfs + dp
 // f(o) = g(l) + g(r)
-// g(0) = max{f(l), g(l)} + max{f(r), g(r)}
+// g(o) = max{f(l), g(l)} + max{f(r), g(r)}
 
 unordered_map<TreeNode*, int> f, g;
 
@@ -149,6 +149,37 @@ public:
     }
     int rob(TreeNode* root) {
         vector<int> res = robTree(root);
+        return max(res[0], res[1]);
+    }
+};
+
+// 2023.01.01
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> robTree(TreeNode* root) {
+        vector<int> res(2, 0);
+        if(root == nullptr) {
+            return res;
+        }
+        auto left = robTree(root->left);
+        auto right = robTree(root->right);
+        res[0] = max(left[0], left[1]) + max(right[0], right[1]);
+        res[1] = root->val + left[0] + right[0];
+        return res;
+    }
+    int rob(TreeNode* root) {
+        auto res = robTree(root);
         return max(res[0], res[1]);
     }
 };
