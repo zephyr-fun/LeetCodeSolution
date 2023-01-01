@@ -12,3 +12,19 @@ public:
         return '0';
     }
 };
+
+// 2023.01.01
+class Solution {
+public:
+    char repeatedCharacter(string s) {
+        int cnt[26];
+        memset(cnt, 0, sizeof(cnt));
+        for(auto& c : s) {
+            cnt[c - 'a']++;
+            if(cnt[c - 'a'] == 2) {
+                return c;
+            }
+        }
+        return ' ';
+    }
+};
