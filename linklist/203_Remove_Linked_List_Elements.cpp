@@ -50,3 +50,22 @@ public:
         return dummy->next;
     }
 };
+
+// 2023.01.06
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode* dummy = new ListNode(-1);
+        dummy->next = head;
+        ListNode* cur = dummy;
+        while(cur != nullptr) {
+            while(cur->next != nullptr && cur->next->val == val) {
+                ListNode* temp = cur->next;
+                cur->next = cur->next->next;
+                delete temp;
+            }
+            cur = cur->next;
+        }
+        return dummy->next;
+    }
+};
