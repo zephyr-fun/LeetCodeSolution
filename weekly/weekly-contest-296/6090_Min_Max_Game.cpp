@@ -31,3 +31,50 @@ public:
         return recursion(nums, true);
     }
 };
+
+// 2023.01.15
+class Solution {
+public:
+    int minMaxGame(vector<int>& nums) {
+        queue<int> que;
+        bool is_min = true;
+        for(auto& num : nums) {
+            que.push(num);
+        }
+        while(que.size() > 1) {
+            int size = que.size();
+            is_min = true;
+            for(int i = 0; i < size; i += 2) {
+                int first = que.front();
+                que.pop();
+                int second = que.front();
+                que.pop();
+                if(is_min) {
+                    que.push(min(first, second));
+                }
+                else {
+                    que.push(max(first, second));
+                }
+                is_min = !is_min;
+            }
+            
+        }
+        return que.front();
+    }
+};
+
+// 2023.01.15
+class Solution {
+public:
+    int minMaxGame(vector<int>& nums) {
+        for(int n = nums.size(); n > 1; ) {
+            n >>= 1;
+            for(int i = 0; i < n; i++) {
+                int a = nums[i << 1];
+                int b = nums[i << 1 | 1];
+                nums[i] = i % 2 == 0 ? min(a, b) : max(a, b);
+            }
+        }
+        return nums[0];
+    }
+};
