@@ -47,3 +47,27 @@ public:
         return vector<int> (res.begin(), res.end());
     }
 };
+
+// 2023.01.15
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        int has1[1010];
+        int has2[1010];
+        memset(has1, false, sizeof(has1));
+        memset(has2, false, sizeof(has2));
+        for(auto& num : nums1) {
+            has1[num] = true;
+        }
+        for(auto& num : nums2) {
+            has2[num] = true;
+        }
+        vector<int> res;
+        for(int i = 0; i <= 1000; i++) {
+            if(has1[i] && has2[i]) {
+                res.emplace_back(i);
+            }
+        }
+        return res;
+    }
+};
