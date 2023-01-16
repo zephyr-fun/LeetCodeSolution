@@ -33,7 +33,7 @@ int countNodes(TreeNode* root)
     int right = (1 << (level + 1)) - 1;//优先级-大于>><<
     while(left < right)
     {
-        int mid = (right - left + 1)/2 + left;
+        int mid = (right - left + 1) / 2 + left;
         if(exists(root, level, mid))
             left = mid;
         else
@@ -43,7 +43,7 @@ int countNodes(TreeNode* root)
 }
 bool exists(TreeNode* root, int level, int mid)
 {
-    int bit = 1 << (level-1);
+    int bit = 1 << (level - 1);
     TreeNode* node = root;
     while(node && (bit > 0))
     {
@@ -105,5 +105,50 @@ public:
             return (2 << leftHeight) - 1;
         }
         return countNodes(root->left) + countNodes(root->right) + 1; // notice that left now equals nullptr
+    }
+};
+
+// 2023.01.16
+// normal
+class Solution {
+public:
+    int res = 0;
+    void traversal(TreeNode* root) {
+        if(root == nullptr) {
+            return ;
+        }
+        res++;
+        traversal(root->left);
+        traversal(root->right);
+    }
+    int countNodes(TreeNode* root) {
+        traversal(root);
+        return res;
+    }
+};
+
+// optim
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        int leftCnt = 0;
+        int rightCnt = 0;
+        TreeNode* left = root->left;
+        TreeNode* right = root->right;
+        while(left) {
+            leftCnt++;
+            left = left->left;
+        }
+        while(right) {
+            rightCnt++;
+            right = right->right;
+        }
+        if(leftCnt == rightCnt) {
+            return (2 << leftCnt) - 1;
+        }
+        return countNodes(root->left) + countNodes(root->right) + 1;
     }
 };
