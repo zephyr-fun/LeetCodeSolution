@@ -116,3 +116,40 @@ public:
         return res;
     }
 };
+
+// 2023.01.22
+class Solution {
+public:
+    string simplifyPath(string path) {
+        int left = 0;
+        int right = 0;
+        int n = path.size();
+        stack<string> st;
+        while(right < n) {
+            while(left < n && path[left] == '/') {
+                left++;
+            }
+            right = left;
+            while(right < n && path[right] != '/') {
+                right++;
+            }
+            string cur = path.substr(left, right - left);
+            cout << cur << endl;
+            if(cur == "..") {
+                if(!st.empty()) {
+                    st.pop();
+                }
+            }
+            else if(cur != "" && cur != ".") {
+                st.push(cur);
+            }
+            left = right;
+        }
+        string res = "";
+        while(!st.empty()) {
+            res = "/" + st.top() + res;
+            st.pop();
+        }
+        return res == "" ? "/" : res;
+    }
+};
