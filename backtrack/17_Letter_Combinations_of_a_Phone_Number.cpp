@@ -191,3 +191,42 @@ public:
         return res;
     }
 };
+
+// 2023.01.25
+class Solution {
+public:
+    int n;
+    string digits;
+    vector<string> res;
+    string path;
+    vector<string> map = {"",
+                          "",
+                          "abc",
+                          "def",
+                          "ghi",
+                          "jkl",
+                          "mno",
+                          "pqrs",
+                          "tuv",
+                          "wxyz"};
+    void dfs(int cur) {
+        if(cur == n) {
+            res.emplace_back(path);
+            return ;
+        }
+        int num = digits[cur] - '0';
+        for(auto& c : map[num]) {
+            path += c;
+            dfs(cur + 1);
+            path.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits_) {
+        digits = digits_;
+        n = digits.size();
+        if(n != 0) {
+            dfs(0);
+        }
+        return res;
+    }
+};
