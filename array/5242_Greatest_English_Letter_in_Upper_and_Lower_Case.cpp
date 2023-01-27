@@ -20,3 +20,29 @@ public:
         return "";
     }
 };
+
+// 2023.01.27
+class Solution {
+public:
+    string greatestLetter(string s) {
+        bool lo[26];
+        bool hi[26];
+        memset(lo, false, sizeof(lo));
+        memset(hi, false, sizeof(hi));
+        for(auto& c : s) {
+            if(c >= 'a' && c <= 'z') {
+                lo[c - 'a'] = true;
+            }
+            else if(c >= 'A' && c <= 'Z') {
+                hi[c - 'A'] = true;
+            }
+        }
+        string res = "";
+        for(int i = 0; i < 26; i++) {
+            if(hi[i] && lo[i]) {
+                res = 'A' + i;
+            }
+        }
+        return res;
+    }
+};
