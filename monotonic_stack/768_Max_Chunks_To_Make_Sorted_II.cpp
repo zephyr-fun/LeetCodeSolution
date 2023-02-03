@@ -43,3 +43,52 @@ public:
         return st.size();
     }
 };
+
+// 2023.02.03
+// O(n)
+// 是上面写法的优化版本，在最初用cur合并if-else逻辑
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        stack<int> st;
+        for(auto& num : arr) {
+            int cur = num;
+            while(!st.empty() && st.top() > num) {
+                cur = max(cur, st.top());
+                st.pop();
+            }
+            st.push(cur);
+        }
+        return st.size();
+    }
+};
+
+// O(nlogn)
+// tot用来即使更新map中的匹配程度
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        vector<int> sorted(arr);
+        sort(sorted.begin(), sorted.end());
+        unordered_map<int, int> map;
+        int n = arr.size();
+        int res = 0;
+        int tot = 0;
+        for(int i = 0; i < n; i++) {
+            int a = arr[i];
+            int b = sorted[i];
+            if(!map.count(a) || map[a] == 0) {
+                tot++;
+            }
+            map[a]++;
+            map[b]--;
+            if(map[b] == 0) {
+                tot--;
+            }
+            if(tot == 0) {
+                res++;
+            }
+        }
+        return res;
+    }
+};
