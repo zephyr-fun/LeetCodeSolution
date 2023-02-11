@@ -1,4 +1,6 @@
 // 2023.02.10
+// https://leetcode.cn/problems/dice-roll-simulation/solution/ni-bi-dong-chao-jian-dan-dong-tai-gui-hua-fu-za-du/
+// https://leetcode.cn/problems/dice-roll-simulation/solution/jiao-ni-yi-bu-bu-si-kao-dong-tai-gui-hua-sje6/
 class Solution {
 public:
     int dieSimulator(int n, vector<int>& rollMax) {
