@@ -57,3 +57,34 @@ public:
         return res;
     }
 };
+
+// 2023.02.11
+class Solution {
+public:
+    int eatenApples(vector<int>& apples, vector<int>& days) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        int n = apples.size();
+        int day = 0;
+        int res = 0;
+        // [end, cnt]
+        while(day < n || !pq.empty()) {
+            if(day < n && apples[day] > 0) {
+                pq.push(make_pair(day + days[day] - 1, apples[day]));
+            }
+            while(!pq.empty() && day > pq.top().first) {
+                pq.pop();
+            }
+            if(!pq.empty()) {
+                auto [end, cnt] = pq.top();
+                pq.pop();
+                cnt--;
+                if(cnt > 0 && end > day) {
+                    pq.push(make_pair(end, cnt));
+                }
+                res++;
+            }
+            day++;
+        }
+        return res;
+    }
+};
