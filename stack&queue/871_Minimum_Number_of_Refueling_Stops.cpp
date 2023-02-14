@@ -92,3 +92,36 @@ public:
         return res;
     }
 };
+
+// 2023.02.14
+// use stack as a backup
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        priority_queue<int, vector<int>, less<int>> pque;
+        int loc = 0;
+        int remain = startFuel;
+        int n = stations.size();
+        int idx = 0;
+        int res = 0;
+        while(loc < target) {
+            if(remain == 0) {
+                if(!pque.empty()) {
+                    remain = pque.top();
+                    pque.pop();
+                    res++;
+                }
+                else {
+                    return -1;
+                }
+            }
+            loc += remain;
+            remain = 0;
+            while(idx < n && loc >= stations[idx][0]) {
+                pque.push(stations[idx][1]);
+                idx++;
+            }
+        }
+        return loc < target ? -1 : res;
+    }
+};
