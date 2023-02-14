@@ -78,3 +78,60 @@ public:
         return res;
     }
 };
+
+// 2023.02.14
+// new monotonic stack template
+class Solution {
+public:
+    int longestWPI(vector<int>& hours) {
+        int res = 0;
+        int n = hours.size();
+        int preSum[n + 1];
+        memset(preSum, 0, sizeof(preSum));
+        stack<int> st;
+        // candidate left end
+        st.push(0);
+        for(int i = 1; i <= n; i++) {
+            preSum[i] = preSum[i - 1] + (hours[i - 1] > 8 ? 1 : -1);
+            if(preSum[st.top()] > preSum[i]) {
+                st.push(i);
+            }
+        }
+        for(int i = n; i > 0; i--) {
+            while(!st.empty() && preSum[st.top()] < preSum[i]) {
+                res = max(res, i - st.top());
+                st.pop();
+            }
+        }
+        return res;
+    }
+};
+
+// take advantage of the continuance
+class Solution {
+public:
+    int longestWPI(vector<int>& hours) {
+        int n = hours.size();
+        int map[n + 2];
+        memset(map, 0, sizeof(map));
+        map[0] = 0; // val, pos
+        int res = 0;
+        int cur = 0;
+        // in case of preSum, iterate with i = 1
+        for(int i = 1; i <= n; i++) {
+            cur += hours[i - 1] > 8 ? -1 : 1;
+            if(cur < 0) {
+                res = i;
+            }
+            else {
+                if(map[cur + 1]) {
+                    res = max(res, i - map[cur + 1]);
+                }
+                if(map[cur] == 0) {
+                    map[cur] = i;
+                }
+            }
+        }
+        return res;
+    }
+};
