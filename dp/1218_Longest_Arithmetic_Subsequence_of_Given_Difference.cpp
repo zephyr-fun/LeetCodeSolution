@@ -108,3 +108,52 @@ public:
         return res;
     }
 };
+
+// 2023.02.16
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        int n = arr.size();
+        int dp[n][2];
+        memset(dp, 0, sizeof(dp));
+        dp[0][1] = 1;
+        int offset = 2e4;
+        int tot = 4e4 + 7;
+        int map[tot];
+        memset(map, -1, sizeof(map));
+        map[arr[0] + offset] = 0;
+        for(int i = 1; i < n; i++) {
+            dp[i][0] = max(dp[i - 1][0], dp[i - 1][1]);
+            dp[i][1] = 1;
+            int prev = arr[i] - difference + offset;
+            if(map[prev] != -1) {
+                dp[i][1] = max(dp[map[prev]][1] + 1, dp[i][1]);
+            }
+            else {
+                dp[i][1] = 1;
+            }
+            map[arr[i] + offset] = i;
+        }
+        return max(dp[n - 1][0], dp[n - 1][1]);
+    }
+};
+
+// 2023.02.16
+// use map to replace dp[][]
+// map[a, b] -> current value, with length
+class Solution {
+public:
+    int longestSubsequence(vector<int>& arr, int difference) {
+        int n = arr.size();
+        int tot = 4e4 + 7;
+        int offset = 2e4;
+        int res = 1;
+        int map[tot]; // val, length
+        memset(map, -1, sizeof(map));
+        for(int i = 0; i < n; i++) {
+            map[arr[i] + offset] = max(1, map[arr[i] + offset - difference] + 1);
+            res = max(res, map[arr[i] + offset]);
+        }
+        return res;
+    }
+};
