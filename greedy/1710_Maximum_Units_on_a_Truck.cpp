@@ -42,3 +42,22 @@ public:
         return res;
     }
 };
+
+// 2023.02.18
+class Solution {
+public:
+    int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
+        int n = boxTypes.size();
+        sort(boxTypes.begin(), boxTypes.end(), [] (vector<int>& a, vector<int>& b) {
+            return a[1] > b[1];
+        });
+        int res = 0;
+        int idx = 0;
+        while(truckSize > 0 && idx < n) {
+            res += min(truckSize, boxTypes[idx][0]) * boxTypes[idx][1];
+            truckSize -= boxTypes[idx][0];
+            idx++;
+        }
+        return res;
+    }
+};
