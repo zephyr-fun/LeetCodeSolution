@@ -144,3 +144,27 @@ public:
         return target.size() - len;
     }
 };
+
+// 2023.02.19
+// plain LCS
+class Solution {
+public:
+    int minOperations(vector<int>& target, vector<int>& arr) {
+        int n = target.size();
+        int m = arr.size();
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(target[i] == arr[j]) {
+                    dp[i + 1][j + 1] = dp[i][j] + 1;
+                }
+                else {
+                    dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j]);
+                }
+            }
+        }
+        return n - dp[n][m];
+    }
+};
+
+// LIS
