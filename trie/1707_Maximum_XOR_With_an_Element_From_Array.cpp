@@ -112,3 +112,66 @@ public:
         return res;
     }
 };
+
+// 2023.02.22
+class Solution {
+public:
+    vector<vector<int>> son;
+
+    void insert(int num) {
+        int p = 0;
+        for(int i = 30; i >= 0; i--) {
+            int u = (num >> i) & 1;
+            if(!son[p][u]) {
+                son[p][u] = son.size();
+                son.push_back({0, 0});
+            }
+            p = son[p][u];
+        }
+    }
+
+    int query(int num) {
+        int p = 0;
+        int res = 0;
+        for(int i = 30; i >= 0; i--) {
+            int u = (num >> i) & 1;
+            if(son[p][!u]) {
+                res = res * 2 + !u;
+                p = son[p][!u];
+            }
+            else {
+                res = res * 2 + u;
+                p = son[p][u];
+            }
+        }
+        return num ^ res;
+    }
+
+    vector<int> maximizeXor(vector<int>& nums, vector<vector<int>>& queries) {
+        son.push_back({0, 0});
+        for(int i = 0; i < queries.size(); i++) {
+            queries[i].emplace_back(i);
+        }
+        sort(nums.begin(), nums.end());
+        sort(queries.begin(), queries.end(), [] (vector<int>& a, vector<int>& b) {
+            return a[1] < b[1];
+        });
+        int n = nums.size();
+        int m = queries.size();
+        vector<int> res(m, -1);
+        int idx = 0;
+        for(auto& q : queries) {
+            while(idx < n && nums[idx] <= q[1]) {
+                insert(nums[idx]);
+                idx++;
+            }
+            if(idx == 0) {
+                res[q[2]] = -1;
+            }
+            else {
+                res[q[2]] = query(q[0]);
+            }
+        }
+        return res;
+    }
+};
