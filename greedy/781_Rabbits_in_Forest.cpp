@@ -23,3 +23,28 @@ public:
         return res;
     }
 };
+
+// 2023.02.23
+class Solution {
+public:
+    int numRabbits(vector<int>& answers) {
+        int n = answers.size();
+        int res = 0;
+        sort(answers.begin(), answers.end());
+        int left = 0;
+        int right = 0;
+        while(left < n && answers[left] == 0) {
+            res++;
+            left++;
+        }
+        right = left;
+        while(right < n) {
+            while(right < n && answers[right] == answers[left]) {
+                right++;
+            }
+            res += ((right - left - 1) / (answers[left] + 1) + 1) * (answers[left] + 1);
+            left = right;
+        }
+        return res;
+    }
+};
