@@ -253,3 +253,57 @@ public:
         return res;
     }
 };
+
+// 2023.02.24
+class UnionFindSet {
+public:
+    UnionFindSet(int n) : parent(n), rank(n, 0) {
+        for(int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+
+    int Find(int u) {
+        if(parent[u] != u) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank[pu] > rank[pv]) {
+            parent[pv] = pu;
+        }
+        else if(rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        }
+        else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+        return true;
+    }
+
+private:
+    vector<int> parent;
+    vector<int> rank;
+};
+class Solution {
+public:
+    int minSwapsCouples(vector<int>& row) {
+        int n = row.size();
+        int res = 0;
+        UnionFindSet set(n / 2);
+        for(int i = 0; i < n; i += 2) {
+            if(set.Union(row[i] / 2, row[i + 1] / 2)) {
+                res++;
+            }
+        }
+        return res;
+    }
+};
