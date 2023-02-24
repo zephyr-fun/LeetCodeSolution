@@ -39,3 +39,17 @@ public:
         return set.size();
     }
 };
+
+// 2023.02.24
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        unordered_set<int> map;
+        for(auto& num : nums) {
+            if(num) {
+                map.insert(num);
+            }
+        }
+        return map.size();
+    }
+};
