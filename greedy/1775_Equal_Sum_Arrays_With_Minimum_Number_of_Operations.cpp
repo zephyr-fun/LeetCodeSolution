@@ -26,3 +26,45 @@ public:
         }
     }
 };
+
+// 2023.02.27
+class Solution {
+public:
+    int minOperations(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        int m = nums2.size();
+        if(6 * n < m || 6 * m < n) {
+            return -1;
+        }
+        int sum1 = 0;
+        int sum2 = 0;
+        int map[6];
+        memset(map, 0, sizeof(map));
+        for(auto& num : nums1) {
+            sum1 += num;
+            map[6 - num]++;
+        }
+        for(auto& num : nums2) {
+            sum2 += num;
+            map[num - 1]++;
+        }
+        if(sum1 > sum2) {
+            return minOperations(nums2, nums1);
+        }
+        int diff = sum2 - sum1;
+        int res = 0;
+        int idx = 5;
+        while(diff) {
+            if(diff >= map[idx] * idx) {
+                diff -= map[idx] * idx;
+                res += map[idx];
+            }
+            else {
+                res += (diff % idx == 0 ? diff / idx : diff / idx + 1);
+                diff = 0;
+            }
+            idx--;
+        }
+        return res;
+    }
+};
