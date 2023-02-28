@@ -43,3 +43,23 @@ public:
         return res;
     }
 };
+
+// 2023.02.28
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), [] (int& a, int& b) {
+            string aa = to_string(a);
+            string bb = to_string(b);
+            return aa + bb > bb + aa;
+        });
+        string res = "";
+        for(auto& num : nums) {
+            res += to_string(num);
+        }
+        if(res[0] == '0') {
+            return "0";
+        }
+        return res;
+    }
+};
