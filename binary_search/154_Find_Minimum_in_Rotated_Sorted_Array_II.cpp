@@ -72,4 +72,27 @@ public:
     }
 };
 
-// 
+// 2023.03.04
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        int left = 0;
+        int right = n - 1;
+        int pos = 0;
+        while(right >= 0 && nums[right] == nums[0]) {
+            right--;
+        }
+        while(left <= right) {
+            int mid = left + ((right - left) >> 1);
+            if(nums[mid] >= nums[0]) {
+                left = mid + 1;
+            }
+            else {
+                pos = mid;
+                right = mid - 1;
+            }
+        }
+        return nums[pos];
+    }
+};
