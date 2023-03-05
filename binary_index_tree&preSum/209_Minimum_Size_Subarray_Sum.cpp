@@ -158,3 +158,25 @@ public:
         return res == 0x3f3f3f3f ? 0 : res;
     }
 };
+
+// 2023.03.05
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int left = 0;
+        int right = 0;
+        int n = nums.size();
+        int minLen = 0x3f3f3f3f;
+        int cur = 0;
+        while(right < n) {
+            cur += nums[right++];
+            while(left <= right && cur - nums[left] >= target) {
+                cur -= nums[left++];
+            }
+            if(cur >= target) {
+                minLen = min(minLen, right - left);
+            }
+        }
+        return minLen == 0x3f3f3f3f ? 0 : minLen;
+    }
+};
