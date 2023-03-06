@@ -45,3 +45,29 @@ public:
         return res;
     }
 };
+
+// 2023.03.06
+class Solution {
+public:
+    vector<bool> canEat(vector<int>& candiesCount, vector<vector<int>>& queries) {
+        int n = candiesCount.size();
+        long cnt[n + 1];
+        memset(cnt, 0, sizeof(cnt));
+        for(int i = 0; i < n; i++) {
+            cnt[i + 1] = cnt[i] + candiesCount[i];
+        }
+        int m = queries.size();
+        vector<bool> res(m, false);
+        for(int i = 0; i < m; i++) {
+            int type = queries[i][0];
+            int day = queries[i][1] + 1;
+            int cap = queries[i][2];
+            long early = cnt[type] / cap + 1;
+            long later = cnt[type + 1];
+            if(day >= early && day <= later) {
+                res[i] = true;
+            }
+        }
+        return res;
+    }
+};
