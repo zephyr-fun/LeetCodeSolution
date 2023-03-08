@@ -21,3 +21,27 @@ public:
         return (dp[n][k] + mod) % mod;
     }
 };
+
+// 2023.03.08
+class Solution {
+public:
+    int kInversePairs(int n, int k) {
+        int mod = 1e9 + 7;
+        // dp[i][j] refers to num of considering 1->i with j inverse
+        // pose i in pos k
+        vector<vector<int>> dp(n + 1, vector<int>(k + 1, 0));
+        dp[1][0] = 1;
+        for(int i = 2; i <= n; i++) {
+            // keep track of a len(k) sum
+            long long sum = 0;
+            for(int j = 0; j <= k; j++) {
+                sum += dp[i - 1][j];
+                if(j - i >= 0) {
+                    sum -= dp[i - 1][j - i];
+                }
+                dp[i][j] = sum % mod;
+            }
+        }
+        return (dp[n][k] + mod) % mod;
+    }
+};
