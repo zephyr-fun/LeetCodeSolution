@@ -269,3 +269,60 @@ private:
  * obj->update(index,val);
  * int param_2 = obj->sumRange(left,right);
  */
+
+// 2023.03.09
+class FenwickTree {
+public:
+    FenwickTree(int n) : sum(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sum.size()) {
+            sum[idx] += delta;
+            idx += lowbit(idx);
+        }
+        return ;
+    }
+
+    int query(int idx) {
+        int res = 0;
+        while(idx > 0) {
+            res += sum[idx];
+            idx -= lowbit(idx);
+        }
+        return res;
+    }
+
+private:
+    vector<int> sum;
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+
+};
+class NumArray {
+public:
+    NumArray(vector<int>& nums) : nums_(nums.begin(), nums.end()), tree(nums.size()){
+        for(int i = 0; i < nums_.size(); i++) {
+            tree.update(i + 1, nums_[i]);
+        }
+    }
+    
+    void update(int index, int val) {
+        tree.update(index + 1, val - nums_[index]);
+        nums_[index] = val;
+    }
+    
+    int sumRange(int left, int right) {
+        return tree.query(right + 1) - tree.query(left);
+    }
+private:
+    vector<int> nums_;
+    FenwickTree tree;
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
