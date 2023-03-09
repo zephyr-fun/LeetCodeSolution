@@ -103,3 +103,20 @@ public:
         return res;
     }
 };
+
+// 2023.03.09
+class Solution {
+public:
+    vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+        int n = arr.size();
+        vector<int> preXor(n + 1, 0);
+        for(int i = 0; i < n; i++) {
+            preXor[i + 1] = preXor[i] ^ arr[i];
+        }
+        vector<int> res;
+        for(auto& q : queries) {
+            res.emplace_back(preXor[q[1] + 1] ^ preXor[q[0]]);
+        }
+        return res;
+    }
+};
