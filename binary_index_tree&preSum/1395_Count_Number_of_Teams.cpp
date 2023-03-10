@@ -232,3 +232,57 @@ public:
         return res;
     }
 };
+
+// 2023.03.10
+class FenwickTree {
+public:
+    FenwickTree(int n) : sum(n + 1, 0) {}
+
+    void update(int idx, int delta) {
+        while(idx < sum.size()) {
+            sum[idx] += delta;
+            idx += lowbit(idx);
+        }
+    }
+
+    int query(int idx) {
+        int res = 0;
+        while(idx > 0) {
+            res += sum[idx];
+            idx -= lowbit(idx);
+        }
+        return res;
+    }
+
+private:
+    vector<int> sum;
+    static inline int lowbit(int x) {
+        return x & (-x);
+    }
+
+};
+class Solution {
+public:
+    int numTeams(vector<int>& rating) {
+        int n = rating.size();
+        vector<int> sorted(rating.begin(), rating.end());
+        sort(sorted.begin(), sorted.end());
+        unordered_map<int, int> map;
+        for(int i = 0; i < n; i++) {
+            map[sorted[i]] = i + 1; // notice i + 1 instead of i, otherwise tree.update(0) is invalid
+        }
+        FenwickTree left(n);
+        FenwickTree right(n);
+        for(int i = 0; i < n; i++) {
+            right.update(map[rating[i]], 1);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            right.update(map[rating[i]], -1);
+            res += left.query(map[rating[i]] - 1) * (right.query(n) - right.query(map[rating[i]]));
+            res += (left.query(n) - left.query(map[rating[i]])) * right.query(map[rating[i]] - 1);
+            left.update(map[rating[i]], 1);
+        }
+        return res;
+    }
+};
