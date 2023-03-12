@@ -83,3 +83,34 @@ public:
         }
     }
 };
+
+// 2023.03.12
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        int g[n + 1][n + 1];
+        memset(g, 0x3f, sizeof(g));
+        for(int i = 1; i <= n; i++) {
+            g[i][i] = 0;
+        }
+        for(auto& time : times) {
+            g[time[0]][time[1]] = time[2];
+        }
+        function<void()> floyd = [&] () {
+            // the order matters, you should enumerate the middle point first
+            for(int k = 1; k <= n; k++) {
+                for(int i = 1; i <= n; i++) {
+                    for(int j = 1; j <= n; j++) {
+                        g[i][j] = min(g[i][j], g[i][k] + g[k][j]);
+                    }
+                }
+            }
+        };
+        floyd();
+        int res = -0x3f3f3f3f;
+        for(int i = 1; i <= n; i++) {
+            res = max(res, g[k][i]);
+        }
+        return res >= 0x3f3f3f3f / 2 ? -1 : res;
+    }
+};
