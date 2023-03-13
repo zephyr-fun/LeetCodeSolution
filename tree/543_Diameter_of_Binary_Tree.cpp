@@ -69,3 +69,29 @@ public:
         return res == 0 ? 0 : res - 1;
     }
 };
+
+// 2023.03.13
+// convert to calc the number of points on a given path
+class Solution {
+public:
+    int res = 1; //optim
+    int oneSideMax(TreeNode* root) {
+        if(root->left == nullptr && root->right == nullptr) {
+            return 1;
+        }
+        int left = 0;
+        int right = 0;
+        if(root->left) {
+            left = oneSideMax(root->left);
+        }
+        if(root->right) {
+            right = oneSideMax(root->right);
+        }
+        res = max(res, left + right + 1);
+        return max(left, right) + 1;
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        oneSideMax(root);
+        return res - 1;
+    }
+};
