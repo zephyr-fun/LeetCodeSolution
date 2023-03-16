@@ -365,3 +365,87 @@ public:
         return res;
     }
 };
+
+// 2023.03.16
+class UnionFindSet {
+public:
+    UnionFindSet(int n) : parent(n + 1, 0), rank(n + 1, 0) {
+        for(int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+    
+    int Find(int u) {
+        if(parent[u] != u) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if(pu == pv) {
+            return false;
+        }
+        if(rank[pu] > rank[pv]) {
+            parent[pv] = pu;
+        }
+        else if(rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+        }
+        else {
+            parent[pv] = pu;
+            rank[pu]++;
+        }
+        return true;
+    }
+
+    bool is_connected(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        return pu == pv;
+    }
+
+private:
+    vector<int> parent;
+    vector<int> rank;
+};
+class Solution {
+public:
+    struct edge {
+        int u, v, h;
+    };
+    int n, m;
+    int getIdx(int x, int y) {
+        return x * m + y;
+    }
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        n = heights.size();
+        m = heights[0].size();
+        UnionFindSet set(n * m);
+        vector<edge> edges;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i + 1 < n) {
+                    edges.push_back({getIdx(i, j), getIdx(i + 1, j), abs(heights[i][j] - heights[i + 1][j])});
+                }
+                if(j + 1 < m) {
+                    edges.push_back({getIdx(i, j), getIdx(i, j + 1), abs(heights[i][j] - heights[i][j + 1])});
+                }
+            }
+        }
+        sort(edges.begin(), edges.end(), [] (edge& a, edge& b) {
+            return a.h < b.h;
+        });
+        int start = 0;
+        int end = n * m - 1;
+        for(int i = 0; i < edges.size(); i++) {
+            set.Union(edges[i].u, edges[i].v);
+            if(set.is_connected(start, end)) {
+                return edges[i].h;
+            }
+        }
+        return 0;
+    }
+};
