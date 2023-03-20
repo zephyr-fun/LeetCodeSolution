@@ -147,3 +147,39 @@ public:
         return dfs(0, true, false);
     }
 };
+
+// 2023.03.20
+// endlesscheng version
+class Solution {
+public:
+    int atMostNGivenDigitSet(vector<string>& digits, int n) {
+        string s = to_string(n);
+        int m = s.size();
+        int dp[m];
+        memset(dp, -1, sizeof(dp));
+        function<int(int, bool, bool)> dfs = [&] (int i, bool is_limit, bool is_num) {
+            if(i == m) {
+                return (int) is_num;
+            }
+            if(!is_limit && is_num && dp[i] != -1) {
+                return dp[i];
+            }
+            int res = 0;
+            if(!is_num) {
+                res = dfs(i + 1, false, false);
+            }
+            char up = is_limit ? s[i] : '9';
+            for(auto& d : digits) {
+                if(d[0] > up) {
+                    break;
+                }
+                res += dfs(i + 1, is_limit && d[0] == up, true);
+            }
+            if(!is_limit && is_num) {
+                dp[i] = res;
+            }
+            return res;
+        };
+        return dfs(0, true, false);
+    }
+};
