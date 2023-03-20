@@ -105,3 +105,36 @@ public:
         return res + 1;
     }
 };
+
+// 2023.03.20
+// endlesscheng version modify template
+class Solution {
+public:
+    int findIntegers(int n) {
+        string s = bitset<32>(n).to_string();
+        int m = s.size();
+        int dp[m][2];
+        memset(dp, -1, sizeof(dp));
+        function<int(int, bool, bool)> dfs = [&] (int i, bool is_pre1, bool is_limit) {
+            if(i == m) {
+                return 1;
+            }
+            if(!is_limit && dp[i][is_pre1] != -1) {
+                return dp[i][is_pre1];
+            }
+            int res = 0;
+            int up = is_limit ? s[i] - '0' : 1;
+            for(int d = 0; d <= up; d++) {
+                if(d == 1 && is_pre1) {
+                    continue;
+                }
+                res += dfs(i + 1, d == 1, is_limit && d == up);
+            }
+            if(!is_limit) {
+                dp[i][is_pre1] = res;
+            }
+            return res;
+        };
+        return dfs(0, false, true);
+    }
+};
