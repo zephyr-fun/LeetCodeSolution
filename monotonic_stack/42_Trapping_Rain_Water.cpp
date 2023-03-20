@@ -341,3 +341,29 @@ public:
         return res;
     }
 };
+
+// 2023.03.20
+// 按水平几层几层接水
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        stack<int> st;
+        int n = height.size();
+        int res = 0;
+        for(int i = 0; i < n; i++) {
+            while(!st.empty() && height[i] > height[st.top()]) {
+                int mid = height[st.top()];
+                while(!st.empty() && height[st.top()] == mid) {
+                    st.pop();
+                }
+                if(!st.empty()) {
+                    int left = st.top();
+                    int right = i;
+                    res += (min(height[left], height[right]) - mid) * (right - left - 1);
+                }
+            }
+            st.push(i);
+        }
+        return res;
+    }
+};
