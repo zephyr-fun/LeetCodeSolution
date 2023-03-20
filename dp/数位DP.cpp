@@ -1,3 +1,52 @@
+// 2023.03.20
+// 通用数位DP模板
+// 将 n 转换为字符串 s ，定义 f(i, mask, is_limit, is_num) 表示构造从左往右第 i 位及其之后数位的合法方案数，
+// 其余参数的含义为：
+// mask 表示前面选过的数字集合，换句话说，第 i 位要选的数字不能在 mask 中
+// is_limit 表示表示当前是否受到了 n 的约束。若为真，则第 i 位填入的数字至多为 s[i] ，否则可以是 9 。
+// 如果在受到约束的情况下填了 s[i] ，那么后续填入的数字仍会受到 n 的约束。
+// is_num 表示 i 前面的数位是否填了数字。
+// 若为假，则当前位可以跳过（不填数字，即位数比给定数少），或者要填入的数字至少为 1
+// 若为真，则必须填数字，且要填入的数字可以从 0 开始。
+// C++ 只需要记忆化 (i,mask) 这个状态，因为：
+// 对于一个固定的 (i,mask)，这个状态受到 isLimit 或 isNum 的约束在整个递归过程中至多会出现一次，没必要记忆化。
+// 另外，如果只记忆化 (i,mask)，dp 数组的含义就变成在不受到约束时的合法方案数，所以要在 !isLimit && isNum 成立时才去记忆化。
+
+// endlesscheng version
+class Solution {
+public:
+    int numDupDigitsAtMostN(int n) {
+        string s = to_string(n);
+        int m = s.size();
+        int dp[m][1 << 10]; // 只记忆 (1, mask)
+        memset(dp, -1, sizeof(dp)); // -1 代表未更新记录
+        // i, mask, is_limit, is_num
+        function<int(int, int, bool, bool)> dfs = [&] (int i, int mask, bool is_limit, bool is_num) {
+            if(i == m) {
+                return (int) is_num;
+            }
+            if(!is_limit && is_num && dp[i][mask] >= 0) { // dp[i][mask] != -1
+                return dp[i][mask];
+            }
+            int res = 0;
+            if(!is_num) {
+                res = dfs(i + 1, mask, false, false);
+            }
+            int up = is_limit ? s[i] - '0' : 9;
+            for(int d = 1 - (int) is_num; d <= up; d++) {
+                if((mask >> d & 1) == 0) {
+                    res += dfs(i + 1, mask | (1 << d), is_limit && d == up, true);
+                }
+            }
+            // record the state
+            if(!is_limit && is_num) {
+                dp[i][mask] = res;
+            }
+            return res;
+        };
+        return n - dfs(0, 0, true, false);
+    }
+};
 // 灵神模板
 class Solution {
 public:
