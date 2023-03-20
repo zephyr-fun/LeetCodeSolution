@@ -58,3 +58,38 @@ public:
         return _n - res + 1;
     }
 };
+
+// 2023.03.20
+class Solution {
+public:
+    int numDupDigitsAtMostN(int n) {
+        string s = to_string(n);
+        int m = s.size();
+        int dp[m][1 << 10];
+        memset(dp, -1, sizeof(dp));
+        function<int(int, int, bool, bool)> dfs = [&] (int i, int mask, bool is_limit, bool is_num) {
+            if(i == m) {
+                return (int) is_num;
+            }
+            if(!is_limit && is_num && dp[i][mask] >= 0) { // dp[i][mask] != -1
+                return dp[i][mask];
+            }
+            int res = 0;
+            if(!is_num) {
+                res = dfs(i + 1, mask, false, false);
+            }
+            int up = is_limit ? s[i] - '0' : 9;
+            for(int d = 1 - (int) is_num; d <= up; d++) {
+                if((mask >> d & 1) == 0) {
+                    res += dfs(i + 1, mask | (1 << d), is_limit && d == up, true);
+                }
+            }
+            // record the state
+            if(!is_limit && is_num) {
+                dp[i][mask] = res;
+            }
+            return res;
+        };
+        return n - dfs(0, 0, true, false);
+    }
+};
