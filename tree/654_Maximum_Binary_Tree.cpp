@@ -269,3 +269,40 @@ public:
         return res;
     }
 };
+
+// 2023.03.24
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        int n = nums.size();
+        stack<TreeNode*> st;
+        for(int i = 0; i < n; i++) {
+            TreeNode* cur = new TreeNode(nums[i]);
+            while(!st.empty() && st.top()->val < nums[i]) {
+                cur->left = st.top();
+                st.pop();
+            }
+            if(!st.empty()) {
+                st.top()->right = cur;
+            }
+            st.push(cur);
+        }
+        TreeNode* res = nullptr;
+        while(!st.empty()) {
+            res = st.top();
+            st.pop();
+        }
+        return res;
+    }
+};
