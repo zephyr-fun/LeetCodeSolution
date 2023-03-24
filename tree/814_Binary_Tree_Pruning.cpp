@@ -56,3 +56,44 @@ public:
         return root->val == 0 ? nullptr : root;
     }
 };
+
+// 2023.03.24
+class Solution {
+public:
+    int traversal(TreeNode* cur) {
+        if(cur == nullptr) {
+            return 0;
+        }
+        int left = traversal(cur->left);
+        int right = traversal(cur->right);
+        if(left == 0) {
+            cur->left = nullptr;
+        }
+        if(right == 0) {
+            cur->right = nullptr;
+        }
+        return left + right + cur->val;
+    }
+    TreeNode* pruneTree(TreeNode* root) {
+        if(traversal(root) == 0) {
+            return nullptr;
+        }
+        return root;
+    }
+};
+
+// optim
+class Solution {
+public:
+    TreeNode* pruneTree(TreeNode* root) {
+        if(root == nullptr) {
+            return nullptr;
+        }
+        root->left = pruneTree(root->left);
+        root->right = pruneTree(root->right);
+        if(root->left || root->right) {
+            return root;
+        }
+        return root->val == 0 ? nullptr : root;
+    }
+};
