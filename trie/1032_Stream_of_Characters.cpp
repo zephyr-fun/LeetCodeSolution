@@ -102,3 +102,46 @@ public:
 };
 
 // 2023.03.24
+static int son[40007][26];
+static int cnt[40007];
+class StreamChecker {
+public:
+    int idx;
+    string cur;
+    void insert(string s) {
+        int p = 0;
+        for(int i = s.size() - 1; i >= 0; i--) {
+            int v = s[i] - 'a';
+            if(!son[p][v]) {
+                son[p][v] = ++idx;
+            }
+            p = son[p][v];
+        }
+        cnt[p]++;
+    }
+    StreamChecker(vector<string>& words) {
+        idx = 0;
+        cur = "";
+        memset(son, 0, sizeof(son));
+        memset(cnt, 0, sizeof(cnt));
+        for(auto& word : words) {
+            insert(word);
+        }
+    }
+    
+    bool query(char letter) {
+        cur += letter;
+        int p = 0;
+        for(int i = cur.size() - 1; i >= 0; i--) {
+            int u = cur[i] - 'a';
+            if(!son[p][u]) {
+                return false;
+            }
+            p = son[p][u];
+            if(cnt[p]) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
