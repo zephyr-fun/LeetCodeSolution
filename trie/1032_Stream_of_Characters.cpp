@@ -17,6 +17,7 @@ public:
         }
         cnt[p]++;
     }
+
     StreamChecker(vector<string>& words) {
         idx = 0;
         cur = "";
@@ -99,3 +100,5 @@ public:
         return false;
     }
 };
+
+// 2023.03.24
