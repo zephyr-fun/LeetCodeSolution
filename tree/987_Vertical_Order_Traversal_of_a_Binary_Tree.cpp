@@ -137,3 +137,42 @@ public:
         return res;
     }
 };
+
+// 2023.03.25
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    map<int, map<int, multiset<int>>> map;
+    void traversal(TreeNode* cur, int row, int col) {
+        if(cur == nullptr) {
+            return ;
+        }
+        map[row][col].insert(cur->val);
+        traversal(cur->left, row - 1, col + 1);
+        traversal(cur->right, row + 1, col + 1);
+    }
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        traversal(root, 0, 0);
+        vector<vector<int>> res;
+        for(auto& [k, v] : map) {
+            vector<int> temp;
+            for(auto& [kk, vv] : v) {
+                for(auto& it : vv) {
+                    temp.emplace_back(it);
+                }
+            }
+            res.emplace_back(temp);
+        }
+        return res;
+    }
+};
