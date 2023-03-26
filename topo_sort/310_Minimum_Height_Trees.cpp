@@ -167,3 +167,75 @@ public:
         return {path[(size - 1) / 2], path[size / 2]};
     }
 };
+
+// 2023.03.26
+// 树形DP -> 换根DP
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> g(n);
+        for(auto& e : edges) {
+            int a = e[0];
+            int b = e[1];
+            g[a].emplace_back(b);
+            g[b].emplace_back(a);
+        }
+        vector<int> d1, d2, p1, p2, up;
+        d1 = d2 = p1 = p2 = up = vector<int>(n, 0);
+        // 用于求d1，d2的值，以u为求解当前点
+        // d1[u]代表u节点向下最长路径值，p1[u]代表最长路径值是从哪个子节点走的
+        // d2[u]代表u节点向下非严格次长路径值，p2[u]代表非严格次长路径值是从哪个子节点走的
+        function<void(int, int)> dfs1 = [&] (int u, int father) {
+            for(int x : g[u]) {
+                if(x == father) {
+                    continue;
+                }
+                dfs1(x, u);
+                int d = d1[x] + 1;
+                if(d >= d1[u]) {
+                    d2[u] = d1[u];
+                    d1[u] = d;
+                    p2[u] = p1[u];
+                    p1[u] = x;
+                }
+                else if(d > d2[u]) {
+                    d2[u] = d;
+                    p2[u] = x;
+                }
+            }
+        };
+        // 用于求up[x]的值，以x为求解当前点
+        // 如果p1[u]是x的话，从u出发的向下的路径就不能选x所代表的最长路径了（折返路径不合法）
+        // 如果p1[u]不是x的话，从u出发的向下的路径就可以选u的另一个子节点所代表的最长路径了
+        function<void(int, int)> dfs2 = [&] (int u, int father) {
+            for(int x : g[u]) {
+                if(x == father) {
+                    continue;
+                }
+                if(p1[u] == x) {
+                    up[x] = max(up[u], d2[u]) + 1;
+                }
+                else {
+                    up[x] = max(up[u], d1[u]) + 1;
+                }
+                dfs2(x, u);
+            }
+        };
+        dfs1(0, -1);
+        dfs2(0, -1);
+        int mind = n + 1;
+        vector<int> res;
+        for(int i = 0; i < n; i++) {
+            int cur = max(d1[i], up[i]);
+            if(cur < mind) {
+                mind = cur;
+                res.clear();
+                res.emplace_back(i);
+            }
+            else if(cur == mind) {
+                res.emplace_back(i);
+            } 
+        }
+        return res;
+    }
+};
