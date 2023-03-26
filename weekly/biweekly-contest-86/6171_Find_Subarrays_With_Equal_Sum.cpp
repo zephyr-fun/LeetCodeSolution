@@ -13,3 +13,20 @@ public:
         return false;
     }
 };
+
+// 2023.03.26
+class Solution {
+public:
+    bool findSubarrays(vector<int>& nums) {
+        unordered_set<int> set;
+        int cur = 0;
+        for(int i = 0; i < nums.size() - 1; i++) {
+            cur = nums[i] + nums[i + 1];
+            if(set.count(cur)) {
+                return true;
+            }
+            set.insert(cur);
+        }
+        return false;
+    }
+};
