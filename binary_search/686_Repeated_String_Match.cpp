@@ -110,3 +110,34 @@ public:
         return -1;
     }
 };
+
+// 2023.03.27
+class Solution {
+public:
+    bool is_sub(int len, string a, string b) {
+        string t = "";
+        while(len--) {
+            t += a;
+        }
+        if(t.find(b) != string::npos) {
+            return true;
+        }
+        return false;
+    }
+    int repeatedStringMatch(string a, string b) {
+        int n = a.size();
+        int m = b.size();
+        // analyze
+        // int low = m / n;
+        // if(m % n != 0) up++;
+        // int up = low + 1;
+        int up = m / n + 2;
+        int low = m / n + (m % n == 0 ? 0 : 1);
+        for(int i = low; i <= up; i++) {
+            if(is_sub(i, a, b)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+};
