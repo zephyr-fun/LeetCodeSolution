@@ -113,3 +113,54 @@ public:
         return -1;
     }
 };
+
+// 2023.03.27
+// meaningless version
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        return haystack.find(needle) == string::npos ? -1 : haystack.find(needle);
+    }
+};
+
+// KMP
+class Solution {
+public:
+    // 找到前缀和后缀的最大重合值，自身匹配
+    void getNext(string& t, int* next) {
+        next[0] = 0;
+        int left = 0;
+        for(int right = 1; right < t.size(); right++) {
+            while(left > 0 && t[left] != t[right]) {
+                left = next[left - 1];
+            }
+            if(t[left] == t[right]) {
+                left++;
+            }
+            next[right] = left;
+        }
+    }
+    int strStr(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+        if(m == 0) {
+            return 0;
+        }
+        int next[m];
+        getNext(t, next);
+        int j = 0;
+        // 与暴力相比，i从不回退，j尽可能少的回退（更多地利用之前s和t的匹配情况加上t自身匹配的信息来少回退）
+        for(int i = 0; i < n; i++) {
+            while(j > 0 && s[i] != t[j]) {
+                j = next[j - 1];
+            }
+            if(s[i] == t[j]) {
+                j++;
+            }
+            if(j == m) {
+                return i - m + 1;
+            }
+        }
+        return -1;
+    }
+};
