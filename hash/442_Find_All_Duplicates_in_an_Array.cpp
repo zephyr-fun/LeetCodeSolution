@@ -18,3 +18,24 @@ public:
         return res;
     }
 };
+
+// 2023.03.28
+// 原地标记法，利用原数组的nums[i]->(1, n)性质，将其作为一个vis[n]标记数组
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> res;
+        for(int i = 0; i < n; i++) {
+            // 判断标记
+            if(nums[abs(nums[i]) - 1] < 0) {
+                res.emplace_back(abs(nums[i]));
+            }
+            // 做标记
+            else {
+                nums[abs(nums[i]) - 1] *= -1;
+            }
+        }
+        return res;
+    }
+};
