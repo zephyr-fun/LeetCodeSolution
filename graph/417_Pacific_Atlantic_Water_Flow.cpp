@@ -323,3 +323,77 @@ public:
         return res;
     }
 };
+
+// 2023.04.02
+class Solution {
+public:
+    int n;
+    int m;
+    vector<vector<int>> h;
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int getIdx(int x, int y, int m) {
+        return x * m + y;
+    }
+    vector<int> getPos(int idx, int m) {
+        return {idx / m, idx % m};
+    }
+    void flow(unordered_set<int>& set, bool p) {
+        queue<int> que;
+        if(p) {
+            for(int i = 0; i < n; i++) {
+                int idx = getIdx(i, 0, m);
+                que.push(idx);
+                set.insert(idx);
+            }
+            for(int j = 0; j < m; j++) {
+                int idx = getIdx(0, j, m);
+                que.push(idx);
+                set.insert(idx);
+            }
+        }
+        else {
+            for(int i = 0; i < n; i++) {
+                int idx = getIdx(i, m - 1, m);
+                que.push(idx);
+                set.insert(idx);
+            }
+            for(int j = 0; j < m; j++) {
+                int idx = getIdx(n - 1, j, m);
+                que.push(idx);
+                set.insert(idx);
+            }
+        }
+        while(!que.empty()) {
+            auto cur = getPos(que.front(), m);
+            que.pop();
+            int x = cur[0];
+            int y = cur[1];
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                int nidx = getIdx(nx, ny, m);
+                if(nx < 0 || nx >= n || ny < 0 || ny >= m || set.count(nidx) || h[nx][ny] < h[x][y]) {
+                    continue;
+                }
+                que.push(nidx);
+                set.insert(nidx);
+            }
+        }
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        h = heights;
+        n = h.size();
+        m = h[0].size();
+        unordered_set<int> pset;
+        unordered_set<int> aset;
+        flow(pset, true);
+        flow(aset, false);
+        vector<vector<int>> res;
+        for(auto cur : pset) {
+            if(aset.count(cur)) {
+                res.emplace_back(getPos(cur, m));
+            }
+        }
+        return res;
+    }
+};
