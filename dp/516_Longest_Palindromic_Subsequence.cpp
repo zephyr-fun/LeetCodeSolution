@@ -42,3 +42,31 @@ public:
         return dp[0][n - 1];
     }
 };
+
+// 2023.04.02
+class Solution {
+public:
+    int longestPalindromeSubseq(string s) {
+        int n = s.size();
+        int dp[n][n]; // 记忆化一下，否则会TLE
+        memset(dp, -1, sizeof(dp));
+        function<int(int, int)> dfs = [&] (int i, int j) {
+            if(dp[i][j] >= 0) {
+                return dp[i][j];
+            }
+            if(i > j) {
+                return 0;
+            }
+            if(i == j) {
+                return 1;
+            }
+            if(s[i] == s[j]) {
+                dp[i][j] = dfs(i + 1, j - 1) + 2;
+                return dp[i][j];
+            }
+            dp[i][j] = max(dfs(i + 1, j), dfs(i, j - 1));
+            return dp[i][j];
+        };
+        return dfs(0, n - 1);
+    }
+};
