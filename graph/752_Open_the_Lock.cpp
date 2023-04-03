@@ -67,3 +67,72 @@ public:
         return -1;
     }
 };
+
+// 2023.04.03
+class Solution {
+public:
+    unordered_set<string> set;
+    string tar;
+    int openLock(vector<string>& deadends, string target) {
+        tar = target;
+        if(tar == "0000") {
+            return 0;
+        }
+        for(auto deadend : deadends) {
+            set.insert(deadend);
+        }
+        if(set.count("0000")) {
+            return -1;
+        }
+        return bfs();
+    }
+    int bfs() {
+        unordered_map<string, int> smap;
+        unordered_map<string, int> tmap;
+        queue<string> sque;
+        queue<string> tque;
+        sque.push("0000");
+        tque.push(tar);
+        smap["0000"] = 0;
+        tmap[tar] = 0;
+        while(!sque.empty() && !tque.empty()) {
+            int t = -1;
+            if(sque.size() <= tque.size()) {
+                t = update(sque, smap, tmap);
+            }
+            else {
+                t = update(tque, tmap, smap);
+            }
+            if(t != -1) {
+                return t;
+            }
+        }
+        return -1;
+    }
+    int update(queue<string>& que, unordered_map<string, int>& cmap, unordered_map<string, int>& omap) {
+        int size = que.size();
+        for(int i = 0; i < size; i++) {
+            string cur = que.front();
+            que.pop();
+            int step = cmap[cur];
+            for(int i = 0; i < 4; i++) {
+                for(int j = -1; j <= 1; j++) {
+                    if(j == 0) {
+                        continue;
+                    }
+                    string temp = cur;
+                    temp[i] = (temp[i] - '0' + j + 10) % 10 + '0';
+                    if(omap.count(temp)) {
+                        return step + omap[temp] + 1;
+                    }
+                    if(cmap.count(temp) || set.count(temp)) {
+                        continue;
+                    }
+                    que.push(temp);
+                    cmap[temp] = step + 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
