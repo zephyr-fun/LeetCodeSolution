@@ -1,5 +1,6 @@
 // 2023.04.04
 // congratulations on 1k solutions !
+// 区间dp
 class Solution {
 public:
     int mergeStones(vector<int>& stones, int k) {
