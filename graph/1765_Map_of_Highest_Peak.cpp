@@ -135,3 +135,49 @@ public:
         return isWater;
     }
 };
+
+// 2023.04.05
+// 尽可能不要额外构建数据结构，节省空间和时间
+class Solution {
+public:
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+        queue<pair<int, int>> que;
+        int n = isWater.size();
+        int m = isWater[0].size();
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(isWater[i][j] == 1) {
+                    que.push({i, j});
+                    isWater[i][j] = -1;
+                }
+            }
+        }
+        int h = 1;
+        while(!que.empty()) {
+            int size = que.size();
+            for(int i = 0; i < size; i++) {
+                auto [x, y] = que.front();
+                que.pop();
+                for(int k = 0; k < 4; k++) {
+                    int nx = x + dirs[k][0];
+                    int ny = y + dirs[k][1];
+                    if(nx < 0 || nx >= n || ny < 0 || ny >= m || isWater[nx][ny] != 0) {
+                        continue;
+                    }
+                    isWater[nx][ny] = h;
+                    que.push({nx, ny});
+                }
+            }
+            h++;
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(isWater[i][j] == -1) {
+                    isWater[i][j] = 0;
+                }
+            }
+        }
+        return isWater;
+    }
+};
