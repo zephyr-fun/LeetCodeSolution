@@ -236,3 +236,46 @@ public:
         return res;
     }
 };
+
+// 2023.04.05
+// 在grid上做标记，并通过层序bfs来省去使用map记录step
+class Solution {
+public:
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int maxDistance(vector<vector<int>>& grid) {
+        queue<pair<int, int>> que;
+        int n = grid.size();
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(grid[i][j] == 1) {
+                    que.push({i, j});
+                }
+            }
+        }
+        int res = -1;
+        int step = 1;
+        while(!que.empty()) {
+            int size = que.size();
+            bool update = false;
+            for(int i = 0; i < size; i++) {
+                auto [x, y] = que.front();
+                que.pop();
+                for(int k = 0; k < 4; k++) {
+                    int nx = x + dirs[k][0];
+                    int ny = y + dirs[k][1];
+                    if(nx < 0 || nx >= n || ny < 0 || ny >= n || grid[nx][ny] > 0) {
+                        continue;
+                    }
+                    update = true;
+                    que.push({nx, ny});
+                    grid[nx][ny] = step;
+                }
+                if(update) {
+                    res = step;
+                }
+            }
+            step++;
+        }
+        return res;
+    }
+};
