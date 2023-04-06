@@ -199,3 +199,43 @@ public:
         return -1;
     }
 };
+
+// 2023.04.06
+// plain bfs, can be optimed with dual bfs
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        int n = beginWord.size();
+        unordered_set<string> set;
+        for(auto& word : wordList) {
+            set.insert(word);
+        }
+        if(!set.count(endWord)) {
+            return 0;
+        }
+        unordered_map<string, int> map;
+        queue<string> que;
+        que.push(beginWord);
+        map[beginWord] = 1;
+        while(!que.empty()) {
+            string cur = que.front();
+            que.pop();
+            int step = map[cur];
+            for(int i = 0; i < n; i++) {
+                for(int j = 0; j < 26; j++) {
+                    string temp = cur;
+                    temp[i] = j + 'a';
+                    if(!set.count(temp) || map.count(temp) || temp == cur) {
+                        continue;
+                    }
+                    if(temp == endWord) {
+                        return step + 1;
+                    }
+                    que.push(temp);
+                    map[temp] = step + 1;
+                }
+            }
+        }
+        return 0;
+    }
+};
