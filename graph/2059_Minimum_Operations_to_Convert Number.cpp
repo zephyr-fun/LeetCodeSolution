@@ -128,3 +128,39 @@ public:
         return -1;
     }
 };
+
+// 2023.04.06
+// plain bfs, can be optimed with dual bfs
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums, int start, int goal) {
+        if(start == goal) {
+            return 0;
+        }
+        int n = nums.size();
+        queue<int> que;
+        que.push(start);
+        unordered_map<int, int> map;
+        map[start] = 0;
+        while(!que.empty()) {
+            int cur = que.front();
+            que.pop();
+            int step = map[cur];
+            for(int i = 0; i < n; i++) {
+                int temp[3] = {cur + nums[i], cur - nums[i], cur ^ nums[i]};
+                for(int j = 0; j < 3; j++) {
+                    if(!map.count(temp[j])) {
+                        if(temp[j] == goal) {
+                            return step + 1;
+                        }
+                        if(temp[j] >= 0 && temp[j] <= 1000) {
+                            que.push(temp[j]);
+                            map[temp[j]] = step + 1;
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
