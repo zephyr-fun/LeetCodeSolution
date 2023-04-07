@@ -108,3 +108,44 @@ public:
         return -1;
     }
 };
+
+// 2023.04.07
+// plain bfs
+class Solution {
+public:
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        int n = startGene.size();
+        char mut[4] = {'A', 'C', 'G', 'T'};
+        unordered_set<string> set;
+        for(auto& b : bank) {
+            set.insert(b);
+        }
+        if(!set.count(endGene)) {
+            return -1;
+        }
+        unordered_map<string, int> map;
+        map[startGene] = 0;
+        queue<string> que;
+        que.push(startGene);
+        while(!que.empty()) {
+            string cur = que.front();
+            que.pop();
+            int step = map[cur];
+            for(int i = 0; i < n; i++) {
+                for(int j = 0; j < 4; j++) {
+                    string temp = cur;
+                    temp[i] = mut[j];
+                    if(temp == cur || map.count(temp) || !set.count(temp)) {
+                        continue;
+                    }
+                    if(temp == endGene) {
+                        return step + 1;
+                    }
+                    que.push(temp);
+                    map[temp] = step + 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
