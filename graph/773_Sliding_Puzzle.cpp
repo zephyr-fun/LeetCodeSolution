@@ -65,3 +65,69 @@ public:
         return -1;
     }
 };
+
+// 2023.04.08
+class Solution {
+public:
+    int n = 2;
+    int m = 3;
+    string start;
+    string end;
+    int sx;
+    int sy;
+    const int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
+    int getIdx(int i, int j) {
+        return i * m + j;
+    }
+    int slidingPuzzle(vector<vector<int>>& board) {
+        start = "";
+        end = "123450";
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < 3; j++) {
+                start += '0' + board[i][j];
+                if(board[i][j] == 0) {
+                    sx = i;
+                    sy = j;
+                }
+            }
+        }
+        int res = bfs();
+        return res;
+    }
+    string update(string s, int x, int y, int nx, int ny) {
+        int idx = getIdx(x, y);
+        int nidx = getIdx(nx, ny);
+        swap(s[idx], s[nidx]);
+        return s;
+    }
+    int bfs() {
+        queue<pair<string, int>> que;
+        unordered_map<string, int> map;
+        que.push({start, getIdx(sx, sy)});
+        map[start] = 0;
+        while(!que.empty()) {
+            auto [state, pos] = que.front();
+            que.pop();
+            int step = map[state];
+            if(state == end) {
+                return step;
+            }
+            int x = pos / 3;
+            int y = pos % 3;
+            for(int i = 0; i < 4; i++) {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if(nx < 0 || nx >= 2 || ny < 0 || ny >= 3) {
+                    continue;
+                }
+                string nstate = update(state, x, y, nx, ny);
+                if(map.count(nstate)) {
+                    continue;
+                }
+                que.push({nstate, getIdx(nx, ny)});
+                map[nstate] = step + 1;
+            }
+        }
+        return -1;
+    }
+};
