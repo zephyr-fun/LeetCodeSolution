@@ -113,3 +113,45 @@ public:
         return res;
     }
 };
+
+// 2023.04.08
+// 0-1 knapsack
+class Solution {
+public:
+    int sti(string& s) {
+        int res = 0;
+        for(auto& c : s) {
+            if((res & (1 << (c - 'a'))) != 0) {
+                return -1;
+            }
+            res |= (1 << (c - 'a'));
+        }
+        return res;
+    }
+    int maxLength(vector<string>& arr) {
+        vector<vector<int>> dp(27, vector<int>());
+        dp[0] = {0};
+        for(auto& str : arr) {
+            int n = str.size();
+            int bin = sti(str);
+            if(bin < 0) {
+                continue;
+            }
+            for(int i = 26 - n; i >= 0; i--) {
+                if(dp[i].size()) {
+                    for(auto& item : dp[i]) {
+                        if((item & bin) == 0) {
+                            dp[i + n].push_back(item | bin);
+                        }
+                    }
+                }
+            }
+        }
+        for(int i = 26; i >= 0; i--) {
+            if(dp[i].size()) {
+                return i;
+            }
+        }
+        return 0;
+    }
+};
