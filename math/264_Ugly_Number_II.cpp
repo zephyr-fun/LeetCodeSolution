@@ -81,3 +81,30 @@ public:
         return ug[n];
     }
 };
+
+// 2023.05.06
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        int res[n + 1];
+        memset(res, 0, sizeof(res));
+        res[1] = 1;
+        for(int i = 2, i2 = 1, i3 = 1, i5 = 1; i <= n; i++) {
+            int a = res[i2] * 2;
+            int b = res[i3] * 3;
+            int c = res[i5] * 5;
+            res[i] = min(a, min(b, c));
+            // separate statement, 10 = 2 * 5
+            if(a == res[i]) {
+                i2++;
+            }
+            if(b == res[i]) {
+                i3++;
+            }
+            if(c == res[i]) {
+                i5++;
+            }
+        }
+        return res[n];
+    }
+};
