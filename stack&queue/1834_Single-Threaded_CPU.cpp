@@ -54,3 +54,53 @@ public:
         long enqueTime, procTime;
     };
 };
+
+// localize
+class Solution {
+public:
+    vector<int> getOrder(vector<vector<int>>& tasks) {
+        vector<task> tks;
+        for(int i = 0; i < tasks.size(); i++) {
+            tks.emplace_back(i, tasks[i][0], tasks[i][1]);
+        }
+        sort(tks.begin(), tks.end(), [](task& a, task& b) {
+            if(a.enqueTime == b.enqueTime) {
+                return a.procTime < b.procTime;
+            }
+            return a.enqueTime < b.enqueTime;
+        });
+        vector<int> res;
+        priority_queue<task> cpuQue;
+        long time = 0;
+        int i = 0;
+        while(i < tks.size() || !cpuQue.empty()) {
+            if(cpuQue.empty()) {
+                time = max(time, tks[i].enqueTime);
+            }
+            while(i < tks.size() && tks[i].enqueTime <= time) {
+                cpuQue.push(tks[i]);
+                i++;
+            }
+            task curTask = cpuQue.top();
+            cpuQue.pop();
+            time += curTask.procTime;
+            res.emplace_back(curTask.index);
+        }
+        return res;
+    }
+    struct task {
+        int index;
+        long enqueTime, procTime;
+        task(int i, long e, long p) {
+            index = i;
+            enqueTime = e;
+            procTime = p;
+        }
+        bool operator < (const task& other) const {
+            if (procTime != other.procTime) {
+                return procTime > other.procTime;
+            }
+            return index > other.index;
+        }
+    };
+};
