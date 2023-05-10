@@ -94,3 +94,50 @@ public:
         return res;
     }
 };
+
+// 2023.05.09
+class Solution {
+public:
+    struct Node {
+        int id;
+        int endTime;
+        bool operator > (const Node& other) const{
+            if(endTime == other.endTime) {
+                return id > other.id;
+            }
+            return endTime > other.endTime;
+        }
+    };
+    vector<int> busiestServers(int k, vector<int>& arrival, vector<int>& load) {
+        vector<int> cnt(k);
+        priority_queue<Node, vector<Node>, greater<>> working;
+        set<int> waiting;
+        vector<int> res;
+        int m = 0;
+        for(int i = 0; i < k; i++) {
+            waiting.insert(i);
+        }
+        for(int i = 0; i < arrival.size(); i++) {
+            while(!working.empty() && working.top().endTime <= arrival[i]) {
+                waiting.insert(working.top().id);
+                working.pop();
+            }
+            auto cur = waiting.lower_bound(i % k);
+            if(cur == waiting.end()) {
+                cur = waiting.begin();
+            }
+            if(cur == waiting.end()) {
+                continue;
+            }
+            working.push({*cur, arrival[i] + load[i]});
+            m = max(m, ++cnt[*cur]);
+            waiting.erase(cur);
+        }
+        for(int i = 0; i < k; i++) {
+            if(cnt[i] == m) {
+                res.push_back(i);
+            }
+        }
+        return res;
+    }
+};
