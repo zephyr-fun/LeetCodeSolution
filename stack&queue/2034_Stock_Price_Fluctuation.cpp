@@ -83,3 +83,48 @@ public:
  * int param_3 = obj->maximum();
  * int param_4 = obj->minimum();
  */
+
+// 2023.05.09
+class StockPrice {
+public:
+    unordered_map<int, int> map;
+    multiset<int> prices;
+    int cur;
+
+    StockPrice() {
+        cur = 0;
+    }
+    
+    void update(int timestamp, int price) {
+        if(map.count(timestamp)) {
+            auto pos = prices.find(map[timestamp]); // erase function of multiset takes either iterator or value as parameter
+            prices.erase(pos);
+        }
+        if(timestamp > cur) {
+            cur = timestamp;
+        }
+        map[timestamp] = price;
+        prices.insert(price);
+    }
+    
+    int current() {
+        return map[cur];
+    }
+    
+    int maximum() {
+        return *prices.rbegin();
+    }
+    
+    int minimum() {
+        return *prices.begin();
+    }
+};
+
+/**
+ * Your StockPrice object will be instantiated and called as such:
+ * StockPrice* obj = new StockPrice();
+ * obj->update(timestamp,price);
+ * int param_2 = obj->current();
+ * int param_3 = obj->maximum();
+ * int param_4 = obj->minimum();
+ */
