@@ -44,3 +44,50 @@ public:
         return hh * mm;
     }
 };
+
+// 2023.05.09
+class Solution {
+public:
+    int countTime(string time) {
+        int h = 0;
+        int m = 0;
+        string hh = time.substr(0, 2);
+        string mm = time.substr(3);
+        if(hh[0] == '?' && hh[1] == '?') {
+            h = 24;
+        }
+        else if(hh[0] != '?' && hh[1] != '?') {
+            h = 1;
+        }
+        else if(hh[0] != '?') {
+            if(hh[0] == '2') {
+                h = 4;
+            }
+            else {
+                h = 10;
+            }
+        }
+        else {
+            if(hh[1] <= '3') {
+                h = 3;
+            }
+            else {
+                h = 2;
+            }
+        }
+
+        if(mm[0] == '?' && mm[1] == '?') {
+            m = 60;
+        }
+        else if(mm[0] != '?' && mm[1] != '?') {
+            m = 1;
+        }
+        else if(mm[0] != '?') {
+            m = 10;
+        }
+        else {
+            m = 6;
+        }
+        return h * m;
+    }
+};
