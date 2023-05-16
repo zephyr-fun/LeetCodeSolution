@@ -164,3 +164,54 @@ public:
         return "";
     }
 };
+
+// 2023.05.15
+class Solution {
+public:
+    const int P = 131;
+    vector<unsigned long long> h;
+    vector<unsigned long long> p;
+    unordered_set<unsigned long long> set;
+    string s;
+    int n;
+    string longestDupSubstring(string s_) {
+        s = s_;
+        n = s.size();
+        h.resize(n + 7);
+        p.resize(n + 7);
+        p[0] = 1;
+        for(int i = 0; i < n; i++) {
+            p[i + 1] = p[i] * P; // weight
+            h[i + 1] = h[i] * P + s[i];
+        }
+        int left = 1;
+        int right = n;
+        string res;
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            string temp = check(mid);
+            if(temp.size() != 0) {
+                res = temp;
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+        return res;
+    }
+    string check(int len) {
+        for(int i = 1; i + len - 1 <= n; i++) {
+            int j = i + len - 1;
+            unsigned long long cur = h[j] - h[i - 1] * p[j - i + 1];
+            if(set.count(cur)) {
+                string res = s.substr(i - 1, len);
+                return res;
+            }
+            else {
+                set.insert(cur);
+            }
+        }
+        return "";
+    }
+};
