@@ -66,3 +66,58 @@ public:
         return helper(s);
     }
 };
+
+// 2023.05.18
+class Solution {
+public:
+    string helper(string& s) {
+        int l = s.find_last_of('(', s.size() - 1);
+        if(l == string::npos) {
+            return s;
+        }
+        int r = l + 1;
+        while(r < s.size() && s[r] != ')') {
+            r++;
+        }
+        int left = l + 1;
+        int right = r - 1;
+        while(left < right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            left++;
+            right--;
+        }
+        s.erase(l, 1);
+        s.erase(r - 1, 1);
+        return helper(s);
+    }
+    string reverseParentheses(string s) {
+        return helper(s);
+    }
+};
+
+class Solution {
+public:
+    string reverseParentheses(string s) {
+        string cur = "";
+        stack<string> st;
+        int n = s.size();
+        for(int i = 0; i < n; i++) {
+            if(s[i] == '(') {
+                st.push(cur);
+                cur = "";
+            }
+            else if(s[i] == ')') {
+                string temp = st.top();
+                st.pop();
+                reverse(cur.begin(), cur.end());
+                cur = temp + cur;
+            }
+            else {
+                cur += s[i];
+            }
+        }
+        return cur;
+    }
+};
