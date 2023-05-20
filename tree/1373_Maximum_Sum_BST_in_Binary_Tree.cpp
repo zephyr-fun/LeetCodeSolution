@@ -117,3 +117,29 @@ public:
         return res;
     }
 };
+
+// 2023.05.20
+// same idea as in 98
+// with postorder traversal
+class Solution {
+public:
+    int res = 0;
+    tuple<int, int, int> dfs(TreeNode* node) {
+        if(node == nullptr) {
+            return {INT_MAX, INT_MIN, 0};
+        }
+        auto [l_min, l_max, l_sum] = dfs(node->left);
+        auto [r_min, r_max, r_sum] = dfs(node->right);
+        int x = node->val;
+        if(x <= l_max || x >= r_min) {
+            return {INT_MIN, INT_MAX, 0};
+        }
+        int sum = l_sum + r_sum + x;
+        res = max(res, sum);
+        return {min(x, l_min), max(x, r_max), sum};
+    }
+    int maxSumBST(TreeNode* root) {
+        dfs(root);
+        return res;
+    }
+};
