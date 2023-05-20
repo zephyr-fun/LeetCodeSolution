@@ -170,3 +170,76 @@ public:
         return res;
     }
 };
+
+// 2023.05.20
+// preorder traversal
+class Solution {
+public:
+    bool dfs(TreeNode* node, long long low, long long up) {
+        if(node == nullptr) {
+            return true;
+        }
+        if(node->val <= low || node->val >= up) {
+            return false;
+        }
+        bool left = dfs(node->left, low, node->val);
+        bool right = dfs(node->right, node->val, up);
+        return left && right;
+    }
+    bool isValidBST(TreeNode* root) {
+        return dfs(root, LONG_MIN, LONG_MAX);
+    }
+};
+
+// optim
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        return dfs(root, LONG_MIN, LONG_MAX);
+    }
+    bool dfs(TreeNode* node, long long low, long long up) {
+        if(node == nullptr) {
+            return true;
+        }
+        return node->val < up && node->val > low && dfs(node->left, low, node->val) && dfs(node->right, node->val, up);
+    }
+};
+
+// inorder traversal
+class Solution {
+public:
+    long long pre = LONG_MIN;
+    bool isValidBST(TreeNode* root) {
+        if(root == nullptr) {
+            return true;
+        }
+        if(!isValidBST(root->left)) {
+            return false;
+        }
+        if(root->val <= pre) {
+            return false;
+        }
+        pre = root->val;
+        return isValidBST(root->right);
+    }
+};
+
+// postorder traversal
+class Solution {
+public:
+    pair<long, long> dfs(TreeNode* node) {
+        if(node == nullptr) {
+            return {LONG_MAX, LONG_MIN};
+        }
+        auto [l_min, l_max] = dfs(node->left);
+        auto [r_min, r_max] = dfs(node->right);
+        long x = node->val; // avoid type diff
+        if(x <= l_max || x >= r_min) {
+            return {LONG_MIN, LONG_MAX};
+        }
+        return {min(x, l_min), max(x, r_max)};
+    }
+    bool isValidBST(TreeNode* root) {
+        return dfs(root).second != LONG_MAX;
+    }
+};
