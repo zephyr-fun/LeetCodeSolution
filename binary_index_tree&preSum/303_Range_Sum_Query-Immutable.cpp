@@ -18,12 +18,6 @@ private:
     vector<int> prefix;
 };
 
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
-
 // 2022.06.01
 class NumArray {
 public:
@@ -42,12 +36,6 @@ public:
     }
 };
 
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
-
 // 2022.06.07
 class NumArray {
 public:
@@ -64,12 +52,6 @@ public:
 private:
     vector<int> sum_;
 };
-
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
 
 // 2022.06.15
 class NumArray {
@@ -88,12 +70,6 @@ private:
     vector<int> sum_;
 };
 
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
-
 // 2022.10.25
 class NumArray {
 public:
@@ -111,12 +87,6 @@ public:
     }
 };
 
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
-
 // 2022.12.02
 class NumArray {
 public:
@@ -133,12 +103,6 @@ public:
         return sum[right + 1] - sum[left];
     }
 };
-
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
 
 // 2023.03.06
 class NumArray {
@@ -158,8 +122,21 @@ private:
     vector<int> preSum;
 };
 
-/**
- * Your NumArray object will be instantiated and called as such:
- * NumArray* obj = new NumArray(nums);
- * int param_1 = obj->sumRange(left,right);
- */
+// 2023.05.23
+class NumArray {
+public:
+    NumArray(vector<int>& nums) {
+        int n = nums.size();
+        prefix.resize(n + 1, 0);
+        for(int i = 1; i <= n; i++) {
+            prefix[i] = prefix[i - 1] + nums[i - 1];
+        }
+    }
+    
+    int sumRange(int left, int right) {
+        return prefix[right + 1] - prefix[left];
+    }
+
+private:
+    vector<int> prefix;
+};
