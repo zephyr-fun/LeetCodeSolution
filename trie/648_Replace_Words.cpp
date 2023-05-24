@@ -200,3 +200,139 @@ public:
         return res.substr(0, res.size() - 1);
     }
 };
+
+// 2023.05.24
+class Trie {
+public:
+    Trie() {
+        memset(son, 0, sizeof(son));
+        memset(cnt, 0, sizeof(cnt));
+    }
+
+    void insert(string s) {
+        int p = 0;
+        for(auto& c : s) {
+            int u = c - 'a';
+            if(!son[p][u]) {
+                son[p][u] = ++idx;
+            }
+            p = son[p][u];
+        }
+        cnt[p]++;
+    }
+
+    string search(string s) {
+        string res = "";
+        int p = 0;
+        for(auto& c : s) {
+            res += c;
+            int u = c - 'a';
+            if(!son[p][u]) {
+                break;
+            }
+            p = son[p][u];
+            if(cnt[p]) {
+                break; // -> return res;
+            }
+        }
+        return cnt[p] ? res : ""; // -> return s;
+    }
+
+private:
+    int idx = 0;
+    int son[100007][26];
+    int cnt[100007];
+};
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        Trie trie;
+        for(auto& dict : dictionary) {
+            trie.insert(dict);
+        }
+        int i = 0;
+        int j = 0;
+        int n = sentence.size();
+        string res = "";
+        while(j < n) {
+            while(j < n && sentence[j] != ' ') {
+                j++;
+            }
+            // res += trie.search(sentence.substr(i, j - i));
+            // res += ' ';
+            string cur = sentence.substr(i, j - i);
+            string temp = trie.search(cur);
+            res += temp == "" ? cur : temp;
+            res += ' ';
+            i = j + 1;
+            j = i;
+        }
+        return res.substr(0, res.size() - 1);
+    }
+};
+
+// optim search
+class Trie {
+public:
+    Trie() {
+        memset(son, 0, sizeof(son));
+        memset(cnt, 0, sizeof(cnt));
+    }
+
+    void insert(string s) {
+        int p = 0;
+        for(auto& c : s) {
+            int u = c - 'a';
+            if(!son[p][u]) {
+                son[p][u] = ++idx;
+            }
+            p = son[p][u];
+        }
+        cnt[p]++;
+    }
+
+    string search(string s) {
+        string res = "";
+        int p = 0;
+        for(auto& c : s) {
+            res += c;
+            int u = c - 'a';
+            if(!son[p][u]) {
+                break;
+            }
+            p = son[p][u];
+            if(cnt[p]) {
+                return res;
+            }
+        }
+        return s;
+    }
+
+private:
+    int idx = 0;
+    int son[100007][26];
+    int cnt[100007];
+};
+class Solution {
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        Trie trie;
+        for(auto& dict : dictionary) {
+            trie.insert(dict);
+        }
+        int i = 0;
+        int j = 0;
+        int n = sentence.size();
+        string res = "";
+        while(j < n) {
+            while(j < n && sentence[j] != ' ') {
+                j++;
+            }
+            res += trie.search(sentence.substr(i, j - i));
+            res += ' ';
+            i = j + 1;
+            j = i;
+        }
+        return res.substr(0, res.size() - 1);
+    }
+};
