@@ -135,3 +135,77 @@ public:
  * WordFilter* obj = new WordFilter(words);
  * int param_1 = obj->f(pref,suff);
  */
+
+// 2023.05.29
+class WordFilter {
+public:
+    struct Node {
+        Node* next[26] = {nullptr};
+        vector<int> ids;
+    }*pre, *suf;
+
+    void insert(Node* p, const string& s, int id, bool isTurn) {
+        int n = s.size();
+        p->ids.emplace_back(id);
+        for(int i = isTurn ? n - 1 : 0; isTurn ? i >= 0 : i < n; isTurn ? i-- : i++) {
+            int u = s[i] - 'a';
+            if(p->next[u] == nullptr) {
+                p->next[u] = new Node();
+            }
+            p = p->next[u];
+            p->ids.emplace_back(id);
+        }
+    }
+
+    WordFilter(vector<string>& words) {
+        pre = new Node();
+        suf = new Node();
+        for(int i = 0; i < words.size(); i++) {
+            insert(pre, words[i], i, false);
+            insert(suf, words[i], i, true);
+        }
+    }
+
+    int f(string pref, string suff) {
+        int n = pref.size();
+        int m = suff.size();
+        auto p = pre;
+        for(int i = 0; i < n; i++) {
+            int u = pref[i] - 'a';
+            if(p->next[u] == nullptr) {
+                return -1;
+            }
+            p = p->next[u];
+        }
+        vector<int>& l1 = p->ids;
+        p = suf;
+        for(int i = m - 1; i >= 0; i--) {
+            int u = suff[i] - 'a';
+            if(p->next[u] == nullptr) {
+                return -1;
+            }
+            p = p->next[u];
+        }
+        vector<int>& l2 = p->ids;
+        n = l1.size();
+        m = l2.size();
+        for(int i = n - 1, j = m - 1; i >= 0 && j >= 0; ) {
+            if(l1[i] > l2[j]) {
+                i--;
+            }
+            else if(l1[i] < l2[j]) {
+                j--;
+            }
+            else {
+                return l1[i];
+            }
+        }
+        return -1;
+    }
+};
+
+/**
+ * Your WordFilter object will be instantiated and called as such:
+ * WordFilter* obj = new WordFilter(words);
+ * int param_1 = obj->f(pref,suff);
+ */
