@@ -96,3 +96,28 @@ public:
         return res;
     }
 };
+
+// 2023.05.31
+class Solution {
+public:
+    int maxTotalFruits(vector<vector<int>>& fruits, int startPos, int k) {
+        int left = lower_bound(fruits.begin(), fruits.end(), startPos - k, [](const auto& a, int b) {
+            return a[0] < b;
+        }) - fruits.begin();
+        int right = left;
+        int s = 0;
+        int n = fruits.size();
+        for(; right < n && fruits[right][0] <= startPos; right++) {
+            s += fruits[right][1];
+        }
+        int res = s;
+        for(; right < n && fruits[right][0] <= startPos + k; right++) {
+            s += fruits[right][1];
+            while(fruits[right][0] * 2 - fruits[left][0] - startPos > k && fruits[right][0] + startPos - fruits[left][0] * 2 > k) {
+                s -= fruits[left++][1];
+            }
+            res = max(res, s);
+        }
+        return res;
+    }
+};
