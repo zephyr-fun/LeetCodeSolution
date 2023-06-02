@@ -65,3 +65,24 @@ public:
         return dp[maxv];
     }
 };
+
+// 2023.06.02
+class Solution {
+public:
+    int deleteAndEarn(vector<int>& nums) {
+        int maxv = 0;
+        int cnt[10001];
+        memset(cnt, 0, sizeof(cnt));
+        for(auto& num : nums) {
+            cnt[num]++;
+            maxv = max(maxv, num);
+        }
+        int dp[maxv + 1];
+        memset(dp, 0, sizeof(dp));
+        dp[1] = cnt[1];
+        for(int i = 2; i <= maxv; i++) {
+            dp[i] = max(dp[i - 1], dp[i - 2] + i * cnt[i]);
+        }
+        return dp[maxv];
+    }
+};
