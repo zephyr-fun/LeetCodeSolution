@@ -220,3 +220,44 @@ public:
         return res;
     }
 };
+
+// 2023.06.05
+typedef unsigned long long ULL;
+const int N = 1010, p = 13331;
+int f[N];
+
+class Solution {
+public:
+    unordered_set<ULL> hs;
+    bool check(const string &s) {
+        int n = s.size();
+        memset(f, -1, sizeof(int) * (n + 1));
+        f[0] = 0;
+        for (int i = 0; i < n; ++i) {
+            if (f[i] == -1) continue;
+            ULL curr = 0;
+            for (int j = i + 1; j <= n; ++j) {
+                curr = curr * p + s[j - 1] - '0';
+                if (hs.count(curr)) f[j] = max(f[j], f[i] + 1);
+            }   
+            if (f[n] > 1) return true;
+        }
+        return false;
+    }
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        int n = words.size();
+        vector<string> res;
+        // 先预处理出words[]中所有字符串的哈希值
+        for (auto &s : words) {
+            ULL curr = 0;
+            for (auto x : s) {
+                curr = curr * p + x - '0';
+            }
+            hs.insert(curr);
+        }
+        for (auto &s : words) {
+            if (check(s)) res.push_back(s);
+        }
+        return res;
+    }
+};
