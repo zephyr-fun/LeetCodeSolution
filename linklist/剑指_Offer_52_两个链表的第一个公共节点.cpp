@@ -43,7 +43,7 @@ public:
     }
 };
 
-// stackn and set also work
+// stack and set also work
 
 // 2022.08.19
 /**
@@ -87,5 +87,38 @@ public:
             curB = curB->next;
         }
         return nullptr;
+    }
+};
+
+// 2023.06.06
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int n = 0;
+        int m = 0;
+        auto cura = headA;
+        auto curb = headB;
+        while(cura) {
+            n++;
+            cura = cura->next;
+        }
+        while(curb) {
+            m++;
+            curb = curb->next;
+        }
+        if(n < m) {
+            return getIntersectionNode(headB, headA);
+        }
+        int diff = n - m;
+        cura = headA;
+        curb = headB;
+        while(diff--) {
+            cura = cura->next;
+        }
+        while(cura != curb) {
+            cura = cura->next;
+            curb = curb->next;
+        }
+        return cura;
     }
 };
