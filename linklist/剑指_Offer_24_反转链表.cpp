@@ -21,3 +21,19 @@ public:
         return prev;
     }
 };
+
+// 2023.06.06
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        ListNode* nxt = nullptr;
+        while(head) {
+            nxt = head->next;
+            head->next = pre;
+            pre = head;
+            head = nxt;
+        }
+        return pre;
+    }
+};
