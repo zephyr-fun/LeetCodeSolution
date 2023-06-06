@@ -25,3 +25,20 @@ public:
         return slow;
     }
 };
+
+// 2023.06.06
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+        auto fast = head;
+        while(k--) {
+            fast = fast->next;
+        }
+        auto slow = head;
+        while(fast) {
+            fast = fast->next;
+            slow = slow->next;
+        }
+        return slow;
+    }
+};
