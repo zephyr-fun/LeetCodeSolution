@@ -209,3 +209,60 @@ public:
         return dp[a];
     }
 };
+
+// 2023.06.09
+class Solution {
+public:
+    int res;
+    int target;
+    vector<int> nums;
+    int n;
+    
+    void dfs(int idx, int sum) {
+        if(idx == n) {
+            if(sum == target) {
+                res++;
+            }
+            return ;
+        }
+        dfs(idx + 1, sum - nums[idx]);
+        dfs(idx + 1, sum + nums[idx]);
+        return ;
+    }
+
+    int findTargetSumWays(vector<int>& nums_, int target_) {
+        res = 0;
+        target = target_;
+        nums = nums_;
+        n = nums.size();
+        dfs(0, 0);
+        return res;
+    }
+};
+
+// dp
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int n = nums.size();
+        int sum = 0;
+        for(auto& num : nums) {
+            sum += num;
+        }
+        if(abs(target) > sum) {
+            return 0;
+        }
+        if((sum + target) % 2) {
+            return 0;
+        }
+        int a = (sum + target) / 2;
+        vector<int> dp(a + 1, 0);
+        dp[0] = 1;
+        for(int i = 0; i < n; i++) {
+            for(int j = a; j >= nums[i]; j--) {
+                dp[j] += dp[j - nums[i]];
+            }
+        }
+        return dp[a];
+    }
+};
