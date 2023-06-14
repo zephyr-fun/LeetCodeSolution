@@ -134,3 +134,37 @@ public:
         return dp[events.size()][k];
     }
 };
+
+// 2023.06.14
+class Solution {
+public:
+    int maxValue(vector<vector<int>>& events, int k) {
+        sort(events.begin(), events.end(), [](vector<int>& a, vector<int>& b) {
+            return a[1] < b[1];
+        });
+        vector<vector<int>> dp(events.size() + 1, vector<int>(k + 1, 0));
+        for(int i = 1; i <= events.size(); i++) {
+            vector<int> curEvent = events[i - 1];
+            int start = curEvent[0];
+            int end = curEvent[1];
+            int value = curEvent[2];
+
+            int left = 1;
+            int right = i - 1;
+            while(left <= right) {
+                int mid = left + (right - left) / 2;
+                if(events[mid - 1][1] < start) {
+                    left = mid + 1;
+                }
+                else {
+                    right = mid - 1;
+                }
+            }
+            int last = right;
+            for(int j = 1; j <= k; j++) {
+                dp[i][j] = max(dp[i - 1][j], dp[last][j - 1] + value);
+            }
+        }
+        return dp[events.size()][k];
+    }
+};
