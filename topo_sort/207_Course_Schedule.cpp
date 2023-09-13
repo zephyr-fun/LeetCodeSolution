@@ -102,3 +102,40 @@ public:
         return true;
     }
 };
+
+// 2023.09.13
+// 算法复健
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> g(numCourses);
+        vector<int> in(numCourses);
+        for (auto& pre : prerequisites) {
+            g[pre[1]].emplace_back(pre[0]);
+            in[pre[0]]++;
+        }
+        queue<int> que;
+        for (int i = 0; i < numCourses; i++) {
+            if (in[i] == 0) {
+                que.push(i);
+            }
+        }
+        // cur next => u v
+        while (!que.empty()) {
+            int cur = que.front();
+            que.pop();
+            for (auto& next : g[cur]) {
+                in[next]--;
+                if (in[next] == 0) {
+                    que.push(next);
+                }
+            }
+        }
+        for (int i = 0; i < numCourses; i++) {
+            if (in[i] > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
