@@ -66,3 +66,45 @@ public:
         return res;
     }
 };
+
+// 2023.09.13
+// 先修课的语义顺序和1，2是反的，不过不影响，只有 this line 标记行需要反顺序反语义
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        int n = queries.size();
+        vector<bool> result(n, false);
+        vector<vector<int>> g(numCourses);
+        vector<int> in(numCourses, 0);
+        vector<unordered_set<int>> preset(numCourses);
+        for (auto& pre : prerequisites) {
+            g[pre[1]].emplace_back(pre[0]);
+            in[pre[0]]++;
+        }
+        queue<int> que;
+        for (int i = 0; i < numCourses; i++) {
+            if (in[i] == 0) {
+                que.emplace(i);
+            }
+        }
+        while (!que.empty()) {
+            int u = que.front();
+            que.pop();
+            for (auto& v : g[u]) {
+                for (auto& inderct : preset[u]) {
+                    preset[v].insert(inderct);
+                }
+                preset[v].insert(u);
+                in[v]--;
+                if (in[v] == 0) {
+                    que.emplace(v);
+                }
+            }
+        }
+        int idx = 0;
+        for (auto& query : queries) {
+            result[idx++] = preset[query[0]].count(query[1]); // this line
+        }
+        return result;
+    }
+};
