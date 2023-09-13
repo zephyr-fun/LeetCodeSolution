@@ -62,3 +62,38 @@ public:
         return res.size() == numCourses ? res : vector<int>();
     }
 };
+
+// 2023.09.13
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> g(numCourses);
+        vector<int> in(numCourses, 0);
+        for (auto& pre : prerequisites) {
+            g[pre[1]].emplace_back(pre[0]);
+            in[pre[0]]++;
+        }
+        vector<int> result;
+        queue<int> que;
+        for (int i = 0; i < numCourses; i++) {
+            if (in[i] == 0) {
+                que.push(i);
+            }
+        }
+        while (!que.empty()) {
+            int u = que.front();
+            que.pop();
+            result.emplace_back(u);
+            for (auto& v : g[u]) {
+                in[v]--;
+                if (in[v] == 0) {
+                    que.push(v);
+                }
+            }
+        }
+        if (result.size() == numCourses) {
+            return result;
+        }
+        return vector<int>();
+    }
+};
