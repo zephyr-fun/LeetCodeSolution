@@ -108,3 +108,29 @@ public:
         return result;
     }
 };
+
+// floyd
+class Solution {
+public:
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        vector<vector<bool>> isReachable(numCourses, vector<bool>(numCourses, false));
+        for (auto& pre : prerequisites) {
+            isReachable[pre[1]][pre[0]] = true;
+        }
+        for (int k = 0; k < numCourses; k++) {
+            for (int i = 0; i < numCourses; i++) {
+                for (int j = 0; j < numCourses; j++) {
+                    if (isReachable[i][k] && isReachable[k][j]) {
+                        isReachable[i][j] = true;
+                    }
+                }
+            }
+        }
+
+        vector<bool> result;
+        for (auto& query : queries) {
+            result.emplace_back(isReachable[query[1]][query[0]]);
+        }
+        return result;
+    }
+};
