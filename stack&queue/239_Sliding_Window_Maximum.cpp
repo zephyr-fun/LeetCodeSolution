@@ -218,3 +218,32 @@ public:
         return res;
     }
 };
+
+// 2023.09.20
+// 单调队列，内部递减，保证最大值在队头，用deque分别实现单调队列的push和pop
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> res;
+        deque<int> dq;
+        int n = nums.size();
+        for (int i = 0; i < k; i++) {
+            while (!dq.empty() && nums[i] > dq.back()) {
+                dq.pop_back();
+            }
+            dq.push_back(nums[i]);
+        }
+        res.emplace_back(dq.front());
+        for (int i = k; i < n; i++) {
+            if (!dq.empty() && dq.front() == nums[i - k]) {
+                dq.pop_front();
+            }
+            while (!dq.empty() && nums[i] > dq.back()) {
+                dq.pop_back();
+            }
+            dq.push_back(nums[i]);
+            res.emplace_back(dq.front());
+        }
+        return res;
+    }
+};
