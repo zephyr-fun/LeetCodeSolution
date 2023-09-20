@@ -126,3 +126,40 @@ public:
         return res;
     }
 };
+
+// 2023.09.20
+class Solution {
+public:
+    int up_max(vector<int>& cur) {
+        int n = cur.size();
+        stack<int> st;
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && cur[i] < cur[st.top()]) {
+                int mid = cur[st.top()];
+                st.pop();
+                int left = st.top();
+                int right = i;
+                res = max(res, mid * (right - left - 1));
+            }
+            st.push(i);
+        }
+        return res;
+    }
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int n = matrix.size();
+        int m = matrix[0].size();
+        vector<int> temp(m + 2, 0);
+        for (int i = 0; i < m; i++) {
+            temp[i + 1] = matrix[0][i] == '1' ? 1 : 0;
+        }
+        int max_value = up_max(temp);
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                temp[j + 1] = matrix[i][j] == '0' ? 0 : temp[j + 1] + 1;
+            }
+            max_value = max(max_value, up_max(temp));
+        }
+        return max_value;
+    }
+};
