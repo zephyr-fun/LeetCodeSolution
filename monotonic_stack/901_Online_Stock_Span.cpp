@@ -23,6 +23,7 @@
 //         return n;
 //     }
 // };
+
 // 按最大值切块
 class StockSpanner {
 public:
@@ -42,8 +43,29 @@ public:
     }
 };
 
-/**
- * Your StockSpanner object will be instantiated and called as such:
- * StockSpanner* obj = new StockSpanner();
- * int param_1 = obj->next(price);
- */
+// 按最大值按区域分块，向前合并，最大值总在最右边，保证了超过即可完全合并
+//                  |(60, 1)|
+// |(60, 1)|        |(70, 2)|       |(75, 4)|
+// |(80, 1)|        |(80, 1)|       |(80, 1)|       |(85, 6)|
+// |(100, 1)|       |(100, 1)|      |(100, 1)|      |(100, 1)|
+//           -> 70            -> 75           -> 85 
+// 2023.09.20
+class StockSpanner {
+public:
+    StockSpanner() {
+        
+    }
+    
+    int next(int price) {
+        int res = 1;
+        while (!st.empty() && st.top().first <= price) {
+            res += st.top().second;
+            st.pop();
+        }
+        st.push(make_pair(price, res));
+        return res;
+    }
+
+private:
+    stack<pair<int, int>> st;
+};
