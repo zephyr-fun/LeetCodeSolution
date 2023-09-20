@@ -367,3 +367,28 @@ public:
         return res;
     }
 };
+
+// 2023.09.20
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n = height.size();
+        int sum = 0;
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && height[i] > height[st.top()]) {
+                int mid = st.top();
+                while (!st.empty() && height[st.top()] == height[mid]) {
+                    st.pop();
+                }
+                if (!st.empty()) {
+                    int left = st.top();
+                    int right = i;
+                    sum += (min(height[left], height[right]) - height[mid]) * (right - left - 1);
+                }
+            }
+            st.push(i);
+        }
+        return sum;
+    }
+};
