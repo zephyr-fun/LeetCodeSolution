@@ -288,3 +288,29 @@ public:
         return max_value;
     }
 };
+
+// optim for [2,1,5,5,5,5,6,2,3]
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        heights.insert(heights.begin(), 0);
+        heights.emplace_back(0);
+        int n = heights.size();
+        stack<int> st;
+        int max_value = 0;
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && heights[i] < heights[st.top()]) {
+                int mid = heights[st.top()];
+                // optim
+                while (!st.empty() && heights[st.top()] == mid) {
+                    st.pop();
+                }
+                int left = st.top();
+                int right = i;
+                max_value = max(max_value, mid * (right - left - 1));
+            }
+            st.push(i);
+        }
+        return max_value;
+    }
+};
