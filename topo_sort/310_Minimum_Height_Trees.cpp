@@ -239,3 +239,50 @@ public:
         return res;
     }
 };
+
+// 2023.09.21
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<vector<int>>& edges) {
+        if (n == 1) {
+            return {0};
+        }
+        vector<vector<int>> g(n);
+        vector<int> in(n);
+        for (auto& edge: edges) {
+            g[edge[0]].emplace_back(edge[1]);
+            g[edge[1]].emplace_back(edge[0]);
+            in[edge[0]]++;
+            in[edge[1]]++;
+        }
+        
+        int count = n;
+
+        queue<int> que;
+        for (int i = 0; i < n; i++) {
+            if (in[i] == 1) {
+                que.push(i);
+            }
+        }
+
+        while (count > 2) {
+            int size = que.size();
+            count -= size;
+            for (int i = 0; i < size; i++) {
+                int u = que.front();
+                que.pop();
+                for (auto& v : g[u]) {
+                    if (--in[v] == 1) {
+                        que.push(v);
+                    }
+                }
+            }
+        }
+        vector<int> res;
+        while (!que.empty()) {
+            res.emplace_back(que.front());
+            que.pop();
+        }
+        return res;
+    }
+};
