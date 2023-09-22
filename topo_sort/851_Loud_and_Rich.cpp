@@ -107,3 +107,43 @@ public:
         return res;
     }
 };
+
+// 2023.09.21
+// 在 topo 的过程中更新结果，因为当前处理的总是从富有指向贫穷，这样就可以更新贫穷的结果
+class Solution {
+public:
+    vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+        int n = quiet.size();
+        vector<vector<int>> g(n);
+        vector<int> in(n, 0);
+        vector<int> res(n);
+        iota(res.begin(), res.end(), 0);
+        for (auto& r : richer) {
+            // r[0] is richer than r[1]
+            g[r[0]].emplace_back(r[1]);
+            in[r[1]]++;
+        }
+
+        queue<int> que;
+
+        for (int i = 0; i < n; i++) {
+            if (in[i] == 0) {
+                que.push(i);
+            }
+        }
+
+        while (!que.empty()) {
+            int u = que.front();
+            que.pop();
+            for (auto& v: g[u]) {
+                if (quiet[res[u]] < quiet[res[v]]) {
+                    res[v] = res[u];
+                }
+                if (--in[v] == 0) {
+                    que.push(v);
+                }
+            }
+        }
+        return res;
+    }
+};
