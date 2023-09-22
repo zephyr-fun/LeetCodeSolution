@@ -82,3 +82,49 @@ public:
         return true;
     }
 };
+
+// 2023.09.22
+class Solution {
+public:
+    bool sequenceReconstruction(vector<int>& nums, vector<vector<int>>& sequences) {
+        int n = nums.size();
+        vector<int> path;
+        vector<vector<int>> g(n + 1);
+        vector<int> in(n + 1, 0);
+        for (auto& s : sequences) {
+            for (int i = 0; i < s.size() - 1; i++) {
+                g[s[i]].emplace_back(s[i + 1]);
+                in[s[i + 1]]++;
+            }
+        }
+        queue<int> que;
+        for (int i = 1; i <= n; i++) {
+            if (in[i] == 0) {
+                que.push(i);
+            }
+        }
+        while (!que.empty()) {
+            int size = que.size();
+            if (size > 1) {
+                return false;
+            }
+            int u = que.front();
+            que.pop();
+            path.emplace_back(u);
+            for (auto& v : g[u]) {
+                if (--in[v] == 0) {
+                    que.push(v);
+                }
+            }
+        }
+        if (nums.size() != path.size()) {
+            return false;
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != path[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
