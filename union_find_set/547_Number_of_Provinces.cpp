@@ -109,3 +109,67 @@ public:
         return res;
     }
 };
+
+// 2023.09.23
+// with size calculated
+class UnionFindSet {
+public:
+    UnionFindSet(int n) : rank(n + 1, 0), parent(n + 1, 0), size(n + 1, 1) {
+        for (int i = 0; i < parent.size(); i++) {
+            parent[i] = i;
+        }
+    }
+
+    int Find(int u) {
+        if (u != parent[u]) {
+            parent[u] = Find(parent[u]);
+        }
+        return parent[u];
+    }
+
+    bool Union(int u, int v) {
+        int pu = Find(u);
+        int pv = Find(v);
+        if (pu == pv) {
+            return false;
+        }
+        if (rank[pu] < rank[pv]) {
+            parent[pu] = pv;
+            size[pv] += size[pu];
+        }
+        else if (rank[pv] < rank[pu]) {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        }
+        else {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+            rank[pu]++;
+        }
+        return true;
+    }
+private:
+    vector<int> parent;
+    vector<int> rank;
+    vector<int> size;
+};
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        UnionFindSet set(n);
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (isConnected[i][j]) {
+                    set.Union(i, j);
+                }
+            }
+        }
+        unordered_set<int> res;
+        for (int i = 0; i < n; i++) {
+            res.insert(set.Find(i));
+        }
+        return res.size();
+    }
+};
