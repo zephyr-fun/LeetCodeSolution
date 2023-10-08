@@ -128,3 +128,48 @@ public:
  * int param_3 = obj->maximum();
  * int param_4 = obj->minimum();
  */
+
+ // 2023.10.08
+ class StockPrice {
+public:
+    StockPrice() {
+        cur = 0;
+    }
+    
+    void update(int timestamp, int price) {
+        cur = max(cur, timestamp);
+        if(map.count(timestamp)) {
+            int old = map[timestamp];
+            auto pos = set.find(old);
+            set.erase(pos);
+        }
+        map[timestamp] = price;
+        set.insert(price);
+    }
+    
+    int current() {
+        return map[cur];
+    }
+    
+    int maximum() {
+        return *set.rbegin();
+    }
+    
+    int minimum() {
+        return *set.begin();
+    }
+
+private:
+    int cur;
+    unordered_map<int, int> map;
+    multiset<int> set;
+};
+
+/**
+ * Your StockPrice object will be instantiated and called as such:
+ * StockPrice* obj = new StockPrice();
+ * obj->update(timestamp,price);
+ * int param_2 = obj->current();
+ * int param_3 = obj->maximum();
+ * int param_4 = obj->minimum();
+ */
